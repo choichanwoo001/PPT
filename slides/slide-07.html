@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 720pt;
+      height: 405pt;
+      font-family: 'Pretendard', sans-serif;
+      background: #B8C4B8;
+      overflow: hidden;
+    }
+    .slide {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(45, 45, 45, 0.55);
+    }
+    .content {
+      position: absolute;
+      inset: 0;
+      padding: 36pt 48pt 32pt;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 14pt;
+    }
+    .lead p {
+      font-size: 12pt;
+      font-weight: 400;
+      color: #F8FAF8;
+      line-height: 1.4;
+      opacity: 0.9;
+    }
+    .quote p {
+      font-size: 26pt;
+      font-weight: 600;
+      color: #F8FAF8;
+      line-height: 1.42;
+      letter-spacing: -0.03em;
+      padding: 2pt 0 4pt;
+    }
+    .support {
+      max-width: 480pt;
+    }
+    .support p {
+      font-size: 12.5pt;
+      font-weight: 400;
+      color: #F8FAF8;
+      line-height: 1.52;
+      opacity: 0.92;
+    }
+    .support p strong {
+      font-weight: 600;
+    }
+    .closing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6pt;
+      margin-top: 6pt;
+    }
+    .closing p.brand {
+      font-size: 28pt;
+      font-weight: 600;
+      color: #F8FAF8;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+    }
+    .closing h2 {
+      font-size: 16pt;
+      font-weight: 500;
+      color: #F8FAF8;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <img src="./assets/slide-07-closing.jpg" alt="따뜻한 서점에서 책을 들고 있는 손">
+    <div class="scrim"></div>
+    <div class="content">
+      <div class="lead">
+        <p>저희가 Verso를 통해 말하고 싶은 건 하나입니다.</p>
+      </div>
+      <div class="quote">
+        <p>“책과의 새로운 만남은,<br>설계될 수 있다.”</p>
+      </div>
+      <div class="support">
+        <p>베스트셀러 순위도, 알고리즘의 자동 추천도 아닌 <strong>내 취향에서 한 발짝 나아간 발견</strong>. Verso는 그 경험을 만드는 서비스입니다.</p>
+      </div>
+      <div class="closing">
+        <p class="brand">Verso</p>
+        <h2>감사합니다.</h2>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -45,21 +45,30 @@ ENV/
 # PPT temporary files
 ~$*.ppt*
 
-# Generated slides and viewer
-slides/
-decks/
+# Slide workspace (slides/, decks/) is tracked so your deck can be pushed to Git.
+# Ignore only regenerable / heavy artifacts inside those dirs.
+slides/**/.cache/
+slides/**/tmp/
+slides/**/.tmp-*
+decks/**/.cache/
+decks/**/tmp/
+decks/**/.tmp-*
 style-preview.html
 *.pptx
 *.pdf
 *.dmg
+!slides/**/*.pptx
+!slides/**/*.pdf
+!decks/**/*.pptx
+!decks/**/*.pdf
 
 # Showcase site: allow PDFs and viewers checked into showcase/presentations/
 !showcase/presentations/**/*.pdf
 !showcase/presentations/**/viewer.html
 !showcase/assets/manifest.json
 
-# Generated outlines and thumbnails
-slide-outline.md
+# Generated outlines and thumbnails (root outline is tracked)
+slides/**/thumbnail-grid.png
 thumbnail-grid.png
 screenshots/
 

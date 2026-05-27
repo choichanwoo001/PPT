@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 720pt;
+      height: 405pt;
+      font-family: 'Pretendard', sans-serif;
+      background: #B8C4B8;
+      overflow: hidden;
+    }
+    .slide {
+      width: 100%;
+      height: 100%;
+      padding: 20pt 36pt 16pt;
+      display: flex;
+      flex-direction: column;
+      gap: 10pt;
+    }
+
+    .headline h2 {
+      font-size: 16pt;
+      font-weight: 600;
+      color: #1A1A1A;
+      line-height: 1.38;
+      letter-spacing: -0.02em;
+    }
+    .headline .lead {
+      font-size: 11pt;
+      font-weight: 400;
+      color: #3D3D3D;
+      line-height: 1.4;
+      margin-top: 3pt;
+    }
+
+    .hero {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      border-radius: 10pt;
+      overflow: hidden;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero .scrim {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 55%;
+      background: rgba(45, 45, 45, 0.72);
+    }
+    .hero .thesis {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 18pt 22pt 20pt;
+    }
+    .hero .thesis p {
+      font-size: 22pt;
+      font-weight: 600;
+      color: #F8FAF8;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+    }
+
+    .explain {
+      background: #F8FAF8;
+      border-radius: 10pt;
+      padding: 12pt 16pt;
+      display: flex;
+      flex-direction: column;
+      gap: 6pt;
+    }
+    .explain .tag p {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #F8FAF8;
+      background: #9AA89A;
+      display: inline-block;
+      padding: 3pt 10pt;
+      border-radius: 4pt;
+      line-height: 1.2;
+    }
+    .explain .body p {
+      font-size: 11.5pt;
+      font-weight: 400;
+      color: #3D3D3D;
+      line-height: 1.48;
+    }
+    .explain .body p strong {
+      font-weight: 600;
+      color: #1A1A1A;
+    }
+    .explain .bridge {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #1A1A1A;
+      line-height: 1.4;
+      margin-top: 2pt;
+    }
+    .explain .next {
+      font-size: 11pt;
+      font-weight: 400;
+      color: #3D3D3D;
+      line-height: 1.42;
+    }
+    .explain .next strong {
+      font-weight: 600;
+      color: #1A1A1A;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <div class="headline">
+      <h2>그렇다면 왜 독자들은 소수의 책만 선택하게 될까요?</h2>
+      <p class="lead">저희는 그 핵심 원인을 이렇게 정의했습니다.</p>
+    </div>
+
+    <div class="hero">
+      <img src="./assets/slide-03-indie-bookstore.jpg" alt="독립서점에서 책을 발견하는 독자">
+      <div class="scrim"></div>
+      <div class="thesis">
+        <p>“도서는 실패 비용이 높은 콘텐츠다.”</p>
+      </div>
+    </div>
+
+    <div class="explain">
+      <div class="tag"><p>실패비용</p></div>
+      <div class="body">
+        <p>영화나 음악과 달리, 책은 <strong>비용과 시간을 투자한 뒤</strong> 그 가치를 판단할 수 있습니다. 기대에 못 미쳤을 때의 금전적·시간적 손실이 크기 때문에, 독자들은 자연스럽게 <strong>검증된 선택</strong>으로 수렴합니다.</p>
+      </div>
+      <p class="bridge">이것이 독서 편식의 구조적 원인입니다.</p>
+      <p class="next">그렇다면 <strong>‘새로운 발견’의 리스크를 낮춰 주는 것</strong>으로서 해결책을 찾아야 한다고 생각하였습니다.</p>
+    </div>
+  </div>
+</body>
+</html>

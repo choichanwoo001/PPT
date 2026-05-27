@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 720pt;
+      height: 405pt;
+      font-family: 'Pretendard', sans-serif;
+      background: #B8C4B8;
+      overflow: hidden;
+    }
+    .slide {
+      width: 100%;
+      height: 100%;
+      padding: 22pt 36pt 18pt;
+      display: flex;
+      flex-direction: column;
+      gap: 10pt;
+    }
+
+    .header h2 {
+      font-size: 18pt;
+      font-weight: 600;
+      color: #1A1A1A;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      padding: 0 2pt;
+    }
+
+    .direct {
+      background: #2D2D2D;
+      border-radius: 10pt;
+      padding: 14pt 16pt;
+      display: grid;
+      grid-template-columns: 52pt 1fr;
+      gap: 12pt;
+      align-items: center;
+    }
+    .direct .icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .direct .icon-wrap i {
+      width: 32pt;
+      height: 32pt;
+      color: #F8FAF8;
+      stroke-width: 1.6;
+    }
+    .direct .content .label-row {
+      display: flex;
+      align-items: center;
+      gap: 8pt;
+      margin-bottom: 5pt;
+    }
+    .direct .content .type p {
+      font-size: 9.5pt;
+      font-weight: 600;
+      color: #2D2D2D;
+      background: #F8FAF8;
+      padding: 3pt 8pt;
+      border-radius: 4pt;
+      line-height: 1.2;
+    }
+    .direct .content h3 {
+      font-size: 15pt;
+      font-weight: 600;
+      color: #F8FAF8;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+    .direct .content .body p {
+      font-size: 11.5pt;
+      font-weight: 400;
+      color: #F8FAF8;
+      line-height: 1.48;
+      opacity: 0.95;
+    }
+    .direct .content .body p strong {
+      font-weight: 600;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10pt;
+      padding: 0 2pt;
+    }
+    .divider .line {
+      flex: 1;
+      height: 1pt;
+      background: #9AA89A;
+    }
+    .divider p {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #3D3D3D;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .secondary {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10pt;
+    }
+    .effect-card {
+      background: #F8FAF8;
+      border-radius: 10pt;
+      padding: 12pt 14pt;
+      display: flex;
+      flex-direction: column;
+      gap: 6pt;
+    }
+    .effect-card .head {
+      display: flex;
+      align-items: center;
+      gap: 8pt;
+    }
+    .effect-card .head i {
+      width: 18pt;
+      height: 18pt;
+      color: #2D2D2D;
+      stroke-width: 2;
+    }
+    .effect-card .type p {
+      font-size: 9.5pt;
+      font-weight: 600;
+      color: #F8FAF8;
+      background: #9AA89A;
+      display: inline-block;
+      padding: 3pt 8pt;
+      border-radius: 4pt;
+      line-height: 1.2;
+    }
+    .effect-card h3 {
+      font-size: 13pt;
+      font-weight: 600;
+      color: #1A1A1A;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+    .effect-card .body p {
+      font-size: 10.5pt;
+      font-weight: 400;
+      color: #3D3D3D;
+      line-height: 1.45;
+    }
+    .effect-card .body p strong {
+      font-weight: 600;
+      color: #1A1A1A;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <div class="header">
+      <h2>Verso가 만들어갈 변화는 크게 세 가지입니다.</h2>
+    </div>
+
+    <div class="direct">
+      <div class="icon-wrap">
+        <i data-lucide="compass"></i>
+      </div>
+      <div class="content">
+        <div class="label-row">
+          <div class="type"><p>직접 효과</p></div>
+          <h3>독서 편향 해소</h3>
+        </div>
+        <div class="body">
+          <p>사용자(2030)가 <strong>취향 반경 밖의 책</strong>을 발견하고 구매하는 경험이 늘어납니다. 실패 비용에 대한 부담이 줄어들고, 다양한 도서로의 접근이 자연스러워집니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <div class="line"></div>
+      <p>부가적 효과</p>
+      <div class="line"></div>
+    </div>
+
+    <div class="secondary">
+      <div class="effect-card">
+        <div class="head">
+          <i data-lucide="users"></i>
+          <div class="type"><p>생태계 효과</p></div>
+        </div>
+        <h3>독서 문화의 확장</h3>
+        <div class="body">
+          <p>Verso를 통해 쌓인 리뷰와 취향 데이터는 <strong>커뮤니티</strong>를 형성하고, 도서 콘텐츠에 대한 관심도를 끌어올립니다. 장기적으로 <strong>전반적인 독서율 향상</strong>에도 기여할 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="effect-card">
+        <div class="head">
+          <i data-lucide="building-2"></i>
+          <div class="type"><p>산업 효과</p></div>
+        </div>
+        <h3>대형서점의 경험 가치 재정의</h3>
+        <div class="body">
+          <p>대형서점이 단순 판매 공간을 넘어 <strong>취향을 발견하는 경험 공간</strong>으로 재정의됩니다. 오프라인 서점의 <strong>지속 가능성</strong>에도 긍정적인 영향을 줍니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

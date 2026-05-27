@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 720pt;
+      height: 405pt;
+      font-family: 'Pretendard', sans-serif;
+      background: #B8C4B8;
+      overflow: hidden;
+    }
+    .slide {
+      width: 100%;
+      height: 100%;
+      padding: 20pt 36pt 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8pt;
+    }
+
+    .headline h2 {
+      font-size: 16pt;
+      font-weight: 600;
+      color: #1A1A1A;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+    }
+    .headline p {
+      font-size: 11pt;
+      font-weight: 400;
+      color: #3D3D3D;
+      line-height: 1.4;
+      margin-top: 3pt;
+    }
+
+    .channels {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12pt;
+      padding: 4pt 0;
+    }
+    .channel {
+      display: flex;
+      align-items: center;
+      gap: 8pt;
+    }
+    .channel .icon-wrap {
+      width: 28pt;
+      height: 28pt;
+      background: #F8FAF8;
+      border-radius: 8pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .channel .icon-wrap i {
+      width: 16pt;
+      height: 16pt;
+      color: #2D2D2D;
+      stroke-width: 2;
+    }
+    .channel .label p {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #1A1A1A;
+      line-height: 1.25;
+    }
+    .channel .label p.sub {
+      font-size: 9pt;
+      font-weight: 400;
+      color: #3D3D3D;
+      margin-top: 1pt;
+    }
+
+    .cycle-hero {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cycle-ring {
+      position: relative;
+      width: 340pt;
+      height: 150pt;
+    }
+
+    .cycle-ring svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .cycle-node {
+      position: absolute;
+      width: 108pt;
+      background: #F8FAF8;
+      border-radius: 10pt;
+      padding: 10pt 11pt;
+      text-align: center;
+    }
+    .cycle-node .num {
+      font-size: 9pt;
+      font-weight: 600;
+      color: #3D3D3D;
+      line-height: 1.2;
+      margin-bottom: 3pt;
+    }
+    .cycle-node .title {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #1A1A1A;
+      line-height: 1.25;
+      margin-bottom: 3pt;
+    }
+    .cycle-node .desc {
+      font-size: 9pt;
+      font-weight: 400;
+      color: #3D3D3D;
+      line-height: 1.35;
+    }
+
+    .node-1 { left: 0; top: 50%; transform: translateY(-50%); }
+    .node-2 { left: 50%; top: 0; transform: translateX(-50%); }
+    .node-3 { right: 0; top: 50%; transform: translateY(-50%); }
+
+    .brand-band {
+      background: #2D2D2D;
+      margin: 0 -36pt;
+      padding: 14pt 36pt 16pt;
+      text-align: center;
+    }
+    .brand-band .brand {
+      font-size: 22pt;
+      font-weight: 600;
+      color: #F8FAF8;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 4pt;
+    }
+    .brand-band .tagline {
+      font-size: 11pt;
+      font-weight: 400;
+      color: #F8FAF8;
+      line-height: 1.4;
+      opacity: 0.92;
+    }
+    .brand-band .note {
+      font-size: 10pt;
+      font-weight: 400;
+      color: #F8FAF8;
+      line-height: 1.4;
+      opacity: 0.75;
+      margin-top: 6pt;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <div class="headline">
+      <h2>저희는 이 지점에 주목했습니다.</h2>
+      <p>각 플랫폼의 강점만 결합하고, 한계를 서로 보완한다면 어떨까요?</p>
+    </div>
+
+    <div class="channels">
+      <div class="channel">
+        <div class="icon-wrap"><i data-lucide="building-2"></i></div>
+        <div class="label">
+          <p>대형서점</p>
+          <p class="sub">접근성 · 풍부한 종수</p>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="icon-wrap"><i data-lucide="book-open"></i></div>
+        <div class="label">
+          <p>독립서점</p>
+          <p class="sub">감성 큐레이션 · 취향 발견</p>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="icon-wrap"><i data-lucide="users"></i></div>
+        <div class="label">
+          <p>온라인 플랫폼</p>
+          <p class="sub">리뷰 · 신뢰 데이터</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cycle-hero">
+      <div class="cycle-ring">
+        <svg viewBox="0 0 340 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 108 75 C 108 30, 170 20, 170 55" stroke="#9AA89A" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+          <path d="M 232 55 C 270 55, 280 75, 232 75" stroke="#9AA89A" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+          <path d="M 170 95 C 170 130, 60 130, 60 95" stroke="#9AA89A" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+          <defs>
+            <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <polygon points="0 0, 6 3, 0 6" fill="#9AA89A"/>
+            </marker>
+          </defs>
+        </svg>
+        <div class="cycle-node node-1">
+          <p class="num">①</p>
+          <p class="title">온라인</p>
+          <p class="desc">취향 데이터 수집</p>
+        </div>
+        <div class="cycle-node node-2">
+          <p class="num">②</p>
+          <p class="title">오프라인</p>
+          <p class="desc">로봇 큐레이터·실제 책 경험</p>
+        </div>
+        <div class="cycle-node node-3">
+          <p class="num">③</p>
+          <p class="title">온라인</p>
+          <p class="desc">커뮤니티·리뷰 재순환</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-band">
+      <p class="brand">Verso</p>
+      <p class="tagline">세 강점을 하나의 흐름으로 연결하는 Online-to-Offline 도서 큐레이션 서비스</p>
+      <p class="note">O2O 순환이 핵심 — 편리함만이 전부는 아닙니다.</p>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
