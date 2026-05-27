@@ -1249,6 +1249,24 @@
       white-space: nowrap;
     }
 
+    /* ── View-only (slides-grab view / edit --view-only) ── */
+    body.view-only #editor-sidebar,
+    body.view-only #btn-clear-bboxes,
+    body.view-only #bbox-layer,
+    body.view-only #object-layer,
+    body.view-only #draw-layer,
+    body.view-only #slide-status-chip {
+      display: none !important;
+    }
+
+    body.view-only .slide-panel {
+      padding: 32px 40px;
+    }
+
+    body.view-only .status-bar {
+      display: none;
+    }
+
     /* ── Editor sidebar ── */
     .editor-sidebar {
       width: 336px;

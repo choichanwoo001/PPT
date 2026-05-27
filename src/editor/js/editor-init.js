@@ -281,6 +281,10 @@ async function loadEditorConfig() {
     if (cfg?.slideMode && document?.body) {
       document.body.dataset.slideMode = cfg.slideMode;
     }
+    if (cfg?.viewOnly && document?.body) {
+      document.body.classList.add('view-only');
+      document.title = 'Slide Viewer - slides-grab';
+    }
   } catch {
     // Defaults (960x540) stay in effect.
   }

@@ -264,8 +264,26 @@ program
   .option('--port <number>', 'Server port')
   .option('--slides-dir <path>', 'Slide directory', 'slides')
   .option('--mode <mode>', 'Slide mode: presentation or card-news', 'presentation')
+  .option('--view-only', 'Hide editor sidebar (view / navigate only)')
   .action(async (options = {}) => {
     const args = ['--slides-dir', options.slidesDir, '--mode', options.mode];
+    if (options.port) {
+      args.push('--port', String(options.port));
+    }
+    if (options.viewOnly) {
+      args.push('--view-only');
+    }
+    await runCommand('scripts/editor-server.js', args);
+  });
+
+program
+  .command('view')
+  .description('Browse slides in the browser without the editor sidebar')
+  .option('--port <number>', 'Server port')
+  .option('--slides-dir <path>', 'Slide directory', 'slides')
+  .option('--mode <mode>', 'Slide mode: presentation or card-news', 'presentation')
+  .action(async (options = {}) => {
+    const args = ['--slides-dir', options.slidesDir, '--mode', options.mode, '--view-only'];
     if (options.port) {
       args.push('--port', String(options.port));
     }

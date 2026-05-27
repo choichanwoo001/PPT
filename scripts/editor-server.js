@@ -65,11 +65,12 @@ const MAX_LOG_CHARS = 800_000;
 const EDIT_TIMEOUT_MS = parseEditTimeoutMs();
 
 function printUsage() {
-  process.stdout.write(`Usage: slides-grab edit [options]\n\n`);
+  process.stdout.write(`Usage: slides-grab edit|view [options]\n\n`);
   process.stdout.write(`Options:\n`);
   process.stdout.write(`  --port <number>           Server port (default: ${DEFAULT_PORT})\n`);
   process.stdout.write(`  --slides-dir <path>       Slide directory (default: ${DEFAULT_SLIDES_DIR})\n`);
   process.stdout.write(`  --mode <mode>             Slide mode: ${getSlideModeChoices().join(', ')} (default: ${DEFAULT_SLIDE_MODE})\n`);
+  process.stdout.write(`  --view-only               Hide editor sidebar (view / navigate only)\n`);
   process.stdout.write(`  Model is selected in editor UI dropdown.\n`);
   process.stdout.write(`  -h, --help                Show this help message\n`);
 }
@@ -79,6 +80,7 @@ function parseArgs(argv) {
     port: DEFAULT_PORT,
     slidesDir: DEFAULT_SLIDES_DIR,
     mode: DEFAULT_SLIDE_MODE,
+    viewOnly: false,
     help: false,
   };
 
@@ -119,6 +121,11 @@ function parseArgs(argv) {
 
     if (arg.startsWith('--mode=')) {
       opts.mode = normalizeSlideMode(arg.slice('--mode='.length));
+      continue;
+    }
+
+    if (arg === '--view-only') {
+      opts.viewOnly = true;
       continue;
     }
 
@@ -673,6 +680,7 @@ async function startServer(opts) {
     const cfg = getSlideModeConfig(opts.mode);
     res.json({
       slideMode: opts.mode,
+      viewOnly: Boolean(opts.viewOnly),
       framePx: { width: cfg.framePx.width, height: cfg.framePx.height },
       screenshotPx: { width: cfg.screenshotPx.width, height: cfg.screenshotPx.height },
       sizeLabel: cfg.sizeLabel,
@@ -937,10 +945,14 @@ async function startServer(opts) {
 
   const server = await listenOnPort(app, opts.port);
 
-  process.stdout.write('\n  slides-grab editor\n');
+  process.stdout.write(`\n  slides-grab ${opts.viewOnly ? 'viewer' : 'editor'}\n`);
   process.stdout.write('  ─────────────────────────────────────\n');
   process.stdout.write(`  Local:       http://localhost:${opts.port}\n`);
-  process.stdout.write(`  Models:      ${ALL_MODELS.join(', ')}\n`);
+  if (opts.viewOnly) {
+    process.stdout.write('  Mode:        view-only (no editor sidebar)\n');
+  } else {
+    process.stdout.write(`  Models:      ${ALL_MODELS.join(', ')}\n`);
+  }
   process.stdout.write(`  Slides:      ${slidesDirectory}\n`);
   process.stdout.write('  ─────────────────────────────────────\n\n');
 
