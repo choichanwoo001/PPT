@@ -1,237 +1,192 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
+<html lang="ko"><head>
+<base href="/slides/">
+<script>
+(() => {
+  const slideFile = "slide-05.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      width: 720pt;
-      height: 405pt;
-      font-family: 'Pretendard', sans-serif;
-      background: #B8C4B8;
-      overflow: hidden;
-    }
-    .slide {
-      width: 100%;
-      height: 100%;
-      padding: 20pt 36pt 0;
-      display: flex;
-      flex-direction: column;
-      gap: 8pt;
-    }
-
-    .headline h2 {
-      font-size: 16pt;
-      font-weight: 600;
-      color: #1A1A1A;
-      line-height: 1.35;
-      letter-spacing: -0.02em;
-    }
-    .headline p {
-      font-size: 11pt;
-      font-weight: 400;
-      color: #3D3D3D;
-      line-height: 1.4;
-      margin-top: 3pt;
-    }
-
-    .channels {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12pt;
-      padding: 4pt 0;
-    }
-    .channel {
-      display: flex;
-      align-items: center;
-      gap: 8pt;
-    }
-    .channel .icon-wrap {
-      width: 28pt;
-      height: 28pt;
-      background: #F8FAF8;
-      border-radius: 8pt;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .channel .icon-wrap i {
-      width: 16pt;
-      height: 16pt;
-      color: #2D2D2D;
-      stroke-width: 2;
-    }
-    .channel .label p {
-      font-size: 10pt;
-      font-weight: 600;
-      color: #1A1A1A;
-      line-height: 1.25;
-    }
-    .channel .label p.sub {
-      font-size: 9pt;
-      font-weight: 400;
-      color: #3D3D3D;
-      margin-top: 1pt;
-    }
-
-    .cycle-hero {
-      flex: 1;
-      min-height: 0;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .cycle-ring {
-      position: relative;
-      width: 340pt;
-      height: 150pt;
-    }
-
-    .cycle-ring svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-    }
-
-    .cycle-node {
-      position: absolute;
-      width: 108pt;
-      background: #F8FAF8;
-      border-radius: 10pt;
-      padding: 10pt 11pt;
-      text-align: center;
-    }
-    .cycle-node .num {
-      font-size: 9pt;
-      font-weight: 600;
-      color: #3D3D3D;
-      line-height: 1.2;
-      margin-bottom: 3pt;
-    }
-    .cycle-node .title {
-      font-size: 11pt;
-      font-weight: 600;
-      color: #1A1A1A;
-      line-height: 1.25;
-      margin-bottom: 3pt;
-    }
-    .cycle-node .desc {
-      font-size: 9pt;
-      font-weight: 400;
-      color: #3D3D3D;
-      line-height: 1.35;
-    }
-
-    .node-1 { left: 0; top: 50%; transform: translateY(-50%); }
-    .node-2 { left: 50%; top: 0; transform: translateX(-50%); }
-    .node-3 { right: 0; top: 50%; transform: translateY(-50%); }
-
-    .brand-band {
-      background: #2D2D2D;
-      margin: 0 -36pt;
-      padding: 14pt 36pt 16pt;
-      text-align: center;
-    }
-    .brand-band .brand {
-      font-size: 22pt;
-      font-weight: 600;
-      color: #F8FAF8;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 4pt;
-    }
-    .brand-band .tagline {
-      font-size: 11pt;
-      font-weight: 400;
-      color: #F8FAF8;
-      line-height: 1.4;
-      opacity: 0.92;
-    }
-    .brand-band .note {
-      font-size: 10pt;
-      font-weight: 400;
-      color: #F8FAF8;
-      line-height: 1.4;
-      opacity: 0.75;
-      margin-top: 6pt;
-    }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    h1, h2, h3, p, li { padding-bottom: 0.1em; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 52pt 40pt 26pt; display: flex; flex-direction: column; gap: 12pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { font-size: 23.5pt; font-weight: 800; color: #2D2D2D; line-height: 1.34; }
+    .mix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; }
+    .source { background: #F8FAF8; border-radius: 8pt; padding: 15pt 14pt; min-height: 86pt; }
+    .source h2 { font-size: 14.5pt; font-weight: 800; color: #2D2D2D; line-height: 1.36; }
+    .source p { margin-top: 7pt; font-size: 11.5pt; font-weight: 500; color: #3D3D3D; line-height: 1.38; }
+    .verso { flex: 1; background: #2D2D2D; border-radius: 8pt; padding: 20pt 24pt; display: grid; grid-template-columns: 0.62fr 1.38fr; gap: 24pt; align-items: center; }
+    .brand h2 { font-size: 40pt; font-weight: 800; color: #F8FAF8; line-height: 1.18; }
+    .brand p { margin-top: 8pt; font-size: 12pt; font-weight: 700; color: #B8C4B8; line-height: 1.35; }
+    .body p { font-size: 14pt; font-weight: 400; color: #F8FAF8; line-height: 1.55; }
+    .body p strong { font-weight: 800; color: #B8C4B8; }
   </style>
 </head>
 <body>
   <div class="slide">
+    <div class="section-badge"><p>2 합성</p></div>
     <div class="headline">
-      <h2>저희는 이 지점에 주목했습니다.</h2>
-      <p>각 플랫폼의 강점만 결합하고, 한계를 서로 보완한다면 어떨까요?</p>
+      <h1>각 채널의 강점만 결합하고, 한계를 서로 보완할 수 없을까?</h1>
     </div>
-
-    <div class="channels">
-      <div class="channel">
-        <div class="icon-wrap"><i data-lucide="building-2"></i></div>
-        <div class="label">
-          <p>대형서점</p>
-          <p class="sub">접근성 · 풍부한 종수</p>
-        </div>
-      </div>
-      <div class="channel">
-        <div class="icon-wrap"><i data-lucide="book-open"></i></div>
-        <div class="label">
-          <p>독립서점</p>
-          <p class="sub">감성 큐레이션 · 취향 발견</p>
-        </div>
-      </div>
-      <div class="channel">
-        <div class="icon-wrap"><i data-lucide="users"></i></div>
-        <div class="label">
-          <p>온라인 플랫폼</p>
-          <p class="sub">리뷰 · 신뢰 데이터</p>
-        </div>
-      </div>
+    <div class="mix">
+      <div class="source"><h2>대형서점</h2><p>접근성<br>풍부한 도서 인프라</p></div>
+      <div class="source"><h2>독립서점</h2><p>취향 기반 큐레이션<br>발견의 경험</p></div>
+      <div class="source"><h2>온라인 플랫폼</h2><p>리뷰<br>사용자 데이터</p></div>
     </div>
-
-    <div class="cycle-hero">
-      <div class="cycle-ring">
-        <svg viewBox="0 0 340 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 108 75 C 108 30, 170 20, 170 55" stroke="#9AA89A" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
-          <path d="M 232 55 C 270 55, 280 75, 232 75" stroke="#9AA89A" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
-          <path d="M 170 95 C 170 130, 60 130, 60 95" stroke="#9AA89A" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
-          <defs>
-            <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-              <polygon points="0 0, 6 3, 0 6" fill="#9AA89A"/>
-            </marker>
-          </defs>
-        </svg>
-        <div class="cycle-node node-1">
-          <p class="num">①</p>
-          <p class="title">온라인</p>
-          <p class="desc">취향 데이터 수집</p>
-        </div>
-        <div class="cycle-node node-2">
-          <p class="num">②</p>
-          <p class="title">오프라인</p>
-          <p class="desc">로봇 큐레이터·실제 책 경험</p>
-        </div>
-        <div class="cycle-node node-3">
-          <p class="num">③</p>
-          <p class="title">온라인</p>
-          <p class="desc">커뮤니티·리뷰 재순환</p>
-        </div>
+    <div class="verso">
+      <div class="brand"><h2>Verso</h2><p>Online-to-Offline 도서 큐레이션 서비스</p></div>
+      <div class="body">
+        <p>오프라인에서는 <strong>새로운 책을 발견하는 경험</strong>을 제공하고, 온라인에서는 AI 및 사용자 간 상호작용과 구매 기반 리뷰를 통해 책에 대한 진입장벽을 낮춥니다.</p>
       </div>
-    </div>
-
-    <div class="brand-band">
-      <p class="brand">Verso</p>
-      <p class="tagline">세 강점을 하나의 흐름으로 연결하는 Online-to-Offline 도서 큐레이션 서비스</p>
-      <p class="note">O2O 순환이 핵심 — 편리함만이 전부는 아닙니다.</p>
     </div>
   </div>
 
-  <script>lucide.createIcons();</script>
-</body>
-</html>
+
+</body></html>

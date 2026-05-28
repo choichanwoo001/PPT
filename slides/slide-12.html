@@ -3,7 +3,7 @@
 <base href="/slides/">
 <script>
 (() => {
-  const slideFile = "slide-06.html";
+  const slideFile = "slide-12.html";
   const localAssetPrefix = "./assets/";
   const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
   const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
@@ -148,64 +148,25 @@
   });
 })();
 </script>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 36pt 0; display: flex; flex-direction: column; gap: 15pt; }
-    .section-badge { position: absolute; top: 16pt; left: 24pt; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 56pt 42pt 32pt; display: flex; flex-direction: column; gap: 16pt; }
+    .section-badge { position: absolute; top: 16pt; left: 28pt; }
     .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 22pt; font-weight: 700; color: #2D2D2D; line-height: 1.34; }
-    .proof { flex: 1; min-height: 0; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 14pt; }
-    .panel { background: #F8FAF8; border-radius: 8pt; padding: 16pt 16pt; display: flex; flex-direction: column; justify-content: flex-start; min-height: 0; }
-    .panel h2 { font-size: 13.5pt; font-weight: 700; color: #2D2D2D; line-height: 1.35; }
-    .share-metric { margin: 24pt 0 0; padding: 19pt 0 0; border-top: 1pt solid #D7DDD7; }
-    .metric { display: grid; grid-template-columns: 86pt 1fr; gap: 13pt; align-items: end; }
-    .metric h3 { font-size: 30pt; font-weight: 800; line-height: 1.12; color: #2D2D2D; letter-spacing: 0; }
-    .metric p { font-size: 10pt; font-weight: 700; color: #3D3D3D; line-height: 1.28; }
-    .share-track { height: 18pt; margin-top: 12pt; background: #D7DDD7; border-radius: 3pt; overflow: hidden; }
-    .share-fill { width: 81%; height: 100%; background: #2D2D2D; border-radius: 3pt 0 0 3pt; }
-    .scale { display: flex; justify-content: space-between; margin-top: 5pt; }
-    .scale p { font-size: 8.5pt; color: #596159; line-height: 1.2; }
-    .week-list { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12pt; align-items: stretch; margin-top: 28pt; }
-    .week-card { border-left: 4pt solid #2D2D2D; background: #EEF2EE; padding: 18pt 14pt 16pt; display: flex; flex-direction: column; justify-content: space-between; min-height: 132pt; }
-    .week-card h3 { font-size: 14pt; font-weight: 800; color: #2D2D2D; line-height: 1.35; }
-    .week-card p { font-size: 30pt; font-weight: 800; color: #2D2D2D; line-height: 1.14; letter-spacing: 0; }
-    .week-card p span { font-size: 16pt; font-weight: 800; }
-    .insight { margin: 0 -36pt; padding: 13pt 36pt 15pt; background: #2D2D2D; }
-    .insight p { font-size: 18pt; font-weight: 700; line-height: 1.36; color: #F8FAF8; }
+    .header h1 { font-size: 30pt; font-weight: 800; color: #2D2D2D; line-height: 1.3; }
+    .placeholder { flex: 1; border: 2pt dashed #2D2D2D; border-radius: 8pt; background: rgba(248, 250, 248, 0.38); }
   </style>
 </head>
 <body>
   <div class="slide">
-    <div class="section-badge"><p>3 분석</p></div>
-    <div class="headline">
-      <h1>도서 구매는 소수의 상위 도서에 집중되어 있습니다.</h1>
-    </div>
-    <div class="proof">
-      <div class="panel">
-        <h2>상위 5% 책 매출 비중</h2>
-        <div class="share-metric">
-          <div class="metric"><h3>81%</h3><p>전체 매출에서<br>상위 5% 도서가 차지한 비중</p></div>
-          <div class="share-track"><div class="share-fill"></div></div>
-          <div class="scale"><p>0%</p><p>전체 매출 100%</p></div>
-        </div>
-      </div>
-      <div class="panel">
-        <h2>종합 베스트셀러 유지 기간</h2>
-        <div class="week-list">
-          <div class="week-card"><h3>소년이 온다</h3><p>27<span>주</span></p></div>
-          <div class="week-card"><h3>세이노의 가르침</h3><p>39<span>주</span></p></div>
-        </div>
-      </div>
-    </div>
-    <div class="insight">
-      <p>독자들의 선택은 다양성보다 검증된 상위 도서에 먼저 모입니다.</p>
-    </div>
+    <div class="section-badge"><p>4 제작</p></div>
+    <div class="header"><h1>이동체</h1></div>
+    <div class="placeholder"></div>
   </div>
-
 
 
 </body></html>

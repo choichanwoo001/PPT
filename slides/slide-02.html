@@ -1,239 +1,37 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
+﻿<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      width: 720pt;
-      height: 405pt;
-      font-family: 'Pretendard', sans-serif;
-      background: #B8C4B8;
-      overflow: hidden;
-    }
-    .slide {
-      width: 100%;
-      height: 100%;
-      padding: 22pt 36pt 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10pt;
-    }
-
-    .header h2 {
-      font-size: 19pt;
-      font-weight: 600;
-      color: #1A1A1A;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 4pt;
-    }
-    .header .context {
-      font-size: 11.5pt;
-      font-weight: 400;
-      color: #3D3D3D;
-      line-height: 1.42;
-    }
-
-    .matrix {
-      flex: 1;
-      min-height: 0;
-      background: #F8FAF8;
-      border-radius: 10pt;
-      display: grid;
-      grid-template-columns: 48pt 1fr 1fr 1fr;
-      grid-template-rows: auto 1fr 1fr;
-      overflow: hidden;
-    }
-
-    .matrix .corner {
-      background: #A3B0A3;
-    }
-    .col-head {
-      padding: 8pt 6pt 7pt;
-      background: #A3B0A3;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4pt;
-      border-bottom: 1pt solid #9AA89A;
-    }
-    .col-head:not(:last-child) {
-      border-right: 1pt solid #9AA89A;
-    }
-    .col-head i {
-      width: 14pt;
-      height: 14pt;
-      color: #2D2D2D;
-      stroke-width: 2;
-    }
-    .col-head h3 {
-      font-size: 10.5pt;
-      font-weight: 600;
-      color: #1A1A1A;
-      line-height: 1.25;
-      text-align: center;
-    }
-
-    .row-label {
-      padding: 8pt 6pt;
-      background: #A3B0A3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-right: 1pt solid #9AA89A;
-    }
-    .row-label p {
-      font-size: 10pt;
-      font-weight: 600;
-      color: #1A1A1A;
-      line-height: 1.2;
-      text-align: center;
-    }
-
-    .cell {
-      padding: 8pt 9pt;
-      border-bottom: 1pt solid #9AA89A;
-      border-right: 1pt solid #9AA89A;
-      min-height: 0;
-    }
-    .cell:nth-child(4n) {
-      border-right: none;
-    }
-    .cell.row-plus {
-      background: #F8FAF8;
-    }
-    .cell.row-minus {
-      background: #F0F3F0;
-      border-bottom: none;
-    }
-    .row-label.minus {
-      border-bottom: none;
-    }
-
-    .cell ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4pt;
-    }
-    .cell li {
-      display: flex;
-      align-items: flex-start;
-      gap: 5pt;
-      font-size: 10pt;
-      font-weight: 400;
-      color: #3D3D3D;
-      line-height: 1.38;
-    }
-    .cell li i {
-      width: 11pt;
-      height: 11pt;
-      flex-shrink: 0;
-      margin-top: 1pt;
-      stroke-width: 2.2;
-    }
-    .cell.row-plus li {
-      color: #1A1A1A;
-      font-weight: 500;
-    }
-    .cell.row-plus li i {
-      color: #2D2D2D;
-    }
-    .cell.row-minus li i {
-      color: #9AA89A;
-    }
-
-    .closing {
-      background: #2D2D2D;
-      margin: 0 -36pt;
-      padding: 11pt 36pt 13pt;
-      text-align: center;
-    }
-    .closing p {
-      font-size: 12pt;
-      font-weight: 400;
-      color: #F8FAF8;
-      line-height: 1.48;
-    }
-    .closing p strong {
-      font-weight: 600;
-    }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    h1, h2, h3, p, li { padding-bottom: 0.1em; }
+    .slide { width: 100%; height: 100%; padding: 34pt 46pt 30pt; display: flex; flex-direction: column; gap: 24pt; }
+    .header { display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1.5pt solid #2D2D2D; padding-bottom: 12pt; }
+    .header h1 { font-size: 30pt; font-weight: 700; line-height: 1.22; color: #2D2D2D; }
+    .header p { font-size: 12pt; font-weight: 600; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; }
+    .agenda { flex: 1; display: grid; grid-template-columns: 1fr 1fr; column-gap: 34pt; row-gap: 13pt; align-content: center; }
+    .item { display: grid; grid-template-columns: 34pt 1fr; gap: 13pt; align-items: start; }
+    .num p { width: 25pt; height: 25pt; border-radius: 50%; background: #F8FAF8; color: #2D2D2D; font-size: 11pt; font-weight: 700; line-height: 25pt; text-align: center; }
+    .copy h2 { font-size: 17pt; font-weight: 700; line-height: 1.32; color: #2D2D2D; }
+    .copy p { margin-top: 4pt; font-size: 11pt; font-weight: 500; line-height: 1.38; color: #3D3D3D; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="header">
-      <h2>도서시장 구조 분석</h2>
-      <p class="context">문제의 원인을 파악하기 위해, 현재 독서 생태계를 구성하는 세 가지 채널을 살펴봤습니다.</p>
+      <h1>목차</h1>
+      <p></p>
     </div>
-
-    <div class="matrix">
-      <div class="corner"></div>
-      <div class="col-head">
-        <i data-lucide="monitor"></i>
-        <h3>온라인 플랫폼</h3>
-      </div>
-      <div class="col-head">
-        <i data-lucide="building-2"></i>
-        <h3>대형서점</h3>
-      </div>
-      <div class="col-head">
-        <i data-lucide="store"></i>
-        <h3>독립서점</h3>
-      </div>
-
-      <div class="row-label plus">
-        <p>강점</p>
-      </div>
-      <div class="cell row-plus">
-        <ul>
-          <li><i data-lucide="circle-check"></i><span>정교한 추천 시스템 보유</span></li>
-        </ul>
-      </div>
-      <div class="cell row-plus">
-        <ul>
-          <li><i data-lucide="circle-check"></i><span>인프라·유통 규모 압도적</span></li>
-        </ul>
-      </div>
-      <div class="cell row-plus">
-        <ul>
-          <li><i data-lucide="circle-check"></i><span>점주 취향이 담긴 선반</span></li>
-          <li><i data-lucide="circle-check"></i><span>감성적 분위기로 ‘새로운 발견’</span></li>
-        </ul>
-      </div>
-
-      <div class="row-label minus">
-        <p>한계</p>
-      </div>
-      <div class="cell row-minus">
-        <ul>
-          <li><i data-lucide="circle-x"></i><span>추천→구매 전환율 낮음</span></li>
-          <li><i data-lucide="circle-x"></i><span>탐색의 시작점엔 적합, 구매 확신 주기엔 한계</span></li>
-        </ul>
-      </div>
-      <div class="cell row-minus">
-        <ul>
-          <li><i data-lucide="circle-x"></i><span>베스트셀러·장르 분류 수준 추천</span></li>
-          <li><i data-lucide="circle-x"></i><span>개인 취향 ‘발견’ 불가, 창고형 매장에 머무름</span></li>
-        </ul>
-      </div>
-      <div class="cell row-minus">
-        <ul>
-          <li><i data-lucide="circle-x"></i><span>보유 도서·접근성 제한</span></li>
-          <li><i data-lucide="circle-x"></i><span>매니아층 중심, 대중 솔루션 어려움</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="closing">
-      <p>세 채널 모두 각자의 강점을 가지지만, <strong>어느 하나도 ‘다양한 책의 발견’을 독립적으로 해결하지 못합니다.</strong></p>
+    <div class="agenda">
+      <div class="item"><div class="num"><p>1</p></div><div class="copy"><h2>1) 목표</h2><p>브레인스토밍과 제한요건을 반영한 설계 목표</p></div></div>
+      <div class="item"><div class="num"><p>2</p></div><div class="copy"><h2>2) 합성</h2><p>관련 기술 조사와 제작 가능한 서비스 설계안</p></div></div>
+      <div class="item"><div class="num"><p>3</p></div><div class="copy"><h2>3) 분석</h2><p>시장·사용자·채널 자료 수집 및 유용성 분석</p></div></div>
+      <div class="item"><div class="num"><p>4</p></div><div class="copy"><h2>4) 제작</h2><p>설계서에 따른 시연영상, 취향파악, 이동체 구현</p></div></div>
+      <div class="item"><div class="num"><p>5</p></div><div class="copy"><h2>5) 시험</h2><p>결과물의 기능, 안정성, 지속 구동 가능성 테스트</p></div></div>
+      <div class="item"><div class="num"><p>6</p></div><div class="copy"><h2>6) 평가</h2><p>경제성·사회적 영향·윤리성·심미성·안전성·생산성 및 내구성</p></div></div>
     </div>
   </div>
 
-  <script>lucide.createIcons();</script>
-</body>
-</html>
+
+</body></html>

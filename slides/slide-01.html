@@ -1,192 +1,42 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
+﻿<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      width: 720pt;
-      height: 405pt;
-      font-family: 'Pretendard', sans-serif;
-      background: #B8C4B8;
-      overflow: hidden;
-    }
-    .slide {
-      width: 100%;
-      height: 100%;
-      padding: 22pt 36pt 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10pt;
-    }
-
-    .headline h2 {
-      font-size: 17pt;
-      font-weight: 600;
-      color: #1A1A1A;
-      line-height: 1.42;
-      letter-spacing: -0.025em;
-      padding: 0 2pt;
-    }
-
-    .hero {
-      flex: 1;
-      min-height: 0;
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 14pt;
-    }
-
-    .chart-panel {
-      background: #F8FAF8;
-      border-radius: 10pt;
-      padding: 12pt 14pt 10pt;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-    .chart-panel .caption {
-      font-size: 10pt;
-      font-weight: 500;
-      color: #3D3D3D;
-      line-height: 1.3;
-      margin-bottom: 4pt;
-    }
-    .chart-wrap {
-      flex: 1;
-      min-height: 0;
-      position: relative;
-    }
-    .chart-wrap canvas {
-      width: 100% !important;
-      height: 100% !important;
-    }
-
-    .insight {
-      background: #2D2D2D;
-      margin: 0 -36pt;
-      padding: 12pt 36pt 14pt;
-      display: flex;
-      flex-direction: column;
-      gap: 6pt;
-    }
-    .insight-header {
-      display: flex;
-      align-items: baseline;
-      gap: 10pt;
-    }
-    .insight-header h3 {
-      font-size: 18pt;
-      font-weight: 600;
-      color: #F8FAF8;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-    .insight-header .audience {
-      font-size: 10pt;
-      font-weight: 500;
-      color: #2D2D2D;
-      background: #F8FAF8;
-      padding: 3pt 9pt;
-      border-radius: 4pt;
-      line-height: 1.2;
-    }
-    .insight p {
-      font-size: 12pt;
-      font-weight: 400;
-      color: #F8FAF8;
-      line-height: 1.5;
-      opacity: 0.92;
-    }
-    .insight p strong {
-      font-weight: 600;
-    }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    h1, h2, h3, p, li { padding-bottom: 0.1em; }
+    .slide { width: 100%; height: 100%; padding: 44pt 54pt 34pt; display: flex; flex-direction: column; justify-content: space-between; }
+    .hello p { font-size: 15pt; font-weight: 500; color: #2D2D2D; line-height: 1.4; }
+    .title { display: flex; flex-direction: column; gap: 12pt; }
+    .title h1 { font-size: 60pt; font-weight: 700; letter-spacing: 0; line-height: 1.12; color: #2D2D2D; }
+    .title h2 { max-width: 470pt; font-size: 21pt; font-weight: 500; line-height: 1.32; color: #F8FAF8; }
+    .bar { width: 112pt; height: 8pt; background: #2D2D2D; border-radius: 99pt; }
+    .team { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14pt; padding: 12pt 14pt; background: rgba(248, 250, 248, 0.35); border: 1.2pt solid rgba(45, 45, 45, 0.28); border-radius: 8pt; }
+    .team p { font-size: 10.5pt; font-weight: 600; color: #2D2D2D; line-height: 1.45; }
+    .team strong { font-weight: 800; }
+    .footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 18pt; }
+    .footer > p { font-size: 12pt; font-weight: 500; color: #2D2D2D; line-height: 1.4; }
   </style>
 </head>
 <body>
   <div class="slide">
-    <div class="headline">
-      <h2>여러분이 ‘많이 팔린 책’이 아니라 정말 끌리는 책을 직접 선택했던 순간은 언제였나요?</h2>
+    <div class="hello">
+      <p></p>
     </div>
-
-    <div class="hero">
-      <div class="chart-panel">
-        <p class="caption">해외 자료 · 상위 5% 책 매출 비중</p>
-        <div class="chart-wrap">
-          <canvas id="salesChart"></canvas>
-        </div>
-      </div>
-      <div class="chart-panel">
-        <p class="caption">Yes24 · 베스트셀러 10위권 유지 주수</p>
-        <div class="chart-wrap">
-          <canvas id="weeksChart"></canvas>
-        </div>
-      </div>
+    <div class="title">
+      <div class="bar"></div>
+      <h1>산책<br></h1>
+      <h2>LLM 기반 추천 에이전트와 자율주행이 <br>결합된 O2O 도서 탐색 플랫폼</h2>
     </div>
-
-    <div class="insight">
-      <div class="insight-header">
-        <h3>독서 편식</h3>
-        <p class="audience">2030세대에서 두드러짐</p>
+    <div class="footer">
+      <div class="team">
+        <p>6조 <br>최찬우	22011979<br>조아라	23011971<br>손영진	20011455 <br>박민석	22011934</p>
+        <p></p>
       </div>
-      <p>다양한 책을 접하고 싶은 욕구는 있지만, 결국 <strong>익숙하고 검증된 책</strong>으로만 손이 가는 구조적 현상입니다.</p>
+      <p></p>
     </div>
   </div>
 
-  <script>
-    const shared = { animation: false, responsive: true, maintainAspectRatio: false };
-    const colors = ['#2D2D2D', '#9AA89A'];
 
-    new Chart(document.getElementById('salesChart'), {
-      type: 'doughnut',
-      data: {
-        labels: ['상위 5% 책', '나머지 95%'],
-        datasets: [{
-          data: [81, 19],
-          backgroundColor: colors,
-          borderWidth: 0
-        }]
-      },
-      options: {
-        ...shared,
-        cutout: '58%',
-        plugins: {
-          legend: { position: 'bottom', labels: { font: { size: 10, family: 'Pretendard' }, boxWidth: 10, padding: 8 } }
-        }
-      }
-    });
-
-    new Chart(document.getElementById('weeksChart'), {
-      type: 'bar',
-      data: {
-        labels: ['『소년이 온다』', ['『세이노의', '가르침』']],
-        datasets: [{
-          data: [27, 39],
-          backgroundColor: ['#9AA89A', '#2D2D2D'],
-          borderRadius: 4,
-          barThickness: 36
-        }]
-      },
-      options: {
-        ...shared,
-        indexAxis: 'y',
-        scales: {
-          x: {
-            beginAtZero: true,
-            max: 45,
-            ticks: { font: { size: 9 }, callback: (v) => v + '주' },
-            grid: { color: '#E8ECE8' }
-          },
-          y: {
-            ticks: { font: { size: 9, family: 'Pretendard' } },
-            grid: { display: false }
-          }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
-  </script>
-</body>
-</html>
+</body></html>
