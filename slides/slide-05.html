@@ -1,153 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
-<base href="/slides/">
-<script>
-(() => {
-  const slideFile = "slide-05.html";
-  const localAssetPrefix = "./assets/";
-  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
-  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
-  const prefix = '[slides-grab:image]';
-
-  function describeElement(element) {
-    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
-    if (element === document.body) return 'body';
-
-    const parts = [];
-    let current = element;
-    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
-      let part = current.tagName.toLowerCase();
-      if (current.id) {
-        part += '#' + current.id;
-        parts.unshift(part);
-        break;
-      }
-      if (current.classList.length > 0) {
-        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
-      }
-      parts.unshift(part);
-      current = current.parentElement;
-    }
-    return 'body > ' + parts.join(' > ');
-  }
-
-  function warn(message, detail) {
-    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
-  }
-
-  function fail(message, detail) {
-    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
-  }
-
-  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
-    const value = (source || '').trim();
-    if (!value) {
-      return allowEmpty;
-    }
-    if (value.startsWith('data:')) {
-      return true;
-    }
-    if (value.startsWith('https://')) {
-      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
-      return false;
-    }
-    if (value.startsWith('http://')) {
-      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
-      return false;
-    }
-    if (absolutePathRe.test(value) || value.startsWith('/')) {
-      fail('non-portable ' + kind + ' path is unsupported', { src: value });
-      return false;
-    }
-    if (schemeRe.test(value)) {
-      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
-      return false;
-    }
-    if (!value.startsWith(localAssetPrefix)) {
-      const report = onNoncanonical === 'fail' ? fail : warn;
-      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
-    }
-    return true;
-  }
-
-  function getVideoSources(video) {
-    const sources = [];
-    const directSrc = (video.getAttribute('src') || '').trim();
-    if (directSrc) {
-      sources.push(directSrc);
-    }
-    for (const source of video.querySelectorAll('source[src]')) {
-      const src = (source.getAttribute('src') || '').trim();
-      if (src) {
-        sources.push(src);
-      }
-    }
-    return sources;
-  }
-
-  window.addEventListener('error', (event) => {
-    const target = event.target;
-    if (target instanceof HTMLImageElement) {
-      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
-      if (!src || src.startsWith('data:')) return;
-      if (src.startsWith(localAssetPrefix)) {
-        fail('missing local asset', { src });
-        return;
-      }
-      fail('image failed to load', { src });
-      return;
-    }
-
-    if (target instanceof HTMLVideoElement) {
-      const sources = getVideoSources(target);
-      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
-        fail('missing local video asset', { sources });
-        return;
-      }
-      fail('video failed to load', { sources });
-      return;
-    }
-
-    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
-      const src = (target.getAttribute('src') || '').trim();
-      if (!src) return;
-      if (src.startsWith(localAssetPrefix)) {
-        fail('missing local video asset', { src });
-        return;
-      }
-      fail('video source failed to load', { src });
-    }
-  }, true);
-
-  window.addEventListener('DOMContentLoaded', () => {
-    for (const image of document.querySelectorAll('img[src]')) {
-      const src = (image.getAttribute('src') || '').trim();
-      validateAssetSource('image', src);
-    }
-
-    for (const video of document.querySelectorAll('video')) {
-      for (const src of getVideoSources(video)) {
-        validateAssetSource('video', src);
-      }
-
-      const poster = (video.getAttribute('poster') || '').trim();
-      if (poster) {
-        validateAssetSource('image', poster);
-      }
-    }
-
-    for (const element of document.body.querySelectorAll('*')) {
-      if (element === document.body) continue;
-      const backgroundImage = window.getComputedStyle(element).backgroundImage;
-      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
-      fail('non-body background-image is not supported for slide content', {
-        element: describeElement(element),
-        backgroundImage,
-      });
-    }
-  });
-})();
-</script>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
@@ -162,7 +14,7 @@
     .source { background: #F8FAF8; border-radius: 8pt; padding: 15pt 14pt; min-height: 86pt; }
     .source h2 { font-size: 14.5pt; font-weight: 800; color: #2D2D2D; line-height: 1.36; }
     .source p { margin-top: 7pt; font-size: 11.5pt; font-weight: 500; color: #3D3D3D; line-height: 1.38; }
-    .verso { flex: 1; background: #2D2D2D; border-radius: 8pt; padding: 20pt 24pt; display: grid; grid-template-columns: 0.62fr 1.38fr; gap: 24pt; align-items: center; }
+    .sanchaek { flex: 1; background: #2D2D2D; border-radius: 8pt; padding: 20pt 24pt; display: grid; grid-template-columns: 0.62fr 1.38fr; gap: 24pt; align-items: center; }
     .brand h2 { font-size: 40pt; font-weight: 800; color: #F8FAF8; line-height: 1.18; }
     .brand p { margin-top: 8pt; font-size: 12pt; font-weight: 700; color: #B8C4B8; line-height: 1.35; }
     .body p { font-size: 14pt; font-weight: 400; color: #F8FAF8; line-height: 1.55; }
@@ -180,8 +32,8 @@
       <div class="source"><h2>독립서점</h2><p>취향 기반 큐레이션<br>발견의 경험</p></div>
       <div class="source"><h2>온라인 플랫폼</h2><p>리뷰<br>사용자 데이터</p></div>
     </div>
-    <div class="verso">
-      <div class="brand"><h2>Verso</h2><p>Online-to-Offline 도서 큐레이션 서비스</p></div>
+    <div class="sanchaek">
+      <div class="brand"><h2>산책</h2><p>Online-to-Offline 도서 큐레이션 서비스</p></div>
       <div class="body">
         <p>오프라인에서는 <strong>새로운 책을 발견하는 경험</strong>을 제공하고, 온라인에서는 AI 및 사용자 간 상호작용과 구매 기반 리뷰를 통해 책에 대한 진입장벽을 낮춥니다.</p>
       </div>

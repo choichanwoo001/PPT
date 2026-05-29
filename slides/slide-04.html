@@ -1,153 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
-<base href="/slides/">
-<script>
-(() => {
-  const slideFile = "slide-04.html";
-  const localAssetPrefix = "./assets/";
-  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
-  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
-  const prefix = '[slides-grab:image]';
-
-  function describeElement(element) {
-    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
-    if (element === document.body) return 'body';
-
-    const parts = [];
-    let current = element;
-    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
-      let part = current.tagName.toLowerCase();
-      if (current.id) {
-        part += '#' + current.id;
-        parts.unshift(part);
-        break;
-      }
-      if (current.classList.length > 0) {
-        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
-      }
-      parts.unshift(part);
-      current = current.parentElement;
-    }
-    return 'body > ' + parts.join(' > ');
-  }
-
-  function warn(message, detail) {
-    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
-  }
-
-  function fail(message, detail) {
-    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
-  }
-
-  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
-    const value = (source || '').trim();
-    if (!value) {
-      return allowEmpty;
-    }
-    if (value.startsWith('data:')) {
-      return true;
-    }
-    if (value.startsWith('https://')) {
-      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
-      return false;
-    }
-    if (value.startsWith('http://')) {
-      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
-      return false;
-    }
-    if (absolutePathRe.test(value) || value.startsWith('/')) {
-      fail('non-portable ' + kind + ' path is unsupported', { src: value });
-      return false;
-    }
-    if (schemeRe.test(value)) {
-      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
-      return false;
-    }
-    if (!value.startsWith(localAssetPrefix)) {
-      const report = onNoncanonical === 'fail' ? fail : warn;
-      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
-    }
-    return true;
-  }
-
-  function getVideoSources(video) {
-    const sources = [];
-    const directSrc = (video.getAttribute('src') || '').trim();
-    if (directSrc) {
-      sources.push(directSrc);
-    }
-    for (const source of video.querySelectorAll('source[src]')) {
-      const src = (source.getAttribute('src') || '').trim();
-      if (src) {
-        sources.push(src);
-      }
-    }
-    return sources;
-  }
-
-  window.addEventListener('error', (event) => {
-    const target = event.target;
-    if (target instanceof HTMLImageElement) {
-      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
-      if (!src || src.startsWith('data:')) return;
-      if (src.startsWith(localAssetPrefix)) {
-        fail('missing local asset', { src });
-        return;
-      }
-      fail('image failed to load', { src });
-      return;
-    }
-
-    if (target instanceof HTMLVideoElement) {
-      const sources = getVideoSources(target);
-      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
-        fail('missing local video asset', { sources });
-        return;
-      }
-      fail('video failed to load', { sources });
-      return;
-    }
-
-    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
-      const src = (target.getAttribute('src') || '').trim();
-      if (!src) return;
-      if (src.startsWith(localAssetPrefix)) {
-        fail('missing local video asset', { src });
-        return;
-      }
-      fail('video source failed to load', { src });
-    }
-  }, true);
-
-  window.addEventListener('DOMContentLoaded', () => {
-    for (const image of document.querySelectorAll('img[src]')) {
-      const src = (image.getAttribute('src') || '').trim();
-      validateAssetSource('image', src);
-    }
-
-    for (const video of document.querySelectorAll('video')) {
-      for (const src of getVideoSources(video)) {
-        validateAssetSource('video', src);
-      }
-
-      const poster = (video.getAttribute('poster') || '').trim();
-      if (poster) {
-        validateAssetSource('image', poster);
-      }
-    }
-
-    for (const element of document.body.querySelectorAll('*')) {
-      if (element === document.body) continue;
-      const backgroundImage = window.getComputedStyle(element).backgroundImage;
-      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
-      fail('non-body background-image is not supported for slide content', {
-        element: describeElement(element),
-        backgroundImage,
-      });
-    }
-  });
-})();
-</script>
 
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -158,8 +10,8 @@
     .slide { width: 100%; height: 100%; position: relative; padding: 42pt 54pt 36pt; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 34pt; align-items: center; }
     .section-badge { position: absolute; top: 16pt; left: 30pt; }
     .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .term { border-left: 8pt solid #2D2D2D; padding-left: 20pt; }
-    .term p { font-size: 13pt; font-weight: 700; color: #F8FAF8; line-height: 1.2; margin-bottom: 10pt; }
+    .term { border-left: 8pt solid #2D2D2D; padding-left: 20pt; display: flex; flex-direction: column; gap: 10pt; }
+    .term p { font-size: 13pt; font-weight: 700; color: #F8FAF8; line-height: 1.2; }
     .term h1 { font-size: 43pt; font-weight: 800; color: #2D2D2D; line-height: 1.18; letter-spacing: 0; }
     .definition { background: #F8FAF8; border-radius: 8pt; padding: 20pt 24pt; display: flex; flex-direction: column; gap: 12pt; }
     .definition h2 { font-size: 20pt; font-weight: 700; color: #2D2D2D; line-height: 1.28; }
@@ -171,8 +23,8 @@
   <div class="slide">
     <div class="section-badge"><p>1 목표</p></div>
     <div class="term">
-      <p>우리는 이 현상을 이렇게 정의했습니다.</p>
       <h1>독서 편식</h1>
+      <p>우리는 이 현상을 이렇게 정의했습니다.</p>
     </div>
     <div class="definition">
       <h2>다양한 책을 접하고 싶은 욕구는 있지만, 결국 익숙하고 검증된 책으로만 손이 가는 구조적 현상</h2>
