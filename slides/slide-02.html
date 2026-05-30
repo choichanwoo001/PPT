@@ -1,35 +1,215 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko"><head>
-<meta charset="UTF-8">
+<base href="/slides/">
+<script>
+(() => {
+  const slideFile = "slide-02.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; padding: 34pt 46pt 30pt; display: flex; flex-direction: column; gap: 24pt; }
-    .header { display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1.5pt solid #2D2D2D; padding-bottom: 12pt; }
-    .header h1 { font-size: 30pt; font-weight: 700; line-height: 1.22; color: #2D2D2D; }
-    .header p { font-size: 12pt; font-weight: 600; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; }
-    .agenda { flex: 1; display: grid; grid-template-columns: 1fr 1fr; column-gap: 34pt; row-gap: 13pt; align-content: center; }
-    .item { display: grid; grid-template-columns: 34pt 1fr; gap: 13pt; align-items: start; }
-    .num p { width: 25pt; height: 25pt; border-radius: 50%; background: #F8FAF8; color: #2D2D2D; font-size: 11pt; font-weight: 700; line-height: 25pt; text-align: center; }
-    .copy h2 { font-size: 17pt; font-weight: 700; line-height: 1.32; color: #2D2D2D; }
-    .copy p { margin-top: 4pt; font-size: 11pt; font-weight: 500; line-height: 1.38; color: #3D3D3D; }
+    .slide { width: 720pt; height: 405pt; overflow: hidden; position: relative; padding: 30pt 42pt 24pt; display: flex; flex-direction: column; gap: 14pt; }
+    .header { display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1.5pt solid #2D2D2D; padding-bottom: 10pt; }
+    .header h1 { font-size: 31pt; font-weight: 850; line-height: 1.2; color: #2D2D2D; }
+    .badge { background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; }
+    .badge p { font-size: 12pt; font-weight: 750; color: #F8FAF8; line-height: 1; }
+    .agenda { flex: 1; position: relative; min-height: 292pt; }
+    .route { position: absolute; left: 30pt; top: 8pt; width: 558pt; height: 250pt; pointer-events: none; }
+    .route svg { width: 100%; height: 100%; display: block; }
+    .trail-shadow { fill: none; stroke: rgba(45, 45, 45, 0.16); stroke-width: 15; stroke-linecap: round; stroke-linejoin: round; }
+    .trail { fill: none; stroke: #F8FAF8; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+    .trail-dash { fill: none; stroke: #2D2D2D; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 12; }
+    .start, .finish { position: absolute; width: 64pt; height: 24pt; border: 1.2pt solid rgba(45, 45, 45, 0.55); border-radius: 99pt; display: flex; align-items: center; justify-content: center; }
+    .start { left: 7pt; top: 18pt; background: rgba(248, 250, 248, 0.48); }
+    .finish { right: 12pt; top: 238pt; background: #2D2D2D; }
+    .start p, .finish p { font-size: 9.5pt; font-weight: 850; letter-spacing: 0.02em; line-height: 1; }
+    .start p { color: #2D2D2D; }
+    .finish p { color: #F8FAF8; }
+    .item { position: absolute; width: 184pt; display: grid; grid-template-columns: 31pt 1fr; gap: 9pt; align-items: start; }
+    .step-1 { left: 70pt; top: 26pt; }
+    .step-2 { left: 282pt; top: 14pt; }
+    .step-3 { left: 436pt; top: 101pt; }
+    .step-4 { left: 302pt; top: 184pt; }
+    .step-5 { left: 98pt; top: 206pt; }
+    .step-6 { left: 438pt; top: 219pt; width: 138pt; }
+    .num { width: 29pt; height: 29pt; border-radius: 50%; background: #F8FAF8; border: 1.5pt solid #2D2D2D; box-shadow: 0 4pt 0 rgba(45, 45, 45, 0.16); }
+    .num p { color: #2D2D2D; font-size: 11pt; font-weight: 850; line-height: 27pt; text-align: center; }
+    .copy { padding-top: 1pt; }
+    .copy h2 { font-size: 14.5pt; font-weight: 850; line-height: 1.22; color: #2D2D2D; }
+    .copy p { margin-top: 3pt; font-size: 9.5pt; font-weight: 620; line-height: 1.3; color: #3D3D3D; }
+    .walk-note { position: absolute; right: 18pt; top: 12pt; width: 132pt; padding: 8pt 10pt; border: 1.1pt solid rgba(45, 45, 45, 0.42); border-radius: 8pt; background: rgba(248, 250, 248, 0.3); }
+    .walk-note p { font-size: 10pt; font-weight: 760; line-height: 1.38; color: #2D2D2D; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="header">
       <h1>목차</h1>
-      <p></p>
+      
     </div>
     <div class="agenda">
-      <div class="item"><div class="num"><p>1</p></div><div class="copy"><h2>1) 목표</h2><p>브레인스토밍과 제한요건을 반영한 설계 목표</p></div></div>
-      <div class="item"><div class="num"><p>2</p></div><div class="copy"><h2>2) 합성</h2><p>관련 기술 조사와 제작 가능한 서비스 설계안</p></div></div>
-      <div class="item"><div class="num"><p>3</p></div><div class="copy"><h2>3) 분석</h2><p>시장·사용자·채널 자료 수집 및 유용성 분석</p></div></div>
-      <div class="item"><div class="num"><p>4</p></div><div class="copy"><h2>4) 제작</h2><p>설계서에 따른 시연영상, 취향파악, 이동체 구현</p></div></div>
-      <div class="item"><div class="num"><p>5</p></div><div class="copy"><h2>5) 시험</h2><p>결과물의 기능, 안정성, 지속 구동 가능성 테스트</p></div></div>
-      <div class="item"><div class="num"><p>6</p></div><div class="copy"><h2>6) 평가</h2><p>경제성·사회적 영향·윤리성·심미성·안전성·생산성 및 내구성</p></div></div>
+      <div class="route">
+        <svg viewBox="0 0 558 250" aria-hidden="true">
+          <path class="trail-shadow" d="M26 42 C124 8, 206 19, 258 66 C309 112, 452 80, 496 132 C544 189, 416 226, 324 199 C244 176, 203 154, 148 190 C108 216, 69 218, 30 208"></path>
+          <path class="trail" d="M26 42 C124 8, 206 19, 258 66 C309 112, 452 80, 496 132 C544 189, 416 226, 324 199 C244 176, 203 154, 148 190 C108 216, 69 218, 30 208"></path>
+          <path class="trail-dash" d="M26 42 C124 8, 206 19, 258 66 C309 112, 452 80, 496 132 C544 189, 416 226, 324 199 C244 176, 203 154, 148 190 C108 216, 69 218, 30 208"></path>
+        </svg>
+      </div>
+      
+      
+      
+      <div class="item step-1" style="left: 72px; top: 76px;"><div class="num"><p>1</p></div><div class="copy"><h2>문제 정의</h2><p>대형서점 탐색에서 겪는 막막함과 선택 피로</p></div></div>
+      <div class="item step-2" style="left: 364px; top: 36px;"><div class="num"><p>2</p></div><div class="copy"><h2>시장·사용자 분석</h2><p>소수 도서 집중과 발견 욕구</p></div></div>
+      <div class="item step-3" style="left: 660px; top: 112px;"><div class="num"><p>3</p></div><div class="copy"><h2>서비스 제안</h2><p>추천, 탐색, 큐레이션의 결합</p></div></div>
+      <div class="item step-4" style="left: 685px; top: 271px;"><div class="num"><p>4</p></div><div class="copy"><h2>기능 구성</h2><p>취향 입력, 추천 안내</p></div></div>
+      <div class="item step-5" style="left: 432px; top: 216px;"><div class="num"><p>5</p></div><div class="copy"><h2>시험과 평가</h2><p>흐름, 안전성, 경제성 검토</p></div></div>
+      <div class="item step-6" style="left: 222px; top: 281px;"><div class="num"><p>6</p></div><div class="copy"><h2>결론</h2><p>새로운 만남 설계</p></div></div>
     </div>
   </div>
 

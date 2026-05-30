@@ -8,6 +8,7 @@ import {
   alignLeft, alignCenter, alignRight,
   popoverTextInput, popoverApplyText, popoverTextColorInput, popoverBgColorInput,
   popoverSizeInput, popoverApplySize, toolModeDrawBtn, toolModeSelectBtn,
+  deleteSelectedObjectBtn,
 } from './editor-dom.js';
 import {
   currentSlideFile, getSlideState, normalizeModelName, setStatus,
@@ -25,6 +26,7 @@ import {
 } from './editor-select.js';
 import {
   mutateSelectedObject, applyTextDecorationToken,
+  startObjectDrag, moveObjectDrag, endObjectDrag, deleteSelectedObject,
 } from './editor-direct-edit.js';
 import { updateSendState, applyChanges } from './editor-send.js';
 import { goToSlide } from './editor-navigation.js';
@@ -49,13 +51,19 @@ btnClearBboxes.addEventListener('click', clearBboxesForCurrentSlide);
 
 // Drawing
 drawLayer.addEventListener('mousedown', startDrawing);
+drawLayer.addEventListener('mousedown', startObjectDrag);
 drawLayer.addEventListener('mousemove', (event) => {
   if (state.toolMode !== TOOL_MODE_SELECT) return;
+  if (state.objectDrag) return;
   updateHoveredObjectFromPointer(event.clientX, event.clientY);
 });
 drawLayer.addEventListener('mouseleave', clearHoveredObject);
 drawLayer.addEventListener('click', (event) => {
   if (state.toolMode !== TOOL_MODE_SELECT) return;
+  if (state.suppressNextSelectClick) {
+    state.suppressNextSelectClick = false;
+    return;
+  }
   const target = getSelectableTargetAt(event.clientX, event.clientY);
   if (!target) {
     setSelectedObjectXPath('', 'No selectable object at this point.');
@@ -65,8 +73,14 @@ drawLayer.addEventListener('click', (event) => {
   const xpath = getXPath(target);
   setSelectedObjectXPath(xpath, `Object selected on ${currentSlideFile()}.`);
 });
-window.addEventListener('mousemove', moveDrawing);
-window.addEventListener('mouseup', endDrawing);
+window.addEventListener('mousemove', (event) => {
+  moveDrawing(event);
+  moveObjectDrag(event);
+});
+window.addEventListener('mouseup', (event) => {
+  endDrawing(event);
+  endObjectDrag();
+});
 
 // Send
 btnSend.addEventListener('click', applyChanges);
@@ -204,6 +218,11 @@ alignRight.addEventListener('click', () => {
   }, 'Object alignment updated and saved.');
 });
 
+deleteSelectedObjectBtn.addEventListener('click', () => {
+  if (deleteSelectedObjectBtn.disabled) return;
+  deleteSelectedObject();
+});
+
 // Global keyboard
 document.addEventListener('keydown', (event) => {
   const inEditableField = hasEditableFocus();
@@ -218,6 +237,12 @@ document.addEventListener('keydown', (event) => {
   if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
     event.preventDefault();
     applyChanges();
+    return;
+  }
+
+  if (state.toolMode === TOOL_MODE_SELECT && !inEditableField && (event.key === 'Delete' || event.key === 'Backspace')) {
+    event.preventDefault();
+    deleteSelectedObject();
     return;
   }
 

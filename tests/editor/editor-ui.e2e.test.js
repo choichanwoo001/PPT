@@ -318,10 +318,12 @@ test('supports direct object selection through the persistent inspector and swit
       const sizeInput = document.querySelector('#popover-size-input');
       const emptyHint = document.querySelector('#select-empty-hint');
       const selectToolbar = document.querySelector('#select-toolbar');
-      return textInput && sizeInput && emptyHint && selectToolbar
+      const deleteBtn = document.querySelector('#delete-selected-object');
+      return textInput && sizeInput && emptyHint && selectToolbar && deleteBtn
         && !selectToolbar.hasAttribute('hidden')
         && textInput.disabled
         && sizeInput.disabled
+        && deleteBtn.disabled
         && /click an object/i.test(emptyHint.textContent || '');
     });
     const selectedMiniVisible = await page.$eval('#selected-object-mini', (el) => getComputedStyle(el).display !== 'none');
@@ -340,11 +342,51 @@ test('supports direct object selection through the persistent inspector and swit
       const colorInput = document.querySelector('#popover-text-color-input');
       const sizeInput = document.querySelector('#popover-size-input');
       const selectedMini = document.querySelector('#selected-object-mini');
-      return textInput && colorInput && sizeInput && selectedMini
+      const deleteBtn = document.querySelector('#delete-selected-object');
+      return textInput && colorInput && sizeInput && selectedMini && deleteBtn
         && !textInput.disabled
         && !colorInput.disabled
         && !sizeInput.disabled
+        && !deleteBtn.disabled
         && getComputedStyle(selectedMini).display !== 'none';
+    });
+
+    const headingRect = await page.$eval('#slide-iframe', (frame) => {
+      const heading = frame.contentDocument?.querySelector('h1');
+      const rect = heading?.getBoundingClientRect();
+      return rect ? { x: rect.x, y: rect.y, width: rect.width, height: rect.height } : null;
+    });
+    assert.ok(headingRect, 'heading rect not found');
+    const dragScale = drawLayer.width / 960;
+    await page.mouse.move(
+      drawLayer.x + (headingRect.x + headingRect.width / 2) * dragScale,
+      drawLayer.y + (headingRect.y + headingRect.height / 2) * dragScale,
+    );
+    await page.mouse.down();
+    await page.mouse.move(
+      drawLayer.x + (headingRect.x + headingRect.width / 2 + 80) * dragScale,
+      drawLayer.y + (headingRect.y + headingRect.height / 2 + 40) * dragScale,
+      { steps: 8 },
+    );
+    await page.mouse.up();
+
+    await page.waitForFunction(() => {
+      const status = document.querySelector('#status-message');
+      return status && /moved|saved/i.test(status.textContent || '');
+    });
+
+    const movedHeadingStyles = await page.$eval('#slide-iframe', (frame) => {
+      const heading = frame.contentDocument?.querySelector('h1');
+      return heading ? {
+        position: heading.style.position,
+        left: heading.style.left,
+        top: heading.style.top,
+      } : null;
+    });
+    assert.deepEqual(movedHeadingStyles, {
+      position: 'relative',
+      left: '80px',
+      top: '40px',
     });
 
     await page.fill('#popover-text-input', 'Quarterly Update');
@@ -434,6 +476,28 @@ test('supports direct object selection through the persistent inspector and swit
     assert.match(savedHtml, /font-weight:\s*(700|bold)/i);
     assert.match(savedHtml, /(rgb\(17,\s*34,\s*51\)|#112233)/i);
     assert.match(savedHtml, /(rgb\(254,\s*226,\s*226\)|#fee2e2)/i);
+    assert.match(savedHtml, /position:\s*relative/i);
+    assert.match(savedHtml, /left:\s*80px/i);
+    assert.match(savedHtml, /top:\s*40px/i);
+
+    await page.click('#delete-selected-object');
+    await page.waitForFunction(() => {
+      const status = document.querySelector('#status-message');
+      const frame = document.querySelector('#slide-iframe');
+      return status && /deleted|saved/i.test(status.textContent || '')
+        && !frame?.contentDocument?.querySelector('h1');
+    });
+    await page.waitForFunction(() => {
+      const deleteBtn = document.querySelector('#delete-selected-object');
+      const emptyHint = document.querySelector('#select-empty-hint');
+      return deleteBtn && emptyHint
+        && deleteBtn.disabled
+        && /click an object/i.test(emptyHint.textContent || '');
+    });
+
+    const deletedHtml = await readFile(join(workspace, 'slides', 'slide-01.html'), 'utf8');
+    assert.doesNotMatch(deletedHtml, /Quarterly Update/);
+    assert.doesNotMatch(deletedHtml, /<h1/i);
 
     await page.click('#tool-mode-draw');
     await page.mouse.move(drawLayer.x + drawLayer.width * 0.08, drawLayer.y + drawLayer.height * 0.10);

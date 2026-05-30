@@ -5,6 +5,7 @@ import {
   slideIframe, slidePanel, drawBox, toolModeDrawBtn, toolModeSelectBtn,
   bboxToolbar, selectToolbar, editorHint, objectSelectedBox, objectHoverBox,
   selectedObjectMini, miniTag, miniText, selectEmptyHint,
+  deleteSelectedObjectBtn,
   toggleBold, toggleItalic, toggleUnderline, toggleStrike,
   alignLeft, alignCenter, alignRight,
   popoverTextInput, popoverApplyText, popoverTextColorInput, popoverBgColorInput,
@@ -177,6 +178,7 @@ export function updateObjectEditorControls() {
   popoverBgColorInput.disabled = !capabilities.backgroundEditable;
   popoverSizeInput.disabled = !capabilities.sizeEditable;
   popoverApplySize.disabled = !capabilities.sizeEditable;
+  if (deleteSelectedObjectBtn) deleteSelectedObjectBtn.disabled = !selected;
 
   setControlEnabled(toggleBold, capabilities.emphasisEditable);
   setControlEnabled(toggleItalic, capabilities.emphasisEditable);

@@ -1,33 +1,57 @@
-﻿<!DOCTYPE html>
-<html lang="ko"><head>
-<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2D2D2D; overflow: hidden; color: #F8FAF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 54pt 36pt; display: flex; flex-direction: column; justify-content: center; gap: 24pt; }
-    .kicker { display: none; }
+    .slide { width: 720pt; height: 405pt; overflow: hidden; position: relative; padding: 46pt 44pt 26pt; display: flex; flex-direction: column; gap: 12pt; }
     .section-badge { position: absolute; top: 18pt; left: 30pt; }
     .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2D2D2D; background: #B8C4B8; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .question h1 { max-width: 590pt; font-size: 35pt; font-weight: 700; line-height: 1.32; letter-spacing: 0; color: #F8FAF8; }
-    .question h1 strong { color: #B8C4B8; font-weight: 700; }
-    .note p { max-width: 470pt; font-size: 14pt; font-weight: 400; line-height: 1.55; color: #D7DDD7; }
-    .rule { position: absolute; right: 50pt; bottom: 38pt; width: 120pt; height: 7pt; border-radius: 99pt; background: #B8C4B8; }
+    .question h1 { max-width: 620pt; font-size: 29pt; font-weight: 800; line-height: 1.24; letter-spacing: 0; color: #F8FAF8; }
+    .scene { flex: 1; position: relative; min-height: 208pt; }
+    .quotes { position: absolute; inset: 0; }
+    .quote-card { position: absolute; display: flex; align-items: center; gap: 10pt; }
+    .quote-card.one { left: -22pt; top: 16pt; width: 205pt; }
+    .quote-card.two { left: 106pt; top: 171pt; width: 214pt; }
+    .quote-card.three { left: 420pt; top: 56pt; width: 216pt; }
+    .speaker-left { flex-direction: row-reverse; }
+    .bubble { position: relative; flex: 1; min-height: 92pt; background: #F8FAF8; border-radius: 8pt; padding: 12pt 12pt 10pt; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10pt 18pt rgba(0, 0, 0, 0.14); }
+    .bubble::before { content: ""; position: absolute; top: 42pt; width: 16pt; height: 16pt; background: #F8FAF8; transform: rotate(45deg); border-radius: 3pt; }
+    .speaker-right .bubble::before { right: -7pt; }
+    .speaker-left .bubble::before { left: -7pt; }
+    .bubble h2 { font-size: 13pt; font-weight: 800; color: #2D2D2D; line-height: 1.2; }
+    .bubble p { font-size: 11.5pt; font-weight: 650; color: #2D2D2D; line-height: 1.37; }
+    .person { position: relative; width: 34pt; height: 78pt; flex: 0 0 34pt; align-self: flex-end; }
+    .person::before { content: ""; position: absolute; left: 8pt; top: 0; width: 18pt; height: 18pt; border-radius: 50%; background: #DCE6DC; box-shadow: inset -3pt -3pt 0 rgba(45, 45, 45, 0.08); }
+    .person::after { content: ""; position: absolute; left: 4pt; top: 23pt; width: 26pt; height: 36pt; border-radius: 12pt 12pt 8pt 8pt; background: #B8C4B8; box-shadow: inset -4pt 0 0 rgba(45, 45, 45, 0.08); }
+    .legs { position: absolute; left: 8pt; bottom: 0; width: 18pt; height: 23pt; border-left: 6pt solid #DCE6DC; border-right: 6pt solid #DCE6DC; border-radius: 0 0 8pt 8pt; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>1 목표</p></div>
-    <div class="kicker"><p>1) 목표</p></div>
     <div class="question">
-      <h1 style="font-size: 45px;">여러분이 마지막으로 베스트셀러가 아닌 책을 직접  취향에 따라 골라 산 게 언제였나요?<br></h1>
+      <h1>대형서점에서 책을 고를 때, 이런 경험이 있나요?</h1>
     </div>
-    <div class="note">
-      <p>좋아할 책을 찾기보다, 실패하지 않을 책을 찾게 됩니다.</p>
+    <div class="scene">
+      <div class="quotes">
+        <div class="quote-card one speaker-right">
+          <div class="bubble"><h2>사용자 1</h2><p>새로운 책을 찾으러 왔는데, 결국 베스트셀러만 보게 돼.</p></div>
+          <div class="person"><div class="legs"></div></div>
+        </div>
+        <div class="quote-card two speaker-left">
+          <div class="bubble"><h2>사용자 2</h2><p>샀다가 재미없으면 돈도 시간도 아까워.</p></div>
+          <div class="person"><div class="legs"></div></div>
+        </div>
+        <div class="quote-card three speaker-right">
+          <div class="bubble"><h2>사용자 3</h2><p>한참 둘러봤는데, 손에 든 책은 하나도 없어.</p></div>
+          <div class="person"><div class="legs"></div></div>
+        </div>
+      </div>
     </div>
-    <div class="rule"></div>
   </div>
-
-
-</body></html>
+</body>
+</html>

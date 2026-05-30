@@ -49,6 +49,7 @@ export const selectedObjectMini = $('#selected-object-mini');
 export const miniTag = $('#mini-tag');
 export const miniText = $('#mini-text');
 export const selectEmptyHint = $('#select-empty-hint');
+export const deleteSelectedObjectBtn = $('#delete-selected-object');
 
 export const statusDot = $('#status-dot');
 export const statusConn = $('#status-connection');

@@ -513,6 +513,10 @@
       cursor: pointer;
     }
 
+    body.object-dragging .mode-select .draw-layer {
+      cursor: grabbing;
+    }
+
     .draw-box {
       position: absolute;
       border: 2px dashed #ef4444;
@@ -1478,6 +1482,18 @@
     .sidebar-btn-sm:hover:not(:disabled) { background: #171b22; border-color: #282e38; }
     .sidebar-btn-sm:disabled { opacity: 0.35; cursor: default; }
 
+    .sidebar-btn-sm.danger {
+      border-color: rgba(239, 68, 68, 0.38);
+      background: rgba(239, 68, 68, 0.1);
+      color: #fecaca;
+    }
+
+    .sidebar-btn-sm.danger:hover:not(:disabled) {
+      border-color: rgba(239, 68, 68, 0.72);
+      background: rgba(239, 68, 68, 0.18);
+      color: #fee2e2;
+    }
+
     .sidebar-color-row {
       display: flex;
       gap: 8px;
@@ -1669,6 +1685,7 @@
                 <span id="mini-text"></span>
               </div>
               <span class="select-empty-hint" id="select-empty-hint">Click an object on the slide</span>
+              <button type="button" class="sidebar-btn-sm danger" id="delete-selected-object" title="Delete selected object" disabled>Delete</button>
             </div>
             <div class="sidebar-divider"></div>
             <div class="sidebar-section">
