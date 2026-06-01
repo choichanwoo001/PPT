@@ -4,59 +4,62 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 52pt 38pt 28pt; display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 22pt; align-items: stretch; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 48pt 42pt 28pt; display: grid; grid-template-columns: 224pt 1fr; gap: 24pt; align-items: stretch; }
     .section-badge { position: absolute; top: 16pt; left: 26pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .left { display: flex; flex-direction: column; justify-content: space-between; gap: 18pt; }
-    .headline h1 { font-size: 28pt; font-weight: 800; color: #2D2D2D; line-height: 1.28; }
-    .headline p { margin-top: 10pt; font-size: 14pt; font-weight: 600; color: #3D3D3D; line-height: 1.42; }
-    .stat { background: #2D2D2D; border-radius: 8pt; padding: 20pt; }
-    .stat h2 { font-size: 48pt; font-weight: 800; color: #F8FAF8; line-height: 1.35; padding-bottom: 0; }
-    .stat p { margin-top: 8pt; font-size: 13pt; font-weight: 600; color: #B8C4B8; line-height: 1.35; }
-    .right { background: #F8FAF8; border-radius: 8pt; padding: 18pt 20pt; display: flex; flex-direction: column; justify-content: center; gap: 10pt; }
-    .flow-title h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .flow { display: flex; flex-direction: column; gap: 8pt; }
-    .point { display: grid; grid-template-columns: 34pt 1fr; gap: 10pt; align-items: start; }
-    .point-number p { width: 28pt; height: 28pt; border-radius: 99pt; background: #2D2D2D; color: #F8FAF8; font-size: 10.5pt; font-weight: 800; line-height: 28pt; text-align: center; }
-    .point-copy { border-bottom: 1pt solid #D6DDD6; padding-bottom: 8pt; }
-    .point:last-child .point-copy { border-bottom: none; padding-bottom: 0; }
-    .point h2 { font-size: 15.5pt; font-weight: 800; color: #2D2D2D; line-height: 1.24; }
-    .point p { margin-top: 4pt; font-size: 12.5pt; font-weight: 400; color: #3D3D3D; line-height: 1.42; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .intro { display: flex; flex-direction: column; justify-content: space-between; min-height: 0; }
+    .headline h1 { font-size: 28pt; font-weight: 850; color: #2C2C2C; line-height: 1.18; letter-spacing: 0; }
+    .headline p { margin-top: 12pt; font-size: 12.5pt; font-weight: 650; color: #555555; line-height: 1.38; }
+    .o2o { background: #2C2C2C; border-radius: 8pt; padding: 15pt 17pt; }
+    .o2o h2 { font-size: 40pt; font-weight: 850; color: #FDFCF8; line-height: 1; letter-spacing: 0; }
+    .o2o p { margin-top: 10pt; font-size: 12.2pt; font-weight: 750; color: #E5D1B3; line-height: 1.32; }
+    .flow { background: #FDFCF8; border-radius: 8pt; padding: 19pt 22pt 18pt; display: flex; flex-direction: column; justify-content: space-between; }
+    .flow-title h2 { font-size: 17pt; font-weight: 850; color: #2C2C2C; line-height: 1.25; }
+    .steps { display: flex; flex-direction: column; gap: 10pt; margin-top: 13pt; }
+    .step { display: grid; grid-template-columns: 36pt 1fr; gap: 12pt; align-items: start; }
+    .num p { width: 31pt; height: 31pt; border-radius: 99pt; background: #2C2C2C; color: #FDFCF8; font-size: 10.5pt; font-weight: 850; line-height: 31pt; text-align: center; }
+    .copy { padding-bottom: 10pt; border-bottom: 1pt solid #EADCC7; }
+    .step:last-child .copy { padding-bottom: 0; border-bottom: none; }
+    .copy h2 { font-size: 18pt; font-weight: 850; color: #2C2C2C; line-height: 1.2; }
+    .copy p { margin-top: 5pt; font-size: 12.3pt; font-weight: 550; color: #555555; line-height: 1.34; }
+    .bottom-note { margin-top: 10pt; background: #F5EBDD; border-radius: 6pt; padding: 9pt 12pt; }
+    .bottom-note p { font-size: 11.8pt; font-weight: 800; color: #2C2C2C; line-height: 1.3; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>3 분석</p></div>
-    <div class="left">
+    <div class="intro">
       <div class="headline">
-        <h1>그래서 저희는 Verso를 제안합니다.</h1>
-        <p>온라인의 개인화 추천, 오프라인 서점 탐색, 독립서점 큐레이션을 결합한 O2O 도서 탐색 플랫폼입니다.</p>
+        <h1>그래서 저희는 산책을 제안합니다.</h1>
+        <p>온라인 추천으로 시작해, 오프라인 서점에서 실제 책을 발견하게 하는 O2O 도서 탐색 플랫폼입니다.</p>
       </div>
-      <div class="stat">
+      <div class="o2o">
         <h2>O2O</h2>
-        <p>온라인 추천과 오프라인 탐색을 연결</p>
+        <p>개인화 추천과 서점 안 탐색을 하나의 경험으로 연결</p>
       </div>
     </div>
-    <div class="right">
-      <div class="flow-title"><h2>Verso 경험 흐름</h2></div>
-      <div class="flow">
-        <div class="point">
-          <div class="point-number"><p>01</p></div>
-          <div class="point-copy"><h2>온라인 추천</h2><p>사용자는 취향 기반 추천을 받아 막막함을 줄입니다.</p></div>
-        </div>
-        <div class="point">
-          <div class="point-number"><p>02</p></div>
-          <div class="point-copy"><h2>오프라인 탐색</h2><p>서점 안에서 실제 책을 직접 보고 비교합니다.</p></div>
-        </div>
-        <div class="point">
-          <div class="point-number"><p>03</p></div>
-          <div class="point-copy"><h2>선별된 발견</h2><p>독립서점처럼 정리된 추천 안에서 새로운 책을 발견합니다.</p></div>
+    <div class="flow">
+      <div>
+        <div class="flow-title"><h2>산책 경험 흐름</h2></div>
+        <div class="steps">
+          <div class="step">
+            <div class="num"><p>01</p></div>
+            <div class="copy"><h2>취향 입력</h2><p>관심 주제와 선호를 입력해 추천의 출발점을 만듭니다.</p></div>
+          </div>
+          <div class="step">
+            <div class="num"><p>02</p></div>
+            <div class="copy"><h2>동선 제안</h2><p>서점 안에서 볼 책과 위치를 함께 안내합니다.</p></div>
+          </div>
+          <div class="step">
+            <div class="num"><p>03</p></div>
+            <div class="copy"><h2>현장 발견</h2><p>직접 보고 비교하며, 낯선 책도 부담 없이 검토합니다.</p></div>
+          </div>
         </div>
       </div>
+      <div class="bottom-note"><p>핵심은 추천을 화면 안에 멈추지 않고, 실제 구매 행동으로 이어지게 하는 것입니다.</p></div>
     </div>
   </div>
-
-
 </body></html>

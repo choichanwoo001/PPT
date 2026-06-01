@@ -11,6 +11,7 @@ export function setSlideFrame(width, height) {
 }
 export const TOOL_MODE_DRAW = 'draw';
 export const TOOL_MODE_SELECT = 'select';
+export const TOOL_MODE_NARRATION = 'narration';
 export const POPOVER_TEXT = 'text';
 export const POPOVER_TEXT_COLOR = 'text-color';
 export const POPOVER_BG_COLOR = 'bg-color';
@@ -35,6 +36,12 @@ export const state = {
   defaultModel: DEFAULT_MODELS[0],
   selectedModel: DEFAULT_MODELS[0],
   toolMode: TOOL_MODE_DRAW,
+  narration: {
+    document: { schemaVersion: 1, slides: {} },
+    voices: [],
+    defaultVoice: 'marin',
+    audio: null,
+  },
   hoveredObjectXPath: '',
   objectDrag: null,
   suppressNextSelectClick: false,

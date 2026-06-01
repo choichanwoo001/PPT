@@ -4,21 +4,54 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 56pt 42pt 32pt; display: flex; flex-direction: column; gap: 16pt; }
-    .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .header h1 { font-size: 30pt; font-weight: 800; color: #2D2D2D; line-height: 1.3; }
-    .placeholder { flex: 1; border: 2pt dashed #2D2D2D; border-radius: 8pt; background: rgba(248, 250, 248, 0.38); }
+    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 38pt 28pt; display: grid; grid-template-columns: 0.92fr 1.08fr; gap: 18pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .left { display: flex; flex-direction: column; justify-content: space-between; gap: 16pt; }
+    .headline h1 { font-size: 28pt; font-weight: 850; color: #2C2C2C; line-height: 1.25; }
+    .headline p { margin-top: 10pt; font-size: 13pt; font-weight: 600; color: #555555; line-height: 1.45; }
+    .input { background: #FDFCF8; border-radius: 8pt; padding: 18pt; border: 1.4pt solid rgba(44, 44, 44, 0.18); }
+    .input h2 { font-size: 12pt; font-weight: 850; color: #8C7851; line-height: 1.2; }
+    .input p { margin-top: 10pt; font-size: 18pt; font-weight: 750; color: #2C2C2C; line-height: 1.38; }
+    .right { background: #2C2C2C; border-radius: 8pt; padding: 20pt; display: flex; flex-direction: column; justify-content: space-between; }
+    .right h2 { font-size: 18pt; font-weight: 850; color: #FDFCF8; line-height: 1.25; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8pt; margin-top: 14pt; }
+    .tag p { font-size: 11.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; border-radius: 99pt; padding: 6pt 10pt; line-height: 1; }
+    .recommend { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+    .book { background: #FDFCF8; border-radius: 8pt; padding: 14pt; min-height: 118pt; }
+    .book h3 { font-size: 15pt; font-weight: 850; color: #2C2C2C; line-height: 1.28; }
+    .book p { margin-top: 7pt; font-size: 10.8pt; font-weight: 500; color: #555555; line-height: 1.42; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>4 제작</p></div>
-    <div class="header"><h1>이동체 안내: 화면을 벗어나 서가를 함께 둘러보는 탐색</h1></div>
-    <div class="placeholder"></div>
+    <div class="left">
+      <div class="headline">
+        <h1>취향 파악: 자연어로 지금 읽고 싶은 분위기를 입력</h1>
+        <p>단순 장르 선택이 아니라, 사용자의 현재 맥락을 추천의 출발점으로 삼습니다.</p>
+      </div>
+      <div class="input">
+        <h2>사용자 입력 예시</h2>
+        <p>“가볍게 읽을 수 있지만 여운이 남는 책”</p>
+      </div>
+    </div>
+    <div class="right">
+      <div>
+        <h2>LLM이 읽어내는 추천 단서</h2>
+        <div class="tags">
+          <div class="tag"><p>가벼운 독서</p></div>
+          <div class="tag"><p>감정의 여운</p></div>
+          <div class="tag"><p>현재 분위기</p></div>
+          <div class="tag"><p>낮은 진입장벽</p></div>
+        </div>
+      </div>
+      <div class="recommend">
+        <div class="book"><h3>추천 결과</h3><p>인기순이 아니라 입력 문장의 분위기와 도서 소개, 리뷰, 주제를 연결합니다.</p></div>
+        <div class="book"><h3>추천 이유</h3><p>왜 이 책이 맞는지 함께 제시해 선택 실패에 대한 부담을 낮춥니다.</p></div>
+      </div>
+    </div>
   </div>
-
-
 </body></html>

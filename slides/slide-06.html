@@ -1,63 +1,62 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 36pt 0; display: flex; flex-direction: column; gap: 15pt; }
-    .section-badge { position: absolute; top: 16pt; left: 24pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 22pt; font-weight: 700; color: #2D2D2D; line-height: 1.34; }
-    .proof { flex: 1; min-height: 0; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 14pt; }
-    .panel { background: #F8FAF8; border-radius: 8pt; padding: 16pt 16pt; display: flex; flex-direction: column; justify-content: flex-start; min-height: 0; }
-    .panel h2 { font-size: 13.5pt; font-weight: 700; color: #2D2D2D; line-height: 1.35; }
-    .share-metric { margin: 24pt 0 0; padding: 19pt 0 0; border-top: 1pt solid #D7DDD7; }
-    .metric { display: grid; grid-template-columns: 86pt 1fr; gap: 13pt; align-items: end; }
-    .metric h3 { font-size: 30pt; font-weight: 800; line-height: 1.12; color: #2D2D2D; letter-spacing: 0; }
-    .metric p { font-size: 10pt; font-weight: 700; color: #3D3D3D; line-height: 1.28; }
-    .share-track { height: 18pt; margin-top: 12pt; background: #D7DDD7; border-radius: 3pt; overflow: hidden; }
-    .share-fill { width: 81%; height: 100%; background: #2D2D2D; border-radius: 3pt 0 0 3pt; }
-    .scale { display: flex; justify-content: space-between; margin-top: 5pt; }
-    .scale p { font-size: 8.5pt; color: #596159; line-height: 1.2; }
-    .week-list { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12pt; align-items: stretch; margin-top: 28pt; }
-    .week-card { border-left: 4pt solid #2D2D2D; background: #EEF2EE; padding: 18pt 14pt 16pt; display: flex; flex-direction: column; justify-content: space-between; min-height: 132pt; }
-    .week-card h3 { font-size: 14pt; font-weight: 800; color: #2D2D2D; line-height: 1.35; }
-    .week-card p { font-size: 30pt; font-weight: 800; color: #2D2D2D; line-height: 1.14; letter-spacing: 0; }
-    .week-card p span { font-size: 16pt; font-weight: 800; }
-    .insight { margin: 0 -36pt; padding: 13pt 36pt 15pt; background: #2D2D2D; }
-    .insight p { font-size: 18pt; font-weight: 700; line-height: 1.36; color: #F8FAF8; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 44pt 42pt 24pt; display: flex; flex-direction: column; gap: 14pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { width: 612pt; font-size: 25pt; font-weight: 850; color: #2C2C2C; line-height: 1.2; letter-spacing: 0; }
+    .contrast { height: 176pt; display: grid; grid-template-columns: 1fr 76pt 1fr; gap: 14pt; align-items: stretch; flex: none; min-height: 0; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 16pt 18pt; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; overflow: hidden; }
+    .label p { display: inline-block; font-size: 9.5pt; font-weight: 800; color: #555555; line-height: 1.2; border-bottom: 2pt solid #EADCC7; padding-bottom: 3pt; }
+    .card h2 { margin-top: 12pt; font-size: 17pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card .big { margin-top: 8pt; font-size: 34pt; font-weight: 850; color: #2C2C2C; line-height: 1; letter-spacing: 0; }
+    .card .note { margin-top: 8pt; font-size: 12pt; font-weight: 600; color: #555555; line-height: 1.32; }
+    .right-card { background: #2C2C2C; }
+    .right-card .label p { color: #E5D1B3; border-bottom-color: #555555; }
+    .right-card h2, .right-card .big { color: #FDFCF8; }
+    .right-card .note { color: #E5D1B3; }
+    .bridge { align-self: center; background: #FDFCF8; border: 2pt solid #2C2C2C; border-radius: 99pt; width: 76pt; height: 76pt; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .bridge p { font-size: 13pt; font-weight: 850; color: #2C2C2C; line-height: 1.18; }
+    .insight { background: #2C2C2C; border-radius: 8pt; padding: 13pt 20pt; }
+    .insight p { font-size: 16.5pt; font-weight: 800; line-height: 1.28; color: #FDFCF8; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>3 분석</p></div>
     <div class="headline">
-      <h1>이 현상은 사람들이 다양한 책을 원하지 않는다는 뜻은 아닙니다.</h1>
+      <h1>문제는 취향이 좁은 것이 아니라, 발견까지 가는 길이 피곤하다는 점입니다.</h1>
     </div>
-    <div class="proof">
-      <div class="panel">
-        <h2>독서 편식</h2>
-        <div class="share-metric">
-          <div class="metric"><h3>욕구</h3><p>새로운 책과<br>맞는 책을 찾고 싶음</p></div>
-          <div class="share-track"><div class="share-fill"></div></div>
-          <div class="scale"><p>발견</p><p>안전한 선택</p></div>
+    <div class="contrast">
+      <div class="card">
+        <div>
+          <div class="label"><p>독자의 욕구</p></div>
+          <h2>새롭고 나에게 맞는 책을 찾고 싶다</h2>
+        </div>
+        <div>
+          <p class="big">발견</p>
+          <p class="note">다양한 책을 보고 싶은 마음은 여전히 존재합니다.</p>
         </div>
       </div>
-      <div class="panel">
-        <h2>실제 행동</h2>
-        <div class="week-list">
-          <div class="week-card"><h3>탐색 피로</h3><p>선택<span>부담</span></p></div>
-          <div class="week-card"><h3>베스트셀러</h3><p>안전<span>선택</span></p></div>
+      <div class="bridge"><p>하지만<br>과정에서<br>이탈</p></div>
+      <div class="card right-card">
+        <div>
+          <div class="label"><p>실제 행동</p></div>
+          <h2>막막함을 피하려고 검증된 선택으로 돌아간다</h2>
+        </div>
+        <div>
+          <p class="big">안전</p>
+          <p class="note">탐색 피로가 커질수록 베스트셀러가 기본값이 됩니다.</p>
         </div>
       </div>
     </div>
     <div class="insight">
-      <p>문제는 취향이 좁어서가 아니라, 다양한 책을 고르기까지의 과정이 어렵고 피곤하다는 데 있습니다.</p>
+      <p>따라서 핵심은 책을 더 많이 보여주는 것이 아니라, 고르는 과정을 가볍게 만드는 것입니다.</p>
     </div>
   </div>
-
-
-
 </body></html>

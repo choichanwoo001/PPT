@@ -101,6 +101,18 @@ test('supports multi-bbox selection and delete in the persistent inspector bbox 
     assert.equal(sendUsesNeutralStyle, true, 'send button should no longer use accent-primary styling');
     const promptTag = await page.$eval('#prompt-input', (el) => el.tagName);
     assert.equal(promptTag, 'TEXTAREA', 'bbox prompt should stay a textarea in the persistent inspector');
+    assert.equal(await page.locator('#tool-mode-narration').isVisible(), true, 'narration tab should be present');
+    await page.click('#tool-mode-narration');
+    assert.equal(await page.locator('#narration-toolbar').isVisible(), true, 'narration panel should be visible');
+    assert.equal(await page.locator('#narration-text-input').isVisible(), true, 'narration text area should be visible');
+    await page.fill('#narration-text-input', 'Slide one narration.');
+    await page.click('#btn-next');
+    await page.waitForFunction(() => document.querySelector('#slide-counter')?.textContent === '2 / 2');
+    assert.equal(await page.locator('#narration-text-input').inputValue(), '', 'new slide should start with empty narration text');
+    await page.click('#btn-prev');
+    await page.waitForFunction(() => document.querySelector('#slide-counter')?.textContent === '1 / 2');
+    assert.equal(await page.locator('#narration-text-input').inputValue(), 'Slide one narration.', 'narration draft should stay with its slide');
+    await page.click('#tool-mode-draw');
     const bodyFont = await page.evaluate(() => getComputedStyle(document.body).fontFamily);
     assert.match(bodyFont, /Pretendard/i);
     assert.ok(!/Geist/i.test(bodyFont), `unexpected body font stack: ${bodyFont}`);
@@ -390,10 +402,7 @@ test('supports direct object selection through the persistent inspector and swit
     });
 
     await page.fill('#popover-text-input', 'Quarterly Update');
-    await page.click('#popover-apply-text');
-
     await page.fill('#popover-size-input', '64');
-    await page.click('#popover-apply-size');
 
     await page.$eval('#popover-text-color-input', (el) => {
       el.value = '#112233';
@@ -479,6 +488,33 @@ test('supports direct object selection through the persistent inspector and swit
     assert.match(savedHtml, /position:\s*relative/i);
     assert.match(savedHtml, /left:\s*80px/i);
     assert.match(savedHtml, /top:\s*40px/i);
+
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('#draw-layer');
+    await page.waitForSelector('#slide-iframe');
+    await page.waitForFunction(() => {
+      const frame = document.querySelector('#slide-iframe');
+      return frame?.contentDocument?.querySelector('h1')?.textContent === 'Quarterly Update';
+    });
+
+    await page.click('#tool-mode-select');
+    const reloadedDrawLayer = await page.locator('#draw-layer').boundingBox();
+    assert.ok(reloadedDrawLayer, 'draw layer not found after reload');
+    const reloadedHeadingRect = await page.$eval('#slide-iframe', (frame) => {
+      const heading = frame.contentDocument?.querySelector('h1');
+      const rect = heading?.getBoundingClientRect();
+      return rect ? { x: rect.x, y: rect.y, width: rect.width, height: rect.height } : null;
+    });
+    assert.ok(reloadedHeadingRect, 'heading rect not found after reload');
+    const reloadedScale = reloadedDrawLayer.width / 960;
+    await page.mouse.click(
+      reloadedDrawLayer.x + (reloadedHeadingRect.x + reloadedHeadingRect.width / 2) * reloadedScale,
+      reloadedDrawLayer.y + (reloadedHeadingRect.y + reloadedHeadingRect.height / 2) * reloadedScale,
+    );
+    await page.waitForFunction(() => {
+      const deleteBtn = document.querySelector('#delete-selected-object');
+      return deleteBtn && !deleteBtn.disabled;
+    });
 
     await page.click('#delete-selected-object');
     await page.waitForFunction(() => {

@@ -148,44 +148,144 @@
   });
 })();
 </script>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body {
+      width: 720pt;
+      height: 405pt;
+      font-family: 'Pretendard', sans-serif;
+      background: #FDFCF8;
+      overflow: hidden;
+      color: #2C2C2C;
+    }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; padding: 44pt 54pt 34pt; display: flex; flex-direction: column; justify-content: space-between; }
-    .hello p { font-size: 15pt; font-weight: 500; color: #2D2D2D; line-height: 1.4; }
-    .title { display: flex; flex-direction: column; gap: 12pt; }
-    .title h1 { font-size: 60pt; font-weight: 700; letter-spacing: 0; line-height: 1.12; color: #2D2D2D; }
-    .title h2 { max-width: 470pt; font-size: 21pt; font-weight: 500; line-height: 1.32; color: #F8FAF8; }
-    .bar { width: 112pt; height: 8pt; background: #2D2D2D; border-radius: 99pt; }
-    .team { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14pt; padding: 12pt 14pt; background: rgba(248, 250, 248, 0.35); border: 1.2pt solid rgba(45, 45, 45, 0.28); border-radius: 8pt; }
-    .team p { font-size: 10.5pt; font-weight: 600; color: #2D2D2D; line-height: 1.45; }
-    .team strong { font-weight: 800; }
-    .footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 18pt; }
-    .footer > p { font-size: 12pt; font-weight: 500; color: #2D2D2D; line-height: 1.4; }
+    .slide {
+      position: relative;
+      width: 720pt;
+      height: 405pt;
+      overflow: hidden;
+      padding: 31pt 42pt 27pt;
+      background: #FDFCF8;
+    }
+    .paper-ring {
+      position: absolute;
+      inset: 18pt 22pt;
+      border: 1.2pt solid rgba(140, 120, 81, 0.28);
+      border-radius: 18pt;
+      pointer-events: none;
+    }
+    .cover-art {
+      position: absolute;
+      right: 18pt;
+      bottom: 8pt;
+      width: 430pt;
+      height: 382pt;
+      object-fit: contain;
+      opacity: 0.98;
+    }
+    .copy {
+      position: relative;
+      z-index: 1;
+      width: 322pt;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hello {
+      display: inline-block;
+      padding: 5pt 11pt 6pt;
+      border: 1.2pt solid rgba(140, 120, 81, 0.48);
+      border-radius: 99pt;
+      background: rgba(229, 209, 179, 0.42);
+    }
+    .hello p {
+      color: #8C7851;
+      font-size: 11pt;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .title { margin-top: 22pt; }
+    .title h1 {
+      font-size: 63pt;
+      font-weight: 850;
+      letter-spacing: 0;
+      line-height: 0.98;
+      color: #2C2C2C;
+    }
+    .title h2 {
+      margin-top: 14pt;
+      max-width: 288pt;
+      font-size: 18.6pt;
+      font-weight: 650;
+      line-height: 1.36;
+      color: #555555;
+    }
+    .walk-line { width: 156pt; height: 30pt; margin-top: 12pt; }
+    .walk-line path {
+      fill: none;
+      stroke: #8C7851;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-dasharray: 1 9;
+    }
+    .team {
+      width: 272pt;
+      padding: 12pt 15pt 13pt;
+      border: 1.2pt solid rgba(140, 120, 81, 0.38);
+      border-radius: 9pt;
+      background: rgba(229, 209, 179, 0.36);
+    }
+    .team p {
+      color: #2C2C2C;
+      font-size: 10.5pt;
+      font-weight: 700;
+      line-height: 1.46;
+    }
+    .team strong { color: #8C7851; font-weight: 850; }
+    .note {
+      position: absolute;
+      right: 384pt;
+      bottom: 92pt;
+      width: 118pt;
+      padding: 9pt 11pt 10pt;
+      border: 1pt solid rgba(44, 44, 44, 0.25);
+      border-radius: 44% 56% 51% 49% / 50% 43% 57% 50%;
+      background: rgba(253, 252, 248, 0.9);
+      z-index: 2;
+    }
+    .note p {
+      color: #555555;
+      font-size: 9.8pt;
+      font-weight: 700;
+      line-height: 1.42;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="slide">
-    <div class="hello">
-      
-    </div>
-    <div class="title">
-      <div class="bar"></div>
-      <h1>Verso<br></h1>
-      <h2>LLM 기반 추천 에이전트와 자율주행 이동체를 결합한 O2O 도서 탐색 플랫폼</h2>
-    </div>
-    <div class="footer">
-      <div class="team">
-        <p>6조 <br>최찬우	22011979<br>조아라	23011971<br>손영진	20011455 <br>박민석	22011934</p>
-        <p></p>
+    <div class="paper-ring"></div>
+    <img class="cover-art" src="./assets/sanchaek-cover-illustration.png" alt="산책 책방 일러스트">
+    <div class="copy">
+      <div>
+        <div class="hello"><p>6조 발표</p></div>
+        <div class="title">
+          <h1>산책</h1>
+          <h2>LLM 기반 추천 에이전트와 자율주행 이동체를 결합한 O2O 도서 탐색 플랫폼</h2>
+          <svg class="walk-line" viewBox="0 0 156 30" aria-hidden="true">
+            <path d="M3 18 C31 4, 52 25, 78 14 C103 3, 120 21, 153 9"></path>
+          </svg>
+        </div>
       </div>
-      <p></p>
+      <div class="team">
+        <p><strong>팀원</strong><br>최찬우 22011979<br>조아라 23011971<br>손영진 20011455<br>박민석 22011934</p>
+      </div>
     </div>
+    
   </div>
-
 
 
 </body></html>

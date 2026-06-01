@@ -4,30 +4,33 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2C2C2C; overflow: hidden; color: #FDFCF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
     .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(45, 45, 45, 0.26); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2D2D2D; }
-    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #F8FAF8; background: #2D2D2D; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(253, 252, 248, 0.28); padding-right: 22pt; }
+    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #FDFCF8; }
+    .title p { font-size: 11.5pt; font-weight: 600; line-height: 1.45; color: #E5D1B3; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
+    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #2C2C2C; background: #E5D1B3; border-radius: 99pt; padding: 5pt 8pt; }
     .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #F8FAF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #3D3D3D; line-height: 1.46; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
+    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>6 평가</p></div>
     <div class="title">
-      <h1>심미성 측면</h1>
-      <p>서점 분위기와의 조화</p>
+      <h1>윤리성 측면</h1>
+      <p>취향 데이터와 추천 투명성</p>
+      <div class="tags"><div class="tag"><p>최소 수집</p></div><div class="tag"><p>추천 이유</p></div><div class="tag"><p>삭제 권한</p></div></div>
     </div>
     <div class="content">
-      <div class="card"><h2>기여 방식</h2><p>Verso의 화면과 이동체는 과도하게 튀는 기술 장치가 아니라, 책 발견을 자연스럽게 돕는 도구가 되어야 합니다.</p></div>
-      <div class="card"><h2>평가 및 개선</h2><p>매장의 조명과 동선, 진열대와 자연스럽게 어울리는 형태로 화면과 이동체 외형을 조정해야 합니다.</p></div>
+      <div class="card"><h2>기여 방식</h2><p>취향 데이터를 다루기 때문에 최소한의 데이터만 수집하고, 추천 이유를 함께 제시해야 합니다.</p></div>
+      <div class="card"><h2>평가 및 개선</h2><p>최소한의 정보만 수집하고, 추천 이유와 기록 삭제·취향 재설정 권한을 사용자에게 제공합니다.</p></div>
     </div>
   </div>
 

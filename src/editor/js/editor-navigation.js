@@ -11,6 +11,7 @@ import { renderBboxes, scaleSlide } from './editor-bbox.js';
 import { renderObjectSelection, updateObjectEditorControls } from './editor-select.js';
 import { flushDirectSaveForSlide } from './editor-direct-edit.js';
 import { updateSendState } from './editor-send.js';
+import { syncNarrationPanel } from './editor-narration.js';
 
 export function persistCurrentSlideDraft() {
   const slide = currentSlideFile();
@@ -49,6 +50,7 @@ export async function goToSlide(index) {
   renderBboxes();
   renderObjectSelection();
   updateObjectEditorControls();
+  syncNarrationPanel();
   updateSendState();
   setStatus(`Loaded ${slide}`);
 }

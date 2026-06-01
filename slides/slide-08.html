@@ -4,54 +4,62 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 36pt 24pt; display: flex; flex-direction: column; gap: 12pt; }
-    .section-badge { position: absolute; top: 16pt; left: 24pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 22pt; font-weight: 700; color: #2D2D2D; line-height: 1.36; }
-    .channels { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; }
-    .channel { background: #F8FAF8; border-radius: 8pt; padding: 14pt; display: flex; flex-direction: column; gap: 10pt; }
-    .channel h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.28; }
-    .block { border-radius: 6pt; padding: 10pt 11pt; min-height: 78pt; }
-    .block h3 { font-size: 10.5pt; font-weight: 800; line-height: 1.2; margin-bottom: 5pt; }
-    .block p { font-size: 11pt; font-weight: 500; line-height: 1.42; }
-    .strength { background: #2D2D2D; }
-    .strength h3, .strength p { color: #F8FAF8; }
-    .limit { background: #E7D9D1; border: 1.5pt solid #8A5A4B; }
-    .limit h3 { color: #8A5A4B; }
-    .limit p { color: #3D3D3D; }
-    .summary { background: #2D2D2D; border-radius: 8pt; padding: 12pt 16pt; }
-    .summary p { font-size: 14pt; font-weight: 700; color: #F8FAF8; line-height: 1.42; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 44pt 42pt 24pt; display: flex; flex-direction: column; gap: 14pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline { display: grid; grid-template-columns: 1fr 210pt; gap: 22pt; align-items: end; }
+    .headline h1 { font-size: 25pt; font-weight: 850; color: #2C2C2C; line-height: 1.18; letter-spacing: 0; }
+    .headline p { font-size: 11.8pt; font-weight: 650; color: #555555; line-height: 1.34; }
+    .solution { height: 168pt; flex: none; min-height: 0; display: grid; grid-template-columns: 0.72fr 1fr 1fr; gap: 14pt; align-items: stretch; }
+    .problem { background: #2C2C2C; border-radius: 8pt; padding: 15pt 15pt; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+    .problem h2 { font-size: 15.5pt; font-weight: 850; color: #FDFCF8; line-height: 1.22; }
+    .problem p { margin-top: 10pt; font-size: 11.8pt; font-weight: 600; color: #E5D1B3; line-height: 1.32; }
+    .problem .tag { font-size: 24pt; font-weight: 850; color: #FDFCF8; line-height: 1; }
+    .feature { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+    .feature-number p { width: 27pt; height: 27pt; border-radius: 99pt; background: #2C2C2C; color: #FDFCF8; font-size: 10pt; font-weight: 850; line-height: 27pt; text-align: center; }
+    .feature h2 { margin-top: 12pt; font-size: 17.5pt; font-weight: 850; color: #2C2C2C; line-height: 1.18; }
+    .feature p { margin-top: 8pt; font-size: 12pt; font-weight: 600; color: #555555; line-height: 1.32; }
+    .feature .outcome { margin-top: 11pt; padding-top: 9pt; border-top: 1pt solid #EADCC7; font-size: 10.8pt; font-weight: 800; color: #2C2C2C; }
+    .summary { background: #2C2C2C; border-radius: 8pt; padding: 11pt 19pt; }
+    .summary p { font-size: 14pt; font-weight: 800; color: #FDFCF8; line-height: 1.28; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>3 분석</p></div>
     <div class="headline">
-      <h1>필요한 기능은 탐색 네비게이션과 취향 기반 큐레이션입니다.</h1>
+      <h1>필요한 것은 더 많은 목록이 아니라, 탐색을 가볍게 만드는 장치입니다.</h1>
+      <p>대형서점의 규모를 장점으로 바꾸려면 방향 안내와 취향 필터가 함께 필요합니다.</p>
     </div>
-    <div class="channels">
-      <div class="channel">
-        <h2>대형서점의 문제</h2>
-        <div class="block strength"><h3>현상</h3><p>책은 많지만 어디서부터 봐야 할지 모릅니다.</p></div>
-        <div class="block limit"><h3>결과</h3><p>원하던 다양한 발견 대신 안전한 선택으로 돌아갑니다.</p></div>
+    <div class="solution">
+      <div class="problem">
+        <div>
+          <h2>현재의 막막함</h2>
+          <p>책은 많지만 어디서부터 봐야 할지 모르고, 결국 익숙한 책으로 돌아갑니다.</p>
+        </div>
+        <p class="tag">문제</p>
       </div>
-      <div class="channel">
-        <h2>탐색 네비게이션</h2>
-        <div class="block strength"><h3>역할</h3><p>서점 안에서 막막함을 줄이고 이동을 안내합니다.</p></div>
-        <div class="block limit"><h3>효과</h3><p>화면만 보는 탐색이 아니라 공간을 함께 보게 합니다.</p></div>
+      <div class="feature">
+        <div>
+          <div class="feature-number"><p>01</p></div>
+          <h2>탐색 네비게이션</h2>
+          <p>서점 안에서 다음에 볼 위치와 동선을 제안합니다.</p>
+        </div>
+        <p class="outcome">공간 속에서 길을 잃지 않게 함</p>
       </div>
-      <div class="channel">
-        <h2>취향 큐레이션</h2>
-        <div class="block strength"><h3>역할</h3><p>독립서점처럼 사용자의 취향에 맞춰 책을 제안합니다.</p></div>
-        <div class="block limit"><h3>효과</h3><p>인기순이 아니라 현재 맥락에 맞는 발견을 돕습니다.</p></div>
+      <div class="feature">
+        <div>
+          <div class="feature-number"><p>02</p></div>
+          <h2>취향 큐레이션</h2>
+          <p>인기순이 아니라 지금 맥락에 맞는 책을 좁혀줍니다.</p>
+        </div>
+        <p class="outcome">낯선 책도 부담 없이 검토하게 함</p>
       </div>
     </div>
     <div class="summary">
-      <p>이 두 가지를 대형서점 안에서 구현하는 것이 Verso의 출발점입니다.</p>
+      <p>산책은 이 두 기능을 결합해, 대형서점 안에서도 독립서점 같은 발견 경험을 만듭니다.</p>
     </div>
   </div>
-
-
 </body></html>

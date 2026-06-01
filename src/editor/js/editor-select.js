@@ -1,9 +1,9 @@
 // editor-select.js — Object selection, hover, tool mode UI
 
-import { state, TOOL_MODE_DRAW, TOOL_MODE_SELECT, SLIDE_W, SLIDE_H, NON_SELECTABLE_TAGS, DIRECT_TEXT_TAGS } from './editor-state.js';
+import { state, TOOL_MODE_DRAW, TOOL_MODE_SELECT, TOOL_MODE_NARRATION, SLIDE_W, SLIDE_H, NON_SELECTABLE_TAGS, DIRECT_TEXT_TAGS } from './editor-state.js';
 import {
-  slideIframe, slidePanel, drawBox, toolModeDrawBtn, toolModeSelectBtn,
-  bboxToolbar, selectToolbar, editorHint, objectSelectedBox, objectHoverBox,
+  slideIframe, slidePanel, drawBox, toolModeDrawBtn, toolModeSelectBtn, toolModeNarrationBtn,
+  bboxToolbar, selectToolbar, narrationToolbar, editorHint, objectSelectedBox, objectHoverBox,
   selectedObjectMini, miniTag, miniText, selectEmptyHint,
   deleteSelectedObjectBtn,
   toggleBold, toggleItalic, toggleUnderline, toggleStrike,
@@ -156,6 +156,9 @@ export function updateObjectEditorControls() {
   if (selectToolbar) {
     selectToolbar.hidden = state.toolMode !== TOOL_MODE_SELECT;
   }
+  if (narrationToolbar) {
+    narrationToolbar.hidden = state.toolMode !== TOOL_MODE_NARRATION;
+  }
 
   if (selectedObjectMini && selectEmptyHint) {
     if (selected) {
@@ -213,15 +216,21 @@ export function renderObjectSelection() {
 
 export function updateToolModeUI() {
   const isDraw = state.toolMode === TOOL_MODE_DRAW;
+  const isSelect = state.toolMode === TOOL_MODE_SELECT;
+  const isNarration = state.toolMode === TOOL_MODE_NARRATION;
   slidePanel.classList.toggle('mode-draw', isDraw);
-  slidePanel.classList.toggle('mode-select', !isDraw);
+  slidePanel.classList.toggle('mode-select', isSelect);
   toolModeDrawBtn.classList.toggle('active', isDraw);
-  toolModeSelectBtn.classList.toggle('active', !isDraw);
+  toolModeSelectBtn.classList.toggle('active', isSelect);
+  if (toolModeNarrationBtn) toolModeNarrationBtn.classList.toggle('active', isNarration);
   toolModeDrawBtn.setAttribute('aria-pressed', isDraw ? 'true' : 'false');
-  toolModeSelectBtn.setAttribute('aria-pressed', !isDraw ? 'true' : 'false');
+  toolModeSelectBtn.setAttribute('aria-pressed', isSelect ? 'true' : 'false');
+  if (toolModeNarrationBtn) toolModeNarrationBtn.setAttribute('aria-pressed', isNarration ? 'true' : 'false');
   editorHint.textContent = isDraw
     ? 'Drag on the slide to add red bboxes. Cmd/Ctrl+Enter to run.'
-    : 'Click an object to edit. \u2318B bold \u00b7 \u2318I italic \u00b7 \u2318U underline';
+    : isSelect
+      ? 'Click an object to edit. \u2318B bold \u00b7 \u2318I italic \u00b7 \u2318U underline'
+      : 'Write slide narration, generate speech, then play it back.';
   renderBboxes();
   renderObjectSelection();
   updateObjectEditorControls();
@@ -229,7 +238,11 @@ export function updateToolModeUI() {
 }
 
 export function setToolMode(mode) {
-  state.toolMode = mode === TOOL_MODE_SELECT ? TOOL_MODE_SELECT : TOOL_MODE_DRAW;
+  state.toolMode = mode === TOOL_MODE_SELECT
+    ? TOOL_MODE_SELECT
+    : mode === TOOL_MODE_NARRATION
+      ? TOOL_MODE_NARRATION
+      : TOOL_MODE_DRAW;
   state.drawing = false;
   state.drawStart = null;
   drawBox.style.display = 'none';
@@ -237,7 +250,13 @@ export function setToolMode(mode) {
     state.hoveredObjectXPath = '';
   }
   updateToolModeUI();
-  setStatus(state.toolMode === TOOL_MODE_SELECT ? 'Select mode enabled.' : 'BBox draw mode enabled.');
+  setStatus(
+    state.toolMode === TOOL_MODE_SELECT
+      ? 'Select mode enabled.'
+      : state.toolMode === TOOL_MODE_NARRATION
+        ? 'Narration mode enabled.'
+        : 'BBox draw mode enabled.',
+  );
 }
 
 export function setSelectedObjectXPath(xpath, statusMessage = 'Object selected.') {

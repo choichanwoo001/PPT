@@ -420,6 +420,10 @@ export function buildCodexEditPrompt({ slideFile, slidePath, userPrompt, slideMo
   const editorPrompt = getEditorPptDesignSkillPrompt()
     .replaceAll('720pt x 405pt', sizeLabel)
     .replace(
+      'Run `slides-grab validate --slides-dir <path>` after generation or edits.',
+      `Run \`slides-grab validate --slides-dir <path>${slideMode === DEFAULT_SLIDE_MODE ? '' : ` --mode ${slideMode}`}\` after generation or edits.`,
+    )
+    .replace(
       'Run `slides-grab validate --slides-dir <path>` after editing.',
       `Run \`slides-grab validate --slides-dir <path>${slideMode === DEFAULT_SLIDE_MODE ? '' : ` --mode ${slideMode}`}\` after editing.`,
     );

@@ -1,44 +1,202 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
+<base href="/slides/">
+<script>
+(() => {
+  const slideFile = "slide-05.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 52pt 40pt 26pt; display: flex; flex-direction: column; gap: 12pt; }
     .section-badge { position: absolute; top: 16pt; left: 26pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 23.5pt; font-weight: 800; color: #2D2D2D; line-height: 1.34; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { font-size: 23.5pt; font-weight: 800; color: #2C2C2C; line-height: 1.34; }
     .mix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; }
-    .source { background: #F8FAF8; border-radius: 8pt; padding: 15pt 14pt; min-height: 86pt; }
-    .source h2 { font-size: 14.5pt; font-weight: 800; color: #2D2D2D; line-height: 1.36; }
-    .source p { margin-top: 7pt; font-size: 11.5pt; font-weight: 500; color: #3D3D3D; line-height: 1.38; }
-    .sanchaek { flex: 1; background: #2D2D2D; border-radius: 8pt; padding: 20pt 24pt; display: grid; grid-template-columns: 0.62fr 1.38fr; gap: 24pt; align-items: center; }
-    .brand h2 { font-size: 40pt; font-weight: 800; color: #F8FAF8; line-height: 1.18; }
-    .brand p { margin-top: 8pt; font-size: 12pt; font-weight: 700; color: #B8C4B8; line-height: 1.35; }
-    .body p { font-size: 14pt; font-weight: 400; color: #F8FAF8; line-height: 1.55; }
-    .body p strong { font-weight: 800; color: #B8C4B8; }
+    .source { background: #FDFCF8; border-radius: 8pt; padding: 15pt 14pt; min-height: 86pt; }
+    .source h2 { font-size: 14.5pt; font-weight: 800; color: #2C2C2C; line-height: 1.36; }
+    .source p { margin-top: 7pt; font-size: 11.5pt; font-weight: 500; color: #555555; line-height: 1.38; }
+    .source strong { display: inline-block; font-size: 25pt; font-weight: 850; color: #2C2C2C; line-height: 1; }
+    .sanchaek { flex: 1; background: #2C2C2C; border-radius: 8pt; padding: 18pt 22pt; display: grid; grid-template-columns: 0.78fr 1.22fr; gap: 22pt; align-items: center; }
+    .brand h2 { font-size: 40pt; font-weight: 800; color: #FDFCF8; line-height: 1.18; }
+    .brand p { margin-top: 8pt; font-size: 12pt; font-weight: 700; color: #E5D1B3; line-height: 1.35; }
+    .body p { font-size: 12.5pt; font-weight: 500; color: #FDFCF8; line-height: 1.45; }
+    .body p strong { font-weight: 800; color: #E5D1B3; }
+    .bar-area { margin-top: 11pt; display: grid; grid-template-columns: 38pt 1fr; gap: 8pt; align-items: center; }
+    .bar-label p { font-size: 9.5pt; font-weight: 800; color: #E5D1B3; line-height: 1.2; }
+    .track { height: 17pt; background: rgba(253, 252, 248, 0.22); border-radius: 99pt; overflow: hidden; }
+    .fill { height: 100%; background: #E5D1B3; border-radius: 99pt; }
+    .fill.top { width: 80%; }
+    .fill.rest { width: 20%; opacity: 0.62; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>3 분석</p></div>
     <div class="headline">
-      <h1>실제 도서 구매 흐름을 보면, 선택은 소수의 책에 크게 집중됩니다.</h1>
+      <h1>실제 도서 구매 흐름을 보면, 선택은 일부 인기 도서에 집중되는 경향이 있습니다.</h1>
     </div>
     <div class="mix">
-      <div class="source"><h2>상위 도서 집중</h2><p>약 5%의 책이<br>80%의 매출 담당</p></div>
-      <div class="source"><h2>장기 베스트셀러</h2><p>27주, 39주처럼<br>상위권 장기 유지</p></div>
+      <div class="source"><h2>상위 도서 집중</h2><p>구매와 관심이<br>일부 책에 크게 모임</p></div>
+      <div class="source"><h2>장기 베스트셀러</h2><p>검증된 인기 도서가<br>선택지로 남음</p></div>
       <div class="source"><h2>안전한 선택</h2><p>익숙하고 검증된<br>책으로 구매 집중</p></div>
     </div>
     <div class="sanchaek">
       <div class="brand"><h2>집중</h2><p>다양성보다 검증된 선택</p></div>
       <div class="body">
-        <p>사람들은 서점에서 많은 책을 마주하지만, 실제 구매는 결국 <strong>익숙하고 검증된 책</strong>으로 쏠리고 있습니다.</p>
+        <p>사람들은 서점에서 많은 책을 마주하지만, 최종 선택은 결국 <strong>익숙하고 검증된 책</strong>으로 쏠리는 경우가 많습니다.</p>
+        <div class="bar-area"><div class="bar-label"><p>상위<br>도서</p></div><div class="track"><div class="fill top"></div></div></div>
+        <div class="bar-area"><div class="bar-label"><p>나머지<br>도서</p></div><div class="track"><div class="fill rest"></div></div></div>
       </div>
     </div>
   </div>
+
 
 
 </body></html>

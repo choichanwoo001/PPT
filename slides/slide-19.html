@@ -4,30 +4,33 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2C2C2C; overflow: hidden; color: #FDFCF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
     .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(45, 45, 45, 0.26); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2D2D2D; }
-    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #F8FAF8; background: #2D2D2D; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(253, 252, 248, 0.28); padding-right: 22pt; }
+    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #FDFCF8; }
+    .title p { font-size: 11.5pt; font-weight: 600; line-height: 1.45; color: #E5D1B3; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
+    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #2C2C2C; background: #E5D1B3; border-radius: 99pt; padding: 5pt 8pt; }
     .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #F8FAF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #3D3D3D; line-height: 1.46; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
+    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>6 평가</p></div>
     <div class="title">
-      <h1>생산성과 내구성 측면</h1>
-      <p>데이터 갱신과 유지보수</p>
+      <h1>안전성 측면</h1>
+      <p>저속 주행과 장애물 감지</p>
+      <div class="tags"><div class="tag"><p>저속 주행</p></div><div class="tag"><p>장애물 감지</p></div><div class="tag"><p>긴급 정지</p></div></div>
     </div>
     <div class="content">
-      <div class="card"><h2>기여 방식</h2><p>추천 데이터 갱신, 도서 위치 관리, 이동체 유지보수가 쉬워야 합니다. 도서 데이터와 매장 동선 정보를 분리해 변경 사항을 빠르게 반영합니다.</p></div>
-      <div class="card"><h2>평가 및 개선</h2><p>여러 매장으로 확장하기 쉬운 구조가 필요합니다. 배터리와 주요 부품을 쉽게 교체할 수 있는 모듈형 설계가 필요합니다.</p></div>
+      <div class="card"><h2>기여 방식</h2><p>이동체가 사람과 진열대 사이를 이동하기 때문에 저속 주행, 장애물 감지, 긴급 정지 기능이 필수적입니다.</p></div>
+      <div class="card"><h2>평가 및 개선</h2><p>저속 주행, 장애물 감지, 긴급 정지를 반복 테스트하고 혼잡 시간대 운영 기준을 둡니다.</p></div>
     </div>
   </div>
 

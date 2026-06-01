@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "slides": {
+    "slide-01.html": {
+      "text": "안녕하세요. 6조 발표를 맡은 최찬우입니다.\n저희는 LLM 기반 추천 에이전트와 자율주행 이동체를 결합한 O2O 도서 탐색 플랫폼, 산책에 대해 발표하겠습니다.\n",
+      "voice": "marin",
+      "instructions": "calm korean",
+      "audio": "./assets/narration/slide-01.mp3",
+      "updatedAt": "2026-05-31T13:10:48.600Z",
+      "generatedAt": "2026-05-31T13:03:00.227Z"
+    },
+    "slide-02.html": {
+      "text": "발표는 문제 정의, 시장과 사용자 분석, 서비스 제안, 기능 구성, 그리고 시험과 평가 순서로 진행하겠습니다.",
+      "voice": "marin",
+      "instructions": "",
+      "audio": "./assets/narration/slide-02.mp3",
+      "updatedAt": "2026-05-31T13:11:20.504Z",
+      "generatedAt": "2026-05-31T13:11:20.504Z"
+    }
+  }
+}

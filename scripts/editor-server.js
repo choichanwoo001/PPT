@@ -28,6 +28,18 @@ import {
   runEditSubprocess,
 } from '../src/editor/edit-subprocess.js';
 import { buildSlideRuntimeHtml } from '../src/image-contract.js';
+import {
+  MAX_TTS_INPUT_CHARS,
+  TTS_VOICES,
+  generateSpeechForSlide,
+  getReusableSpeechForSlide,
+  getNarrationAudioUrl,
+  normalizeNarrationEntry,
+  normalizeVoice,
+  readNarration,
+  saveNarrationEntry,
+} from '../src/narration.js';
+import { loadLocalEnv } from '../src/local-env.js';
 
 const require = createRequire(import.meta.url);
 const {
@@ -55,6 +67,8 @@ async function loadDeps() {
 
 const DEFAULT_PORT = 3456;
 const DEFAULT_SLIDES_DIR = 'slides';
+
+loadLocalEnv();
 
 const SLIDE_FILE_PATTERN = /^slide-.*\.html$/i;
 const PORT_PROBE_HOSTS = ['::', '127.0.0.1'];
@@ -282,6 +296,22 @@ function normalizeSlideHtml(rawHtml) {
   return rawHtml;
 }
 
+function normalizeNarrationRequest(rawBody = {}, { requireText = false } = {}) {
+  const text = typeof rawBody.text === 'string' ? rawBody.text : '';
+  if (requireText && text.trim() === '') {
+    throw new Error('Narration text is required.');
+  }
+  if (text.length > MAX_TTS_INPUT_CHARS) {
+    throw new Error(`Narration text is too long. Max ${MAX_TTS_INPUT_CHARS} characters.`);
+  }
+
+  return {
+    text,
+    voice: normalizeVoice(rawBody.voice),
+    instructions: typeof rawBody.instructions === 'string' ? rawBody.instructions : '',
+  };
+}
+
 function sanitizeTargets(rawTargets) {
   if (!Array.isArray(rawTargets)) return [];
 
@@ -335,12 +365,20 @@ function mirrorRunLog(onLog) {
   };
 }
 
+function normalizeSpawnTarget(bin, args) {
+  if (typeof bin === 'string' && /\.c?js$/i.test(bin)) {
+    return { bin: process.execPath, args: [bin, ...args] };
+  }
+  return { bin, args };
+}
+
 function spawnCodexEdit({ prompt, imagePath, model, cwd, onLog, onChild, signal }) {
   const codexBin = process.env.PPT_AGENT_CODEX_BIN || 'codex';
   const args = buildCodexExecArgs({ prompt, imagePath, model });
+  const target = normalizeSpawnTarget(codexBin, args);
   return runEditSubprocess({
-    bin: codexBin,
-    args,
+    bin: target.bin,
+    args: target.args,
     cwd,
     // Close stdin (`'ignore'`) so the Codex CLI does not wait for additional
     // piped instructions. Recent Codex versions (>=0.125) print
@@ -359,14 +397,15 @@ function spawnCodexEdit({ prompt, imagePath, model, cwd, onLog, onChild, signal 
 function spawnClaudeEdit({ prompt, imagePath, model, cwd, onLog, onChild, signal }) {
   const claudeBin = process.env.PPT_AGENT_CLAUDE_BIN || 'claude';
   const args = buildClaudeExecArgs({ prompt, imagePath, model });
+  const target = normalizeSpawnTarget(claudeBin, args);
 
   // Remove CLAUDECODE env var to avoid "nested session" detection error
   const env = { ...process.env };
   delete env.CLAUDECODE;
 
   return runEditSubprocess({
-    bin: claudeBin,
-    args,
+    bin: target.bin,
+    args: target.args,
     cwd,
     env,
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -694,6 +733,99 @@ async function startServer(opts) {
       models: ALL_MODELS,
       defaultModel: DEFAULT_CODEX_MODEL,
     });
+  });
+
+  app.get('/api/narration', async (_req, res) => {
+    try {
+      const document = await readNarration(slidesDirectory);
+      res.json({
+        ...document,
+        voices: TTS_VOICES,
+        defaultVoice: 'marin',
+      });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.put('/api/narration/:slide', async (req, res) => {
+    let slide;
+    try {
+      slide = normalizeSlideFilename(req.params.slide, 'slide filename');
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    try {
+      await readFile(join(slidesDirectory, slide), 'utf-8');
+    } catch {
+      return res.status(404).json({ error: `Slide not found: ${slide}` });
+    }
+
+    let patch;
+    try {
+      patch = normalizeNarrationRequest(req.body ?? {});
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    try {
+      const entry = await saveNarrationEntry(slidesDirectory, slide, patch);
+      res.json({
+        success: true,
+        slide,
+        entry: normalizeNarrationEntry(entry),
+        audioUrl: entry.audio ? getNarrationAudioUrl(slide, entry.generatedAt || entry.updatedAt || '') : '',
+      });
+    } catch (error) {
+      res.status(500).json({ error: `Failed to save narration for ${slide}: ${error.message}` });
+    }
+  });
+
+  app.post('/api/narration/:slide/speech', async (req, res) => {
+    let slide;
+    try {
+      slide = normalizeSlideFilename(req.params.slide, 'slide filename');
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    try {
+      await readFile(join(slidesDirectory, slide), 'utf-8');
+    } catch {
+      return res.status(404).json({ error: `Slide not found: ${slide}` });
+    }
+
+    const hasInlinePatch = req.body && (
+      Object.hasOwn(req.body, 'text')
+      || Object.hasOwn(req.body, 'voice')
+      || Object.hasOwn(req.body, 'instructions')
+    );
+    if (hasInlinePatch) {
+      try {
+        const patch = normalizeNarrationRequest(req.body, { requireText: true });
+        await saveNarrationEntry(slidesDirectory, slide, patch);
+      } catch (error) {
+        return res.status(400).json({ error: error.message });
+      }
+    }
+
+    try {
+      const existing = req.body?.force === true ? null : await getReusableSpeechForSlide({ slidesDir: slidesDirectory, slide });
+      const result = existing || await generateSpeechForSlide({ slidesDir: slidesDirectory, slide });
+      res.json({
+        success: true,
+        slide,
+        entry: result.entry,
+        audioUrl: result.audioUrl,
+        bytes: result.bytes,
+        reused: Boolean(result.reused),
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const status = /OPENAI_API_KEY|Narration text|required|too long/i.test(message) ? 400 : 502;
+      res.status(status).json({ error: message });
+    }
   });
 
   app.get('/api/runs', (_req, res) => {

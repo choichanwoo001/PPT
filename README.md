@@ -96,6 +96,7 @@ slides-grab png               # Render one PNG per slide (default 2160p)
 slides-grab png --slide-mode card-news  # Render square 1:1 PNGs for Instagram
 slides-grab image --prompt "..."    # Generate a local slide image with god-tibo-imagen by default (uses your local Codex ChatGPT login — no API key required)
 slides-grab fetch-video --url <youtube-url> --slides-dir decks/my-deck  # Download a local video asset with yt-dlp
+slides-grab narrate --slides-dir decks/my-deck  # Generate per-slide OpenAI TTS MP3 narration from narration.json
 slides-grab tldraw           # Render a .tldr diagram into a slide-sized local SVG asset
 slides-grab list-templates    # Show available slide templates
 slides-grab list-styles       # Show 35 bundled design styles (browse, preview, select)

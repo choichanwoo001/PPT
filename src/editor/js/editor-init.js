@@ -1,6 +1,6 @@
 // editor-init.js — Entry point: imports, event bindings, init()
 
-import { state, TOOL_MODE_DRAW, TOOL_MODE_SELECT, setSlideFrame } from './editor-state.js';
+import { state, TOOL_MODE_DRAW, TOOL_MODE_SELECT, TOOL_MODE_NARRATION, setSlideFrame } from './editor-state.js';
 import {
   btnPrev, btnNext, slideIframe, slideWrapper, drawLayer, promptInput, modelSelect,
   btnSend, btnClearBboxes, slideCounter,
@@ -8,7 +8,7 @@ import {
   alignLeft, alignCenter, alignRight,
   popoverTextInput, popoverApplyText, popoverTextColorInput, popoverBgColorInput,
   popoverSizeInput, popoverApplySize, toolModeDrawBtn, toolModeSelectBtn,
-  deleteSelectedObjectBtn,
+  toolModeNarrationBtn, deleteSelectedObjectBtn,
 } from './editor-dom.js';
 import {
   currentSlideFile, getSlideState, normalizeModelName, setStatus,
@@ -31,6 +31,7 @@ import {
 import { updateSendState, applyChanges } from './editor-send.js';
 import { goToSlide } from './editor-navigation.js';
 import { connectSSE, loadRunsInitial } from './editor-sse.js';
+import { bindNarrationEvents, loadNarration } from './editor-narration.js';
 
 // Late-binding: connect bbox changes to updateSendState
 onBboxChange(updateSendState);
@@ -45,6 +46,7 @@ btnNext.addEventListener('click', () => { void goToSlide(state.currentIndex + 1)
 // Tool modes
 toolModeDrawBtn.addEventListener('click', () => setToolMode(TOOL_MODE_DRAW));
 toolModeSelectBtn.addEventListener('click', () => setToolMode(TOOL_MODE_SELECT));
+toolModeNarrationBtn?.addEventListener('click', () => setToolMode(TOOL_MODE_NARRATION));
 
 // Clear bboxes
 btnClearBboxes.addEventListener('click', clearBboxesForCurrentSlide);
@@ -84,6 +86,7 @@ window.addEventListener('mouseup', (event) => {
 
 // Send
 btnSend.addEventListener('click', applyChanges);
+bindNarrationEvents();
 
 // Model select
 modelSelect.addEventListener('change', () => {
@@ -115,22 +118,40 @@ promptInput.addEventListener('input', () => {
   updateSendState();
 });
 
-// Text editing
-popoverApplyText.addEventListener('click', () => {
-  if (popoverApplyText.disabled) return;
+function applySelectedTextFromInput(message = 'Object text updated and saved.', delay = 120) {
   mutateSelectedObject((el) => {
     const escaped = popoverTextInput.value
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     el.innerHTML = escaped.replace(/\n/g, '<br>');
-  }, 'Object text updated and saved.', { delay: 120 });
+  }, message, { delay, preserveTextInput: true });
+}
+
+function applySelectedSizeFromInput(message = 'Object font size updated and saved.', delay = 0) {
+  const size = clamp(Number.parseInt(popoverSizeInput.value || '24', 10) || 24, 8, 180);
+  mutateSelectedObject((el) => {
+    el.style.fontSize = `${size}px`;
+  }, message, { delay, preserveTextInput: true });
+}
+
+// Text editing
+popoverTextInput.addEventListener('input', () => {
+  if (popoverTextInput.disabled) return;
+  applySelectedTextFromInput('Object text updated and saved.', 300);
+});
+
+popoverApplyText.addEventListener('click', () => {
+  if (popoverApplyText.disabled) return;
+  applySelectedTextFromInput('Object text updated and saved.', 0);
+});
+
+popoverSizeInput.addEventListener('input', () => {
+  if (popoverSizeInput.disabled) return;
+  applySelectedSizeFromInput('Object font size updated and saved.', 300);
 });
 
 popoverApplySize.addEventListener('click', () => {
   if (popoverApplySize.disabled) return;
-  const size = clamp(Number.parseInt(popoverSizeInput.value || '24', 10) || 24, 8, 180);
-  mutateSelectedObject((el) => {
-    el.style.fontSize = `${size}px`;
-  }, 'Object font size updated and saved.');
+  applySelectedSizeFromInput('Object font size updated and saved.', 0);
 });
 
 popoverTextInput.addEventListener('keydown', (event) => {
@@ -336,6 +357,7 @@ async function init() {
     }
 
     await loadModelOptions();
+    await loadNarration();
     updateToolModeUI();
     await goToSlide(0);
     scaleSlide();

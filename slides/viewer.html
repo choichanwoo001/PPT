@@ -117,9 +117,8 @@
 
     <div class="slide-viewport" id="viewport">
       <div class="slide-scaler" id="scaler">
-        <iframe class="slide-frame active" data-slide="1" srcdoc="﻿<!DOCTYPE html>
+        <iframe class="slide-frame active" data-slide="1" srcdoc="<!DOCTYPE html>
 <html lang=&quot;ko&quot;><head>
-<base href=&quot;./&quot;>
 <script>
 (() => {
   const slideFile = &quot;slide-01.html&quot;;
@@ -267,54 +266,10 @@
   });
 })();
 </script>
-<meta charset=&quot;UTF-8&quot;>
-  <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
-    h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; padding: 44pt 54pt 34pt; display: flex; flex-direction: column; justify-content: space-between; }
-    .hello p { font-size: 15pt; font-weight: 500; color: #2D2D2D; line-height: 1.4; }
-    .title { display: flex; flex-direction: column; gap: 12pt; }
-    .title h1 { font-size: 60pt; font-weight: 700; letter-spacing: 0; line-height: 1.12; color: #2D2D2D; }
-    .title h2 { max-width: 470pt; font-size: 21pt; font-weight: 500; line-height: 1.32; color: #F8FAF8; }
-    .bar { width: 112pt; height: 8pt; background: #2D2D2D; border-radius: 99pt; }
-    .team { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14pt; padding: 12pt 14pt; background: rgba(248, 250, 248, 0.35); border: 1.2pt solid rgba(45, 45, 45, 0.28); border-radius: 8pt; }
-    .team p { font-size: 10.5pt; font-weight: 600; color: #2D2D2D; line-height: 1.45; }
-    .team strong { font-weight: 800; }
-    .footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 18pt; }
-    .footer > p { font-size: 12pt; font-weight: 500; color: #2D2D2D; line-height: 1.4; }
-  </style>
-</head>
-<body>
-  <div class=&quot;slide&quot;>
-    <div class=&quot;hello&quot;>
-      <p>안녕하세요. 6조 발표를 맡은 최찬우입니다.</p>
-    </div>
-    <div class=&quot;title&quot;>
-      <div class=&quot;bar&quot;></div>
-      <h1>Verso<br></h1>
-      <h2>LLM 기반 추천 에이전트와 자율주행 이동체를 결합한 O2O 도서 탐색 플랫폼</h2>
-    </div>
-    <div class=&quot;footer&quot;>
-      <div class=&quot;team&quot;>
-        <p>6조 <br>최찬우	22011979<br>조아라	23011971<br>손영진	20011455 <br>박민석	22011934</p>
-        <p></p>
-      </div>
-      <p></p>
-    </div>
-  </div>
-
-
-</body></html>
-" sandbox="allow-same-origin"></iframe>
-        <iframe class="slide-frame" data-slide="2" srcdoc="<!DOCTYPE html>
-<html lang=&quot;ko&quot;>
-<head>
-<base href=&quot;./&quot;>
+<base href=&quot;/slides/&quot;>
 <script>
 (() => {
-  const slideFile = &quot;slide-02.html&quot;;
+  const slideFile = &quot;slide-01.html&quot;;
   const localAssetPrefix = &quot;./assets/&quot;;
   const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
   const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
@@ -463,69 +418,788 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body {
+      width: 720pt;
+      height: 405pt;
+      font-family: 'Pretendard', sans-serif;
+      background: #FDFCF8;
+      overflow: hidden;
+      color: #2C2C2C;
+    }
+    h1, h2, h3, p, li { padding-bottom: 0.1em; }
+    .slide {
+      position: relative;
+      width: 720pt;
+      height: 405pt;
+      overflow: hidden;
+      padding: 31pt 42pt 27pt;
+      background: #FDFCF8;
+    }
+    .paper-ring {
+      position: absolute;
+      inset: 18pt 22pt;
+      border: 1.2pt solid rgba(140, 120, 81, 0.28);
+      border-radius: 18pt;
+      pointer-events: none;
+    }
+    .cover-art {
+      position: absolute;
+      right: 18pt;
+      bottom: 8pt;
+      width: 430pt;
+      height: 382pt;
+      object-fit: contain;
+      opacity: 0.98;
+    }
+    .copy {
+      position: relative;
+      z-index: 1;
+      width: 322pt;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hello {
+      display: inline-block;
+      padding: 5pt 11pt 6pt;
+      border: 1.2pt solid rgba(140, 120, 81, 0.48);
+      border-radius: 99pt;
+      background: rgba(229, 209, 179, 0.42);
+    }
+    .hello p {
+      color: #8C7851;
+      font-size: 11pt;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .title { margin-top: 22pt; }
+    .title h1 {
+      font-size: 63pt;
+      font-weight: 850;
+      letter-spacing: 0;
+      line-height: 0.98;
+      color: #2C2C2C;
+    }
+    .title h2 {
+      margin-top: 14pt;
+      max-width: 288pt;
+      font-size: 18.6pt;
+      font-weight: 650;
+      line-height: 1.36;
+      color: #555555;
+    }
+    .walk-line { width: 156pt; height: 30pt; margin-top: 12pt; }
+    .walk-line path {
+      fill: none;
+      stroke: #8C7851;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-dasharray: 1 9;
+    }
+    .team {
+      width: 272pt;
+      padding: 12pt 15pt 13pt;
+      border: 1.2pt solid rgba(140, 120, 81, 0.38);
+      border-radius: 9pt;
+      background: rgba(229, 209, 179, 0.36);
+    }
+    .team p {
+      color: #2C2C2C;
+      font-size: 10.5pt;
+      font-weight: 700;
+      line-height: 1.46;
+    }
+    .team strong { color: #8C7851; font-weight: 850; }
+    .note {
+      position: absolute;
+      right: 384pt;
+      bottom: 92pt;
+      width: 118pt;
+      padding: 9pt 11pt 10pt;
+      border: 1pt solid rgba(44, 44, 44, 0.25);
+      border-radius: 44% 56% 51% 49% / 50% 43% 57% 50%;
+      background: rgba(253, 252, 248, 0.9);
+      z-index: 2;
+    }
+    .note p {
+      color: #555555;
+      font-size: 9.8pt;
+      font-weight: 700;
+      line-height: 1.42;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class=&quot;slide&quot;>
+    <div class=&quot;paper-ring&quot;></div>
+    <img class=&quot;cover-art&quot; src=&quot;./assets/sanchaek-cover-illustration.png&quot; alt=&quot;산책 책방 일러스트&quot;>
+    <div class=&quot;copy&quot;>
+      <div>
+        <div class=&quot;hello&quot;><p>6조 발표</p></div>
+        <div class=&quot;title&quot;>
+          <h1>산책</h1>
+          <h2>LLM 기반 추천 에이전트와 자율주행 이동체를 결합한 O2O 도서 탐색 플랫폼</h2>
+          <svg class=&quot;walk-line&quot; viewBox=&quot;0 0 156 30&quot; aria-hidden=&quot;true&quot;>
+            <path d=&quot;M3 18 C31 4, 52 25, 78 14 C103 3, 120 21, 153 9&quot;></path>
+          </svg>
+        </div>
+      </div>
+      <div class=&quot;team&quot;>
+        <p><strong>팀원</strong><br>최찬우 22011979<br>조아라 23011971<br>손영진 20011455<br>박민석 22011934</p>
+      </div>
+    </div>
+    
+  </div>
+
+
+</body></html>" sandbox="allow-same-origin"></iframe>
+        <iframe class="slide-frame" data-slide="2" srcdoc="<!DOCTYPE html>
+<html lang=&quot;ko&quot;><head>
+<script>
+(() => {
+  const slideFile = &quot;slide-02.html&quot;;
+  const localAssetPrefix = &quot;./assets/&quot;;
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current &amp;&amp; current.nodeType === Node.ELEMENT_NODE &amp;&amp; current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement &amp;&amp; target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+<script>
+(() => {
+  const slideFile = &quot;slide-02.html&quot;;
+  const localAssetPrefix = &quot;./assets/&quot;;
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current &amp;&amp; current.nodeType === Node.ELEMENT_NODE &amp;&amp; current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement &amp;&amp; target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+<script>
+(() => {
+  const slideFile = &quot;slide-02.html&quot;;
+  const localAssetPrefix = &quot;./assets/&quot;;
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current &amp;&amp; current.nodeType === Node.ELEMENT_NODE &amp;&amp; current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement &amp;&amp; target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+<base href=&quot;/slides/&quot;>
+<script>
+(() => {
+  const slideFile = &quot;slide-02.html&quot;;
+  const localAssetPrefix = &quot;./assets/&quot;;
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current &amp;&amp; current.nodeType === Node.ELEMENT_NODE &amp;&amp; current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement &amp;&amp; target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+<meta charset=&quot;UTF-8&quot;>
+  <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 720pt; height: 405pt; overflow: hidden; position: relative; padding: 30pt 42pt 24pt; display: flex; flex-direction: column; gap: 14pt; }
-    .header { display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1.5pt solid #2D2D2D; padding-bottom: 10pt; }
-    .header h1 { font-size: 31pt; font-weight: 850; line-height: 1.2; color: #2D2D2D; }
-    .badge { background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; }
-    .badge p { font-size: 12pt; font-weight: 750; color: #F8FAF8; line-height: 1; }
+    .header { display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1.5pt solid #2C2C2C; padding-bottom: 10pt; }
+    .header h1 { font-size: 31pt; font-weight: 850; line-height: 1.2; color: #2C2C2C; }
     .agenda { flex: 1; position: relative; min-height: 292pt; }
     .route { position: absolute; left: 30pt; top: 8pt; width: 558pt; height: 250pt; pointer-events: none; }
     .route svg { width: 100%; height: 100%; display: block; }
-    .trail-shadow { fill: none; stroke: rgba(45, 45, 45, 0.16); stroke-width: 15; stroke-linecap: round; stroke-linejoin: round; }
-    .trail { fill: none; stroke: #F8FAF8; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
-    .trail-dash { fill: none; stroke: #2D2D2D; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 12; }
-    .start, .finish { position: absolute; width: 64pt; height: 24pt; border: 1.2pt solid rgba(45, 45, 45, 0.55); border-radius: 99pt; display: flex; align-items: center; justify-content: center; }
-    .start { left: 7pt; top: 18pt; background: rgba(248, 250, 248, 0.48); }
-    .finish { right: 12pt; top: 238pt; background: #2D2D2D; }
-    .start p, .finish p { font-size: 9.5pt; font-weight: 850; letter-spacing: 0.02em; line-height: 1; }
-    .start p { color: #2D2D2D; }
-    .finish p { color: #F8FAF8; }
+    .trail-shadow { fill: none; stroke: rgba(44, 44, 44, 0.16); stroke-width: 15; stroke-linecap: round; stroke-linejoin: round; }
+    .trail { fill: none; stroke: #FDFCF8; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+    .trail-dash { fill: none; stroke: #2C2C2C; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 12; }
     .item { position: absolute; width: 184pt; display: grid; grid-template-columns: 31pt 1fr; gap: 9pt; align-items: start; }
-    .step-1 { left: 70pt; top: 26pt; }
-    .step-2 { left: 282pt; top: 14pt; }
-    .step-3 { left: 436pt; top: 101pt; }
-    .step-4 { left: 302pt; top: 184pt; }
-    .step-5 { left: 98pt; top: 206pt; }
-    .step-6 { left: 438pt; top: 219pt; width: 138pt; }
-    .num { width: 29pt; height: 29pt; border-radius: 50%; background: #F8FAF8; border: 1.5pt solid #2D2D2D; box-shadow: 0 4pt 0 rgba(45, 45, 45, 0.16); }
-    .num p { color: #2D2D2D; font-size: 11pt; font-weight: 850; line-height: 27pt; text-align: center; }
+    .step-1 { left: 70pt; top: 22pt; }
+    .step-2 { left: 268pt; top: 10pt; }
+    .step-3 { left: 440pt; top: 74pt; }
+    .step-4 { left: 402pt; top: 155pt; }
+    .step-5 { left: 300pt; top: 194pt; width: 180pt; }
+    .step-6 { left: 54pt; top: 220pt; width: 232pt; }
+    .step-7 { left: 486pt; top: 222pt; width: 132pt; }
+    .num { width: 29pt; height: 29pt; border-radius: 50%; background: #FDFCF8; border: 1.5pt solid #2C2C2C; box-shadow: 0 4pt 0 rgba(44, 44, 44, 0.16); }
+    .num p { color: #2C2C2C; font-size: 11pt; font-weight: 850; line-height: 27pt; text-align: center; }
     .copy { padding-top: 1pt; }
-    .copy h2 { font-size: 14.5pt; font-weight: 850; line-height: 1.22; color: #2D2D2D; }
-    .copy p { margin-top: 3pt; font-size: 9.5pt; font-weight: 620; line-height: 1.3; color: #3D3D3D; }
-    .walk-note { position: absolute; right: 18pt; top: 12pt; width: 132pt; padding: 8pt 10pt; border: 1.1pt solid rgba(45, 45, 45, 0.42); border-radius: 8pt; background: rgba(248, 250, 248, 0.3); }
-    .walk-note p { font-size: 10pt; font-weight: 760; line-height: 1.38; color: #2D2D2D; }
+    .copy h2 { font-size: 14.5pt; font-weight: 850; line-height: 1.22; color: #2C2C2C; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;header&quot;>
       <h1>목차</h1>
-      <div class=&quot;badge&quot;><p>산책 경로</p></div>
     </div>
-    <div class=&quot;agenda&quot;>
+    <div class=&quot;agenda&quot; style=&quot;left: -4px; top: 16px;&quot;>
       <div class=&quot;route&quot;>
         <svg viewBox=&quot;0 0 558 250&quot; aria-hidden=&quot;true&quot;>
-          <path class=&quot;trail-shadow&quot; d=&quot;M26 42 C124 8, 206 19, 258 66 C309 112, 452 80, 496 132 C544 189, 416 226, 324 199 C244 176, 203 154, 148 190 C108 216, 69 218, 30 208&quot; />
-          <path class=&quot;trail&quot; d=&quot;M26 42 C124 8, 206 19, 258 66 C309 112, 452 80, 496 132 C544 189, 416 226, 324 199 C244 176, 203 154, 148 190 C108 216, 69 218, 30 208&quot; />
-          <path class=&quot;trail-dash&quot; d=&quot;M26 42 C124 8, 206 19, 258 66 C309 112, 452 80, 496 132 C544 189, 416 226, 324 199 C244 176, 203 154, 148 190 C108 216, 69 218, 30 208&quot; />
+          <path class=&quot;trail-shadow&quot; d=&quot;M26 42 C124 8, 206 19, 258 66 C309 112, 452 80, 496 132 C544 189, 416 226, 324 199 C244 176, 203 154, 148 190 C108 216, 69 218, 30 208&quot;></path>
+          <path class=&quot;trail&quot; d=&quot;M26 42 C124 8, 206 19, 258 66 C309 112, 452 80, 496 132 C544 189, 416 226, 324 199 C244 176, 203 154, 148 190 C108 216, 69 218, 30 208&quot;></path>
+          <path class=&quot;trail-dash&quot; d=&quot;M26 42 C124 8, 206 19, 258 66 C309 112, 452 80, 496 132 C544 189, 416 226, 324 199 C244 176, 203 154, 148 190 C108 216, 69 218, 30 208&quot;></path>
         </svg>
       </div>
-      <div class=&quot;start&quot;><p>START</p></div>
-      <div class=&quot;finish&quot;><p>GOAL</p></div>
-      <div class=&quot;walk-note&quot;><p>발표의 흐름을 책을 찾아 걷는 산책처럼 따라갑니다.</p></div>
-      <div class=&quot;item step-1&quot;><div class=&quot;num&quot;><p>1</p></div><div class=&quot;copy&quot;><h2>문제 정의</h2><p>대형서점 탐색에서 겪는 막막함과 선택 피로</p></div></div>
-      <div class=&quot;item step-2&quot;><div class=&quot;num&quot;><p>2</p></div><div class=&quot;copy&quot;><h2>시장·사용자 분석</h2><p>소수 도서 집중과 발견 욕구</p></div></div>
-      <div class=&quot;item step-3&quot;><div class=&quot;num&quot;><p>3</p></div><div class=&quot;copy&quot;><h2>서비스 제안</h2><p>추천, 탐색, 큐레이션의 결합</p></div></div>
-      <div class=&quot;item step-4&quot;><div class=&quot;num&quot;><p>4</p></div><div class=&quot;copy&quot;><h2>기능 구성</h2><p>취향 입력, 추천 안내</p></div></div>
-      <div class=&quot;item step-5&quot;><div class=&quot;num&quot;><p>5</p></div><div class=&quot;copy&quot;><h2>시험과 평가</h2><p>흐름, 안전성, 경제성 검토</p></div></div>
-      <div class=&quot;item step-6&quot;><div class=&quot;num&quot;><p>6</p></div><div class=&quot;copy&quot;><h2>결론</h2><p>새로운 만남 설계</p></div></div>
+
+      <div class=&quot;item step-1&quot; style=&quot;left: 57px; top: 7px;&quot;><div class=&quot;num&quot;><p>1</p></div><div class=&quot;copy&quot;><h2>발표 개요</h2></div></div>
+      <div class=&quot;item step-2&quot; style=&quot;left: 315px; top: 9px;&quot;><div class=&quot;num&quot;><p>2</p></div><div class=&quot;copy&quot;><h2>문제 정의</h2></div></div>
+      <div class=&quot;item step-3&quot; style=&quot;left: 456px; top: 80px;&quot;><div class=&quot;num&quot;><p>3</p></div><div class=&quot;copy&quot;><h2>시장과 사용자 분석</h2></div></div>
+      <div class=&quot;item step-4&quot; style=&quot;left: 726px; top: 199px;&quot;><div class=&quot;num&quot;><p>4</p></div><div class=&quot;copy&quot;><h2>서비스 제안</h2></div></div>
+      <div class=&quot;item step-5&quot; style=&quot;left: 482px; top: 225px;&quot;><div class=&quot;num&quot;><p>5</p></div><div class=&quot;copy&quot;><h2>핵심 기능 및 시연</h2></div></div>
+      <div class=&quot;item step-6&quot; style=&quot;left: 216px; top: 285px;&quot;><div class=&quot;num&quot;><p>6</p></div><div class=&quot;copy&quot;><h2>시험 및 적용 가능성 검토</h2></div></div>
+      <div class=&quot;item step-7&quot; style=&quot;left: 72px; top: 235px;&quot;><div class=&quot;num&quot;><p>7</p></div><div class=&quot;copy&quot;><h2>결론</h2></div></div>
     </div>
   </div>
-</body>
-</html>
-" sandbox="allow-same-origin"></iframe>
+
+</body></html>" sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="3" srcdoc="<!DOCTYPE html>
 <html lang=&quot;ko&quot;>
 <head>
@@ -681,12 +1355,12 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2D2D2D; overflow: hidden; color: #F8FAF8; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2C2C2C; overflow: hidden; color: #FDFCF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 720pt; height: 405pt; overflow: hidden; position: relative; padding: 46pt 44pt 26pt; display: flex; flex-direction: column; gap: 12pt; }
     .section-badge { position: absolute; top: 18pt; left: 30pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2D2D2D; background: #B8C4B8; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .question h1 { max-width: 620pt; font-size: 29pt; font-weight: 800; line-height: 1.24; letter-spacing: 0; color: #F8FAF8; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .question h1 { max-width: 620pt; font-size: 29pt; font-weight: 800; line-height: 1.24; letter-spacing: 0; color: #FDFCF8; }
     .scene { flex: 1; position: relative; min-height: 208pt; }
     .quotes { position: absolute; inset: 0; }
     .quote-card { position: absolute; display: flex; align-items: center; gap: 10pt; }
@@ -694,16 +1368,16 @@
     .quote-card.two { left: 106pt; top: 171pt; width: 214pt; }
     .quote-card.three { left: 420pt; top: 56pt; width: 216pt; }
     .speaker-left { flex-direction: row-reverse; }
-    .bubble { position: relative; flex: 1; min-height: 92pt; background: #F8FAF8; border-radius: 8pt; padding: 12pt 12pt 10pt; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10pt 18pt rgba(0, 0, 0, 0.14); }
-    .bubble::before { content: &quot;&quot;; position: absolute; top: 42pt; width: 16pt; height: 16pt; background: #F8FAF8; transform: rotate(45deg); border-radius: 3pt; }
+    .bubble { position: relative; flex: 1; min-height: 92pt; background: #FDFCF8; border-radius: 8pt; padding: 12pt 12pt 10pt; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10pt 18pt rgba(0, 0, 0, 0.14); }
+    .bubble::before { content: &quot;&quot;; position: absolute; top: 42pt; width: 16pt; height: 16pt; background: #FDFCF8; transform: rotate(45deg); border-radius: 3pt; }
     .speaker-right .bubble::before { right: -7pt; }
     .speaker-left .bubble::before { left: -7pt; }
-    .bubble h2 { font-size: 13pt; font-weight: 800; color: #2D2D2D; line-height: 1.2; }
-    .bubble p { font-size: 11.5pt; font-weight: 650; color: #2D2D2D; line-height: 1.37; }
-    .person { position: relative; width: 34pt; height: 78pt; flex: 0 0 34pt; align-self: flex-end; }
-    .person::before { content: &quot;&quot;; position: absolute; left: 8pt; top: 0; width: 18pt; height: 18pt; border-radius: 50%; background: #DCE6DC; box-shadow: inset -3pt -3pt 0 rgba(45, 45, 45, 0.08); }
-    .person::after { content: &quot;&quot;; position: absolute; left: 4pt; top: 23pt; width: 26pt; height: 36pt; border-radius: 12pt 12pt 8pt 8pt; background: #B8C4B8; box-shadow: inset -4pt 0 0 rgba(45, 45, 45, 0.08); }
-    .legs { position: absolute; left: 8pt; bottom: 0; width: 18pt; height: 23pt; border-left: 6pt solid #DCE6DC; border-right: 6pt solid #DCE6DC; border-radius: 0 0 8pt 8pt; }
+    .bubble h2 { font-size: 13pt; font-weight: 800; color: #2C2C2C; line-height: 1.2; }
+    .bubble p { font-size: 11.5pt; font-weight: 650; color: #2C2C2C; line-height: 1.37; }
+    .mascot { width: 58pt; height: 58pt; flex: 0 0 58pt; align-self: flex-end; object-fit: contain; filter: drop-shadow(0 9pt 12pt rgba(0, 0, 0, 0.24)); }
+    .quote-card.one .mascot { transform: rotate(-4deg); }
+    .quote-card.two .mascot { width: 64pt; height: 64pt; flex-basis: 64pt; transform: rotate(5deg); }
+    .quote-card.three .mascot { transform: rotate(3deg); }
   </style>
 </head>
 <body>
@@ -716,15 +1390,15 @@
       <div class=&quot;quotes&quot;>
         <div class=&quot;quote-card one speaker-right&quot;>
           <div class=&quot;bubble&quot;><h2>사용자 1</h2><p>새로운 책을 찾으러 왔는데, 결국 베스트셀러만 보게 돼.</p></div>
-          <div class=&quot;person&quot;><div class=&quot;legs&quot;></div></div>
+          <img class=&quot;mascot&quot; src=&quot;./assets/sanchaek-mascot.png&quot; alt=&quot;산책 캐릭터&quot;>
         </div>
         <div class=&quot;quote-card two speaker-left&quot;>
           <div class=&quot;bubble&quot;><h2>사용자 2</h2><p>샀다가 재미없으면 돈도 시간도 아까워.</p></div>
-          <div class=&quot;person&quot;><div class=&quot;legs&quot;></div></div>
+          <img class=&quot;mascot&quot; src=&quot;./assets/sanchaek-mascot.png&quot; alt=&quot;산책 캐릭터&quot;>
         </div>
         <div class=&quot;quote-card three speaker-right&quot;>
           <div class=&quot;bubble&quot;><h2>사용자 3</h2><p>한참 둘러봤는데, 손에 든 책은 하나도 없어.</p></div>
-          <div class=&quot;person&quot;><div class=&quot;legs&quot;></div></div>
+          <img class=&quot;mascot&quot; src=&quot;./assets/sanchaek-mascot.png&quot; alt=&quot;산책 캐릭터&quot;>
         </div>
       </div>
     </div>
@@ -733,8 +1407,7 @@
 </html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="4" srcdoc="<!DOCTYPE html>
-<html lang=&quot;ko&quot;>
-<head>
+<html lang=&quot;ko&quot;><head>
 <base href=&quot;./&quot;>
 <script>
 (() => {
@@ -883,29 +1556,30 @@
   });
 })();
 </script>
-  <meta charset=&quot;UTF-8&quot;>
+<meta charset=&quot;UTF-8&quot;>
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #F8FAF8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #FDFCF8; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 720pt; height: 405pt; overflow: hidden; position: relative; padding: 25pt 32pt 28pt; display: flex; flex-direction: column; gap: 16pt; background: #F8FAF8; }
+    .slide { width: 720pt; height: 405pt; overflow: hidden; position: relative; padding: 25pt 32pt 28pt; display: flex; flex-direction: column; gap: 16pt; background: #FDFCF8; }
     .header { display: flex; justify-content: space-between; align-items: flex-end; gap: 22pt; }
     .title { max-width: 488pt; }
-    .title p { display: inline-block; font-size: 10.5pt; font-weight: 850; line-height: 1.1; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; }
-    .title h1 { margin-top: 9pt; font-size: 26pt; font-weight: 850; line-height: 1.18; letter-spacing: 0; color: #2D2D2D; }
-    .note { width: 148pt; padding: 8pt 10pt; border: 1.2pt solid rgba(45, 45, 45, 0.32); border-radius: 8pt; background: #B8C4B8; }
-    .note p { font-size: 10.4pt; font-weight: 750; line-height: 1.42; color: #2D2D2D; }
+    .title p { display: inline-block; font-size: 10.5pt; font-weight: 850; line-height: 1.1; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; }
+    .title h1 { margin-top: 9pt; font-size: 26pt; font-weight: 850; line-height: 1.18; letter-spacing: 0; color: #2C2C2C; }
+    .note { width: 148pt; padding: 8pt 10pt; border: 1.2pt solid rgba(44, 44, 44, 0.32); border-radius: 8pt; background: #E5D1B3; }
+    .note p { font-size: 10.4pt; font-weight: 750; line-height: 1.42; color: #2C2C2C; }
     .story { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12pt; min-height: 0; }
-    .panel { position: relative; min-height: 0; border-radius: 8pt; overflow: hidden; background: #D8DED8; border: 1.2pt solid rgba(45, 45, 45, 0.22); box-shadow: 0 8pt 18pt rgba(45, 45, 45, 0.12); }
-    .panel img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .panel::after { content: &quot;&quot;; position: absolute; inset: 0; background: rgba(45, 45, 45, 0.12); pointer-events: none; }
-    .stage { position: absolute; left: 10pt; top: 10pt; z-index: 2; background: #2D2D2D; border-radius: 99pt; padding: 4pt 8pt; }
-    .stage p { font-size: 9.5pt; font-weight: 850; line-height: 1; color: #F8FAF8; }
-    .bubble { position: absolute; left: 12pt; right: 12pt; bottom: 12pt; z-index: 2; padding: 11pt 12pt 10pt; border-radius: 8pt; background: #F8FAF8; border: 1.1pt solid rgba(45, 45, 45, 0.24); box-shadow: 0 6pt 14pt rgba(45, 45, 45, 0.16); }
-    .bubble::before { content: &quot;&quot;; position: absolute; left: 22pt; top: -7pt; width: 15pt; height: 15pt; background: #F8FAF8; border-left: 1.1pt solid rgba(45, 45, 45, 0.24); border-top: 1.1pt solid rgba(45, 45, 45, 0.24); transform: rotate(45deg); border-radius: 2pt; }
-    .bubble h2 { position: relative; z-index: 1; font-size: 12.2pt; font-weight: 850; line-height: 1.2; color: #2D2D2D; }
-    .bubble p { position: relative; z-index: 1; margin-top: 5pt; font-size: 13pt; font-weight: 750; line-height: 1.34; color: #2D2D2D; }
+    .panel { position: relative; min-height: 0; border-radius: 8pt; overflow: visible; background: #EFE2CF; border: 1.2pt solid rgba(44, 44, 44, 0.22); box-shadow: 0 8pt 18pt rgba(44, 44, 44, 0.12); }
+    .panel:not(:last-child)::before { content: &quot;→&quot;; position: absolute; right: -16pt; top: 49%; z-index: 5; width: 20pt; height: 20pt; border-radius: 99pt; background: #2C2C2C; color: #FDFCF8; font-size: 12pt; font-weight: 850; line-height: 20pt; text-align: center; box-shadow: 0 4pt 10pt rgba(44, 44, 44, 0.18); }
+    .panel img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 8pt; }
+    .panel::after { content: &quot;&quot;; position: absolute; inset: 0; border-radius: 8pt; background: rgba(44, 44, 44, 0.12); pointer-events: none; }
+    .stage { position: absolute; left: 10pt; top: 10pt; z-index: 2; background: #2C2C2C; border-radius: 99pt; padding: 4pt 8pt; }
+    .stage p { font-size: 9.5pt; font-weight: 850; line-height: 1; color: #FDFCF8; }
+    .bubble { position: absolute; left: 12pt; right: 12pt; bottom: 12pt; z-index: 2; padding: 11pt 12pt 10pt; border-radius: 8pt; background: #FDFCF8; border: 1.1pt solid rgba(44, 44, 44, 0.24); box-shadow: 0 6pt 14pt rgba(44, 44, 44, 0.16); }
+    .bubble::before { content: &quot;&quot;; position: absolute; left: 22pt; top: -7pt; width: 15pt; height: 15pt; background: #FDFCF8; border-left: 1.1pt solid rgba(44, 44, 44, 0.24); border-top: 1.1pt solid rgba(44, 44, 44, 0.24); transform: rotate(45deg); border-radius: 2pt; }
+    .bubble h2 { position: relative; z-index: 1; font-size: 12.2pt; font-weight: 850; line-height: 1.2; color: #2C2C2C; }
+    .bubble p { position: relative; z-index: 1; margin-top: 5pt; font-size: 13pt; font-weight: 750; line-height: 1.34; color: #2C2C2C; }
   </style>
 </head>
 <body>
@@ -915,9 +1589,7 @@
         <p>대상 사용자</p>
         <h1>대형 서점에서 책을 고르다<br>지치는 사람들</h1>
       </div>
-      <div class=&quot;note&quot;>
-        <p>선택지가 너무 많으면 탐색은 곧 피로가 됩니다.</p>
-      </div>
+      
     </div>
     <div class=&quot;story&quot;>
       <div class=&quot;panel&quot;>
@@ -941,17 +1613,165 @@
         <div class=&quot;stage&quot;><p>03 마지막 선택</p></div>
         <div class=&quot;bubble&quot;>
           <h2>결국 마지막에는</h2>
-          <p>맘에 드는 책을 못 고르겠어... 그냥 베셀만 사 갈까?</p>
+          <p>맘에 드는 책을 못 고르겠어... 그냥 베스트셀러나 살까?</p>
         </div>
       </div>
     </div>
   </div>
-</body>
-</html>
+
+
+</body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="5" srcdoc="<!DOCTYPE html>
 <html lang=&quot;ko&quot;><head>
-<base href=&quot;./&quot;>
+<script>
+(() => {
+  const slideFile = &quot;slide-05.html&quot;;
+  const localAssetPrefix = &quot;./assets/&quot;;
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current &amp;&amp; current.nodeType === Node.ELEMENT_NODE &amp;&amp; current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement &amp;&amp; target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+<base href=&quot;/slides/&quot;>
 <script>
 (() => {
   const slideFile = &quot;slide-05.html&quot;;
@@ -1103,41 +1923,51 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 52pt 40pt 26pt; display: flex; flex-direction: column; gap: 12pt; }
     .section-badge { position: absolute; top: 16pt; left: 26pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 23.5pt; font-weight: 800; color: #2D2D2D; line-height: 1.34; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { font-size: 23.5pt; font-weight: 800; color: #2C2C2C; line-height: 1.34; }
     .mix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; }
-    .source { background: #F8FAF8; border-radius: 8pt; padding: 15pt 14pt; min-height: 86pt; }
-    .source h2 { font-size: 14.5pt; font-weight: 800; color: #2D2D2D; line-height: 1.36; }
-    .source p { margin-top: 7pt; font-size: 11.5pt; font-weight: 500; color: #3D3D3D; line-height: 1.38; }
-    .sanchaek { flex: 1; background: #2D2D2D; border-radius: 8pt; padding: 20pt 24pt; display: grid; grid-template-columns: 0.62fr 1.38fr; gap: 24pt; align-items: center; }
-    .brand h2 { font-size: 40pt; font-weight: 800; color: #F8FAF8; line-height: 1.18; }
-    .brand p { margin-top: 8pt; font-size: 12pt; font-weight: 700; color: #B8C4B8; line-height: 1.35; }
-    .body p { font-size: 14pt; font-weight: 400; color: #F8FAF8; line-height: 1.55; }
-    .body p strong { font-weight: 800; color: #B8C4B8; }
+    .source { background: #FDFCF8; border-radius: 8pt; padding: 15pt 14pt; min-height: 86pt; }
+    .source h2 { font-size: 14.5pt; font-weight: 800; color: #2C2C2C; line-height: 1.36; }
+    .source p { margin-top: 7pt; font-size: 11.5pt; font-weight: 500; color: #555555; line-height: 1.38; }
+    .source strong { display: inline-block; font-size: 25pt; font-weight: 850; color: #2C2C2C; line-height: 1; }
+    .sanchaek { flex: 1; background: #2C2C2C; border-radius: 8pt; padding: 18pt 22pt; display: grid; grid-template-columns: 0.78fr 1.22fr; gap: 22pt; align-items: center; }
+    .brand h2 { font-size: 40pt; font-weight: 800; color: #FDFCF8; line-height: 1.18; }
+    .brand p { margin-top: 8pt; font-size: 12pt; font-weight: 700; color: #E5D1B3; line-height: 1.35; }
+    .body p { font-size: 12.5pt; font-weight: 500; color: #FDFCF8; line-height: 1.45; }
+    .body p strong { font-weight: 800; color: #E5D1B3; }
+    .bar-area { margin-top: 11pt; display: grid; grid-template-columns: 38pt 1fr; gap: 8pt; align-items: center; }
+    .bar-label p { font-size: 9.5pt; font-weight: 800; color: #E5D1B3; line-height: 1.2; }
+    .track { height: 17pt; background: rgba(253, 252, 248, 0.22); border-radius: 99pt; overflow: hidden; }
+    .fill { height: 100%; background: #E5D1B3; border-radius: 99pt; }
+    .fill.top { width: 80%; }
+    .fill.rest { width: 20%; opacity: 0.62; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>3 분석</p></div>
     <div class=&quot;headline&quot;>
-      <h1>실제 도서 구매 흐름을 보면, 선택은 소수의 책에 크게 집중됩니다.</h1>
+      <h1>실제 도서 구매 흐름을 보면, 선택은 일부 인기 도서에 집중되는 경향이 있습니다.</h1>
     </div>
     <div class=&quot;mix&quot;>
-      <div class=&quot;source&quot;><h2>상위 도서 집중</h2><p>약 5%의 책이<br>80%의 매출 담당</p></div>
-      <div class=&quot;source&quot;><h2>장기 베스트셀러</h2><p>27주, 39주처럼<br>상위권 장기 유지</p></div>
+      <div class=&quot;source&quot;><h2>상위 도서 집중</h2><p>구매와 관심이<br>일부 책에 크게 모임</p></div>
+      <div class=&quot;source&quot;><h2>장기 베스트셀러</h2><p>검증된 인기 도서가<br>선택지로 남음</p></div>
       <div class=&quot;source&quot;><h2>안전한 선택</h2><p>익숙하고 검증된<br>책으로 구매 집중</p></div>
     </div>
     <div class=&quot;sanchaek&quot;>
       <div class=&quot;brand&quot;><h2>집중</h2><p>다양성보다 검증된 선택</p></div>
       <div class=&quot;body&quot;>
-        <p>사람들은 서점에서 많은 책을 마주하지만, 실제 구매는 결국 <strong>익숙하고 검증된 책</strong>으로 쏠리고 있습니다.</p>
+        <p>사람들은 서점에서 많은 책을 마주하지만, 최종 선택은 결국 <strong>익숙하고 검증된 책</strong>으로 쏠리는 경우가 많습니다.</p>
+        <div class=&quot;bar-area&quot;><div class=&quot;bar-label&quot;><p>상위<br>도서</p></div><div class=&quot;track&quot;><div class=&quot;fill top&quot;></div></div></div>
+        <div class=&quot;bar-area&quot;><div class=&quot;bar-label&quot;><p>나머지<br>도서</p></div><div class=&quot;track&quot;><div class=&quot;fill rest&quot;></div></div></div>
       </div>
     </div>
   </div>
+
 
 
 </body></html>
@@ -1292,66 +2122,65 @@
   });
 })();
 </script>
-<meta charset=&quot;UTF-8&quot;>
+  <meta charset=&quot;UTF-8&quot;>
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 36pt 0; display: flex; flex-direction: column; gap: 15pt; }
-    .section-badge { position: absolute; top: 16pt; left: 24pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 22pt; font-weight: 700; color: #2D2D2D; line-height: 1.34; }
-    .proof { flex: 1; min-height: 0; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 14pt; }
-    .panel { background: #F8FAF8; border-radius: 8pt; padding: 16pt 16pt; display: flex; flex-direction: column; justify-content: flex-start; min-height: 0; }
-    .panel h2 { font-size: 13.5pt; font-weight: 700; color: #2D2D2D; line-height: 1.35; }
-    .share-metric { margin: 24pt 0 0; padding: 19pt 0 0; border-top: 1pt solid #D7DDD7; }
-    .metric { display: grid; grid-template-columns: 86pt 1fr; gap: 13pt; align-items: end; }
-    .metric h3 { font-size: 30pt; font-weight: 800; line-height: 1.12; color: #2D2D2D; letter-spacing: 0; }
-    .metric p { font-size: 10pt; font-weight: 700; color: #3D3D3D; line-height: 1.28; }
-    .share-track { height: 18pt; margin-top: 12pt; background: #D7DDD7; border-radius: 3pt; overflow: hidden; }
-    .share-fill { width: 81%; height: 100%; background: #2D2D2D; border-radius: 3pt 0 0 3pt; }
-    .scale { display: flex; justify-content: space-between; margin-top: 5pt; }
-    .scale p { font-size: 8.5pt; color: #596159; line-height: 1.2; }
-    .week-list { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12pt; align-items: stretch; margin-top: 28pt; }
-    .week-card { border-left: 4pt solid #2D2D2D; background: #EEF2EE; padding: 18pt 14pt 16pt; display: flex; flex-direction: column; justify-content: space-between; min-height: 132pt; }
-    .week-card h3 { font-size: 14pt; font-weight: 800; color: #2D2D2D; line-height: 1.35; }
-    .week-card p { font-size: 30pt; font-weight: 800; color: #2D2D2D; line-height: 1.14; letter-spacing: 0; }
-    .week-card p span { font-size: 16pt; font-weight: 800; }
-    .insight { margin: 0 -36pt; padding: 13pt 36pt 15pt; background: #2D2D2D; }
-    .insight p { font-size: 18pt; font-weight: 700; line-height: 1.36; color: #F8FAF8; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 44pt 42pt 24pt; display: flex; flex-direction: column; gap: 14pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { width: 612pt; font-size: 25pt; font-weight: 850; color: #2C2C2C; line-height: 1.2; letter-spacing: 0; }
+    .contrast { height: 176pt; display: grid; grid-template-columns: 1fr 76pt 1fr; gap: 14pt; align-items: stretch; flex: none; min-height: 0; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 16pt 18pt; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; overflow: hidden; }
+    .label p { display: inline-block; font-size: 9.5pt; font-weight: 800; color: #555555; line-height: 1.2; border-bottom: 2pt solid #EADCC7; padding-bottom: 3pt; }
+    .card h2 { margin-top: 12pt; font-size: 17pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card .big { margin-top: 8pt; font-size: 34pt; font-weight: 850; color: #2C2C2C; line-height: 1; letter-spacing: 0; }
+    .card .note { margin-top: 8pt; font-size: 12pt; font-weight: 600; color: #555555; line-height: 1.32; }
+    .right-card { background: #2C2C2C; }
+    .right-card .label p { color: #E5D1B3; border-bottom-color: #555555; }
+    .right-card h2, .right-card .big { color: #FDFCF8; }
+    .right-card .note { color: #E5D1B3; }
+    .bridge { align-self: center; background: #FDFCF8; border: 2pt solid #2C2C2C; border-radius: 99pt; width: 76pt; height: 76pt; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .bridge p { font-size: 13pt; font-weight: 850; color: #2C2C2C; line-height: 1.18; }
+    .insight { background: #2C2C2C; border-radius: 8pt; padding: 13pt 20pt; }
+    .insight p { font-size: 16.5pt; font-weight: 800; line-height: 1.28; color: #FDFCF8; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>3 분석</p></div>
     <div class=&quot;headline&quot;>
-      <h1>이 현상은 사람들이 다양한 책을 원하지 않는다는 뜻은 아닙니다.</h1>
+      <h1>문제는 취향이 좁은 것이 아니라, 발견까지 가는 길이 피곤하다는 점입니다.</h1>
     </div>
-    <div class=&quot;proof&quot;>
-      <div class=&quot;panel&quot;>
-        <h2>독서 편식</h2>
-        <div class=&quot;share-metric&quot;>
-          <div class=&quot;metric&quot;><h3>욕구</h3><p>새로운 책과<br>맞는 책을 찾고 싶음</p></div>
-          <div class=&quot;share-track&quot;><div class=&quot;share-fill&quot;></div></div>
-          <div class=&quot;scale&quot;><p>발견</p><p>안전한 선택</p></div>
+    <div class=&quot;contrast&quot;>
+      <div class=&quot;card&quot;>
+        <div>
+          <div class=&quot;label&quot;><p>독자의 욕구</p></div>
+          <h2>새롭고 나에게 맞는 책을 찾고 싶다</h2>
+        </div>
+        <div>
+          <p class=&quot;big&quot;>발견</p>
+          <p class=&quot;note&quot;>다양한 책을 보고 싶은 마음은 여전히 존재합니다.</p>
         </div>
       </div>
-      <div class=&quot;panel&quot;>
-        <h2>실제 행동</h2>
-        <div class=&quot;week-list&quot;>
-          <div class=&quot;week-card&quot;><h3>탐색 피로</h3><p>선택<span>부담</span></p></div>
-          <div class=&quot;week-card&quot;><h3>베스트셀러</h3><p>안전<span>선택</span></p></div>
+      <div class=&quot;bridge&quot;><p>하지만<br>과정에서<br>이탈</p></div>
+      <div class=&quot;card right-card&quot;>
+        <div>
+          <div class=&quot;label&quot;><p>실제 행동</p></div>
+          <h2>막막함을 피하려고 검증된 선택으로 돌아간다</h2>
+        </div>
+        <div>
+          <p class=&quot;big&quot;>안전</p>
+          <p class=&quot;note&quot;>탐색 피로가 커질수록 베스트셀러가 기본값이 됩니다.</p>
         </div>
       </div>
     </div>
     <div class=&quot;insight&quot;>
-      <p>문제는 취향이 좁어서가 아니라, 다양한 책을 고르기까지의 과정이 어렵고 피곤하다는 데 있습니다.</p>
+      <p>따라서 핵심은 책을 더 많이 보여주는 것이 아니라, 고르는 과정을 가볍게 만드는 것입니다.</p>
     </div>
   </div>
-
-
-
 </body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="7" srcdoc="<!DOCTYPE html>
@@ -1508,30 +2337,30 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 52pt 40pt 28pt; display: flex; flex-direction: column; gap: 12pt; }
     .section-badge { position: absolute; top: 16pt; left: 26pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 25pt; font-weight: 700; line-height: 1.25; color: #2D2D2D; }
-    .thesis { background: #2D2D2D; border-radius: 8pt; padding: 19pt 24pt; }
-    .thesis p { font-size: 27pt; font-weight: 700; line-height: 1.36; color: #F8FAF8; }
-    .thesis p strong { color: #B8C4B8; font-weight: 800; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { font-size: 25pt; font-weight: 700; line-height: 1.25; color: #2C2C2C; }
+    .thesis { background: #2C2C2C; border-radius: 8pt; padding: 19pt 24pt; }
+    .thesis p { font-size: 24pt; font-weight: 700; line-height: 1.34; color: #FDFCF8; }
+    .thesis p strong { color: #E5D1B3; font-weight: 800; }
     .logic { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; }
-    .step { background: #F8FAF8; border-radius: 8pt; padding: 15pt 16pt; display: flex; flex-direction: column; gap: 10pt; }
-    .step h2 { font-size: 14.5pt; font-weight: 700; color: #2D2D2D; line-height: 1.4; }
-    .step p { font-size: 12pt; font-weight: 400; color: #3D3D3D; line-height: 1.48; }
-    .closing p { font-size: 14pt; font-weight: 700; color: #2D2D2D; line-height: 1.42; }
+    .step { background: #FDFCF8; border-radius: 8pt; padding: 15pt 16pt; display: flex; flex-direction: column; gap: 10pt; }
+    .step h2 { font-size: 14.5pt; font-weight: 700; color: #2C2C2C; line-height: 1.4; }
+    .step p { font-size: 12pt; font-weight: 400; color: #555555; line-height: 1.48; }
+    .closing p { font-size: 14pt; font-weight: 700; color: #2C2C2C; line-height: 1.42; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>3 분석</p></div>
     <div class=&quot;headline&quot;>
-      <h1>독립서점의 증가는 사람들이 다양한 발견을 원한다는 근거입니다.</h1>
+      <h1>독립서점이 주목받는 흐름은 사람들이 다양한 발견을 원한다는 신호입니다.</h1>
     </div>
     <div class=&quot;thesis&quot;>
-      <p>사람들은 단순히 베스트셀러만 사고 싶은 것이 아닙니다.</p>
+      <p>사람들은 선택을 도와주는 환경 안에서 새로운 책을 발견하고 싶어 합니다.</p>
     </div>
     <div class=&quot;logic&quot;>
       <div class=&quot;step&quot;><h2>주제별 큐레이션</h2><p>책의 수는 적지만 선택을 돕는 기준이 분명합니다.</p></div>
@@ -1539,7 +2368,7 @@
       <div class=&quot;step&quot;><h2>짧은 소개 문구</h2><p>낯선 책도 부담 없이 살펴볼 수 있게 만듭니다.</p></div>
     </div>
     <div class=&quot;closing&quot;>
-      <p>독립서점의 증가는 다양한 책을 찾고 싶은 욕구가 여전히 존재한다는 근거가 됩니다.</p>
+      <p>독립서점이 주목받는 흐름은 다양한 책을 찾고 싶은 욕구가 여전히 존재한다는 근거가 됩니다.</p>
     </div>
   </div>
 
@@ -1700,56 +2529,64 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 36pt 24pt; display: flex; flex-direction: column; gap: 12pt; }
-    .section-badge { position: absolute; top: 16pt; left: 24pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 22pt; font-weight: 700; color: #2D2D2D; line-height: 1.36; }
-    .channels { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; }
-    .channel { background: #F8FAF8; border-radius: 8pt; padding: 14pt; display: flex; flex-direction: column; gap: 10pt; }
-    .channel h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.28; }
-    .block { border-radius: 6pt; padding: 10pt 11pt; min-height: 78pt; }
-    .block h3 { font-size: 10.5pt; font-weight: 800; line-height: 1.2; margin-bottom: 5pt; }
-    .block p { font-size: 11pt; font-weight: 500; line-height: 1.42; }
-    .strength { background: #2D2D2D; }
-    .strength h3, .strength p { color: #F8FAF8; }
-    .limit { background: #E7D9D1; border: 1.5pt solid #8A5A4B; }
-    .limit h3 { color: #8A5A4B; }
-    .limit p { color: #3D3D3D; }
-    .summary { background: #2D2D2D; border-radius: 8pt; padding: 12pt 16pt; }
-    .summary p { font-size: 14pt; font-weight: 700; color: #F8FAF8; line-height: 1.42; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 44pt 42pt 24pt; display: flex; flex-direction: column; gap: 14pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline { display: grid; grid-template-columns: 1fr 210pt; gap: 22pt; align-items: end; }
+    .headline h1 { font-size: 25pt; font-weight: 850; color: #2C2C2C; line-height: 1.18; letter-spacing: 0; }
+    .headline p { font-size: 11.8pt; font-weight: 650; color: #555555; line-height: 1.34; }
+    .solution { height: 168pt; flex: none; min-height: 0; display: grid; grid-template-columns: 0.72fr 1fr 1fr; gap: 14pt; align-items: stretch; }
+    .problem { background: #2C2C2C; border-radius: 8pt; padding: 15pt 15pt; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+    .problem h2 { font-size: 15.5pt; font-weight: 850; color: #FDFCF8; line-height: 1.22; }
+    .problem p { margin-top: 10pt; font-size: 11.8pt; font-weight: 600; color: #E5D1B3; line-height: 1.32; }
+    .problem .tag { font-size: 24pt; font-weight: 850; color: #FDFCF8; line-height: 1; }
+    .feature { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+    .feature-number p { width: 27pt; height: 27pt; border-radius: 99pt; background: #2C2C2C; color: #FDFCF8; font-size: 10pt; font-weight: 850; line-height: 27pt; text-align: center; }
+    .feature h2 { margin-top: 12pt; font-size: 17.5pt; font-weight: 850; color: #2C2C2C; line-height: 1.18; }
+    .feature p { margin-top: 8pt; font-size: 12pt; font-weight: 600; color: #555555; line-height: 1.32; }
+    .feature .outcome { margin-top: 11pt; padding-top: 9pt; border-top: 1pt solid #EADCC7; font-size: 10.8pt; font-weight: 800; color: #2C2C2C; }
+    .summary { background: #2C2C2C; border-radius: 8pt; padding: 11pt 19pt; }
+    .summary p { font-size: 14pt; font-weight: 800; color: #FDFCF8; line-height: 1.28; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>3 분석</p></div>
     <div class=&quot;headline&quot;>
-      <h1>필요한 기능은 탐색 네비게이션과 취향 기반 큐레이션입니다.</h1>
+      <h1>필요한 것은 더 많은 목록이 아니라, 탐색을 가볍게 만드는 장치입니다.</h1>
+      <p>대형서점의 규모를 장점으로 바꾸려면 방향 안내와 취향 필터가 함께 필요합니다.</p>
     </div>
-    <div class=&quot;channels&quot;>
-      <div class=&quot;channel&quot;>
-        <h2>대형서점의 문제</h2>
-        <div class=&quot;block strength&quot;><h3>현상</h3><p>책은 많지만 어디서부터 봐야 할지 모릅니다.</p></div>
-        <div class=&quot;block limit&quot;><h3>결과</h3><p>원하던 다양한 발견 대신 안전한 선택으로 돌아갑니다.</p></div>
+    <div class=&quot;solution&quot;>
+      <div class=&quot;problem&quot;>
+        <div>
+          <h2>현재의 막막함</h2>
+          <p>책은 많지만 어디서부터 봐야 할지 모르고, 결국 익숙한 책으로 돌아갑니다.</p>
+        </div>
+        <p class=&quot;tag&quot;>문제</p>
       </div>
-      <div class=&quot;channel&quot;>
-        <h2>탐색 네비게이션</h2>
-        <div class=&quot;block strength&quot;><h3>역할</h3><p>서점 안에서 막막함을 줄이고 이동을 안내합니다.</p></div>
-        <div class=&quot;block limit&quot;><h3>효과</h3><p>화면만 보는 탐색이 아니라 공간을 함께 보게 합니다.</p></div>
+      <div class=&quot;feature&quot;>
+        <div>
+          <div class=&quot;feature-number&quot;><p>01</p></div>
+          <h2>탐색 네비게이션</h2>
+          <p>서점 안에서 다음에 볼 위치와 동선을 제안합니다.</p>
+        </div>
+        <p class=&quot;outcome&quot;>공간 속에서 길을 잃지 않게 함</p>
       </div>
-      <div class=&quot;channel&quot;>
-        <h2>취향 큐레이션</h2>
-        <div class=&quot;block strength&quot;><h3>역할</h3><p>독립서점처럼 사용자의 취향에 맞춰 책을 제안합니다.</p></div>
-        <div class=&quot;block limit&quot;><h3>효과</h3><p>인기순이 아니라 현재 맥락에 맞는 발견을 돕습니다.</p></div>
+      <div class=&quot;feature&quot;>
+        <div>
+          <div class=&quot;feature-number&quot;><p>02</p></div>
+          <h2>취향 큐레이션</h2>
+          <p>인기순이 아니라 지금 맥락에 맞는 책을 좁혀줍니다.</p>
+        </div>
+        <p class=&quot;outcome&quot;>낯선 책도 부담 없이 검토하게 함</p>
       </div>
     </div>
     <div class=&quot;summary&quot;>
-      <p>이 두 가지를 대형서점 안에서 구현하는 것이 Verso의 출발점입니다.</p>
+      <p>산책은 이 두 기능을 결합해, 대형서점 안에서도 독립서점 같은 발견 경험을 만듭니다.</p>
     </div>
   </div>
-
-
 </body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="9" srcdoc="<!DOCTYPE html>
@@ -1906,61 +2743,64 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 52pt 38pt 28pt; display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 22pt; align-items: stretch; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 48pt 42pt 28pt; display: grid; grid-template-columns: 224pt 1fr; gap: 24pt; align-items: stretch; }
     .section-badge { position: absolute; top: 16pt; left: 26pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .left { display: flex; flex-direction: column; justify-content: space-between; gap: 18pt; }
-    .headline h1 { font-size: 28pt; font-weight: 800; color: #2D2D2D; line-height: 1.28; }
-    .headline p { margin-top: 10pt; font-size: 14pt; font-weight: 600; color: #3D3D3D; line-height: 1.42; }
-    .stat { background: #2D2D2D; border-radius: 8pt; padding: 20pt; }
-    .stat h2 { font-size: 48pt; font-weight: 800; color: #F8FAF8; line-height: 1.35; padding-bottom: 0; }
-    .stat p { margin-top: 8pt; font-size: 13pt; font-weight: 600; color: #B8C4B8; line-height: 1.35; }
-    .right { background: #F8FAF8; border-radius: 8pt; padding: 18pt 20pt; display: flex; flex-direction: column; justify-content: center; gap: 10pt; }
-    .flow-title h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .flow { display: flex; flex-direction: column; gap: 8pt; }
-    .point { display: grid; grid-template-columns: 34pt 1fr; gap: 10pt; align-items: start; }
-    .point-number p { width: 28pt; height: 28pt; border-radius: 99pt; background: #2D2D2D; color: #F8FAF8; font-size: 10.5pt; font-weight: 800; line-height: 28pt; text-align: center; }
-    .point-copy { border-bottom: 1pt solid #D6DDD6; padding-bottom: 8pt; }
-    .point:last-child .point-copy { border-bottom: none; padding-bottom: 0; }
-    .point h2 { font-size: 15.5pt; font-weight: 800; color: #2D2D2D; line-height: 1.24; }
-    .point p { margin-top: 4pt; font-size: 12.5pt; font-weight: 400; color: #3D3D3D; line-height: 1.42; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .intro { display: flex; flex-direction: column; justify-content: space-between; min-height: 0; }
+    .headline h1 { font-size: 28pt; font-weight: 850; color: #2C2C2C; line-height: 1.18; letter-spacing: 0; }
+    .headline p { margin-top: 12pt; font-size: 12.5pt; font-weight: 650; color: #555555; line-height: 1.38; }
+    .o2o { background: #2C2C2C; border-radius: 8pt; padding: 15pt 17pt; }
+    .o2o h2 { font-size: 40pt; font-weight: 850; color: #FDFCF8; line-height: 1; letter-spacing: 0; }
+    .o2o p { margin-top: 10pt; font-size: 12.2pt; font-weight: 750; color: #E5D1B3; line-height: 1.32; }
+    .flow { background: #FDFCF8; border-radius: 8pt; padding: 19pt 22pt 18pt; display: flex; flex-direction: column; justify-content: space-between; }
+    .flow-title h2 { font-size: 17pt; font-weight: 850; color: #2C2C2C; line-height: 1.25; }
+    .steps { display: flex; flex-direction: column; gap: 10pt; margin-top: 13pt; }
+    .step { display: grid; grid-template-columns: 36pt 1fr; gap: 12pt; align-items: start; }
+    .num p { width: 31pt; height: 31pt; border-radius: 99pt; background: #2C2C2C; color: #FDFCF8; font-size: 10.5pt; font-weight: 850; line-height: 31pt; text-align: center; }
+    .copy { padding-bottom: 10pt; border-bottom: 1pt solid #EADCC7; }
+    .step:last-child .copy { padding-bottom: 0; border-bottom: none; }
+    .copy h2 { font-size: 18pt; font-weight: 850; color: #2C2C2C; line-height: 1.2; }
+    .copy p { margin-top: 5pt; font-size: 12.3pt; font-weight: 550; color: #555555; line-height: 1.34; }
+    .bottom-note { margin-top: 10pt; background: #F5EBDD; border-radius: 6pt; padding: 9pt 12pt; }
+    .bottom-note p { font-size: 11.8pt; font-weight: 800; color: #2C2C2C; line-height: 1.3; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>3 분석</p></div>
-    <div class=&quot;left&quot;>
+    <div class=&quot;intro&quot;>
       <div class=&quot;headline&quot;>
-        <h1>그래서 저희는 Verso를 제안합니다.</h1>
-        <p>온라인의 개인화 추천, 오프라인 서점 탐색, 독립서점 큐레이션을 결합한 O2O 도서 탐색 플랫폼입니다.</p>
+        <h1>그래서 저희는 산책을 제안합니다.</h1>
+        <p>온라인 추천으로 시작해, 오프라인 서점에서 실제 책을 발견하게 하는 O2O 도서 탐색 플랫폼입니다.</p>
       </div>
-      <div class=&quot;stat&quot;>
+      <div class=&quot;o2o&quot;>
         <h2>O2O</h2>
-        <p>온라인 추천과 오프라인 탐색을 연결</p>
+        <p>개인화 추천과 서점 안 탐색을 하나의 경험으로 연결</p>
       </div>
     </div>
-    <div class=&quot;right&quot;>
-      <div class=&quot;flow-title&quot;><h2>Verso 경험 흐름</h2></div>
-      <div class=&quot;flow&quot;>
-        <div class=&quot;point&quot;>
-          <div class=&quot;point-number&quot;><p>01</p></div>
-          <div class=&quot;point-copy&quot;><h2>온라인 추천</h2><p>사용자는 취향 기반 추천을 받아 막막함을 줄입니다.</p></div>
-        </div>
-        <div class=&quot;point&quot;>
-          <div class=&quot;point-number&quot;><p>02</p></div>
-          <div class=&quot;point-copy&quot;><h2>오프라인 탐색</h2><p>서점 안에서 실제 책을 직접 보고 비교합니다.</p></div>
-        </div>
-        <div class=&quot;point&quot;>
-          <div class=&quot;point-number&quot;><p>03</p></div>
-          <div class=&quot;point-copy&quot;><h2>선별된 발견</h2><p>독립서점처럼 정리된 추천 안에서 새로운 책을 발견합니다.</p></div>
+    <div class=&quot;flow&quot;>
+      <div>
+        <div class=&quot;flow-title&quot;><h2>산책 경험 흐름</h2></div>
+        <div class=&quot;steps&quot;>
+          <div class=&quot;step&quot;>
+            <div class=&quot;num&quot;><p>01</p></div>
+            <div class=&quot;copy&quot;><h2>취향 입력</h2><p>관심 주제와 선호를 입력해 추천의 출발점을 만듭니다.</p></div>
+          </div>
+          <div class=&quot;step&quot;>
+            <div class=&quot;num&quot;><p>02</p></div>
+            <div class=&quot;copy&quot;><h2>동선 제안</h2><p>서점 안에서 볼 책과 위치를 함께 안내합니다.</p></div>
+          </div>
+          <div class=&quot;step&quot;>
+            <div class=&quot;num&quot;><p>03</p></div>
+            <div class=&quot;copy&quot;><h2>현장 발견</h2><p>직접 보고 비교하며, 낯선 책도 부담 없이 검토합니다.</p></div>
+          </div>
         </div>
       </div>
+      <div class=&quot;bottom-note&quot;><p>핵심은 추천을 화면 안에 멈추지 않고, 실제 구매 행동으로 이어지게 하는 것입니다.</p></div>
     </div>
   </div>
-
-
 </body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="10" srcdoc="<!DOCTYPE html>
@@ -2117,23 +2957,39 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 56pt 42pt 32pt; display: flex; flex-direction: column; gap: 16pt; }
-    .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .header h1 { font-size: 30pt; font-weight: 800; color: #2D2D2D; line-height: 1.3; }
-    .placeholder { flex: 1; border: 2pt dashed #2D2D2D; border-radius: 8pt; background: rgba(248, 250, 248, 0.38); }
+    .slide { width: 100%; height: 100%; position: relative; padding: 48pt 38pt 28pt; display: flex; flex-direction: column; gap: 14pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { font-size: 24pt; font-weight: 800; color: #2C2C2C; line-height: 1.32; }
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9pt; position: relative; }
+    .flow::before { content: &quot;&quot;; position: absolute; left: 10%; right: 10%; top: 31pt; height: 2pt; background: #2C2C2C; opacity: 0.32; }
+    .step { position: relative; z-index: 1; background: #FDFCF8; border-radius: 8pt; padding: 13pt 12pt 14pt; min-height: 112pt; border: 1.2pt solid rgba(44, 44, 44, 0.18); }
+    .num p { width: 32pt; height: 32pt; border-radius: 99pt; background: #2C2C2C; color: #FDFCF8; font-size: 10.5pt; font-weight: 850; line-height: 32pt; text-align: center; }
+    .step h2 { margin-top: 11pt; font-size: 14.5pt; font-weight: 850; color: #2C2C2C; line-height: 1.24; }
+    .step p.desc { margin-top: 5pt; font-size: 10.4pt; font-weight: 500; color: #555555; line-height: 1.36; }
+    .reason { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; }
+    .card { background: #2C2C2C; border-radius: 8pt; padding: 18pt 20pt; display: flex; flex-direction: column; justify-content: center; }
+    .card h2 { font-size: 19pt; font-weight: 850; color: #FDFCF8; line-height: 1.24; }
+    .card p { margin-top: 8pt; font-size: 12.5pt; font-weight: 500; color: #E5D1B3; line-height: 1.5; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>4 제작</p></div>
-    <div class=&quot;header&quot;><h1>시연 영상: 취향 입력부터 실제 도서 위치 이동까지</h1></div>
-    <div class=&quot;placeholder&quot;></div>
+    <div class=&quot;headline&quot;><h1>산책의 핵심 기능은 취향 파악, 도서 추천, 위치 안내, 이동체 기반 탐색입니다.</h1></div>
+    <div class=&quot;flow&quot;>
+      <div class=&quot;step&quot;><div class=&quot;num&quot;><p>01</p></div><h2>취향 파악</h2><p class=&quot;desc&quot;>간단한 선택 질문과 자연어 입력으로 지금 읽고 싶은 분위기를 파악합니다.</p></div>
+      <div class=&quot;step&quot;><div class=&quot;num&quot;><p>02</p></div><h2>LLM 추천</h2><p class=&quot;desc&quot;>LLM 추천 에이전트가 도서 정보와 사용자의 맥락을 연결합니다.</p></div>
+      <div class=&quot;step&quot;><div class=&quot;num&quot;><p>03</p></div><h2>위치 안내</h2><p class=&quot;desc&quot;>추천된 책이 매장 어디에 있는지 바로 보여줍니다.</p></div>
+      <div class=&quot;step&quot;><div class=&quot;num&quot;><p>04</p></div><h2>이동체 탐색</h2><p class=&quot;desc&quot;>자율주행 이동체가 사용자를 해당 위치까지 이끕니다.</p></div>
+    </div>
+    <div class=&quot;reason&quot;>
+      <div class=&quot;card&quot;><h2>시야 확보</h2><p>안내가 스마트폰 화면 안에만 머물지 않아, 사용자는 주변 서가를 자연스럽게 함께 둘러볼 수 있습니다.</p></div>
+      <div class=&quot;card&quot;><h2>신체적 피로 감소</h2><p>이동체가 이동 보조 역할까지 수행하면 오래 걷고 들고 다니는 부담을 줄여 탐색 시간을 늘릴 수 있습니다.</p></div>
+    </div>
   </div>
-
-
 </body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="11" srcdoc="<!DOCTYPE html>
@@ -2290,19 +3146,19 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 56pt 42pt 32pt; display: flex; flex-direction: column; gap: 16pt; }
     .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .header h1 { font-size: 30pt; font-weight: 800; color: #2D2D2D; line-height: 1.3; }
-    .placeholder { flex: 1; border: 2pt dashed #2D2D2D; border-radius: 8pt; background: rgba(248, 250, 248, 0.38); }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .header h1 { font-size: 30pt; font-weight: 800; color: #2C2C2C; line-height: 1.3; }
+    .placeholder { flex: 1; border: 2pt dashed #2C2C2C; border-radius: 8pt; background: rgba(253, 252, 248, 0.38); }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>4 제작</p></div>
-    <div class=&quot;header&quot;><h1>취향 파악: 자연어로 지금 읽고 싶은 분위기를 입력</h1></div>
+    <div class=&quot;header&quot;><h1>시연 영상: 취향 입력부터 실제 도서 위치 이동까지</h1></div>
     <div class=&quot;placeholder&quot;></div>
   </div>
 
@@ -2463,23 +3319,56 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 56pt 42pt 32pt; display: flex; flex-direction: column; gap: 16pt; }
-    .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .header h1 { font-size: 30pt; font-weight: 800; color: #2D2D2D; line-height: 1.3; }
-    .placeholder { flex: 1; border: 2pt dashed #2D2D2D; border-radius: 8pt; background: rgba(248, 250, 248, 0.38); }
+    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 38pt 28pt; display: grid; grid-template-columns: 0.92fr 1.08fr; gap: 18pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .left { display: flex; flex-direction: column; justify-content: space-between; gap: 16pt; }
+    .headline h1 { font-size: 28pt; font-weight: 850; color: #2C2C2C; line-height: 1.25; }
+    .headline p { margin-top: 10pt; font-size: 13pt; font-weight: 600; color: #555555; line-height: 1.45; }
+    .input { background: #FDFCF8; border-radius: 8pt; padding: 18pt; border: 1.4pt solid rgba(44, 44, 44, 0.18); }
+    .input h2 { font-size: 12pt; font-weight: 850; color: #8C7851; line-height: 1.2; }
+    .input p { margin-top: 10pt; font-size: 18pt; font-weight: 750; color: #2C2C2C; line-height: 1.38; }
+    .right { background: #2C2C2C; border-radius: 8pt; padding: 20pt; display: flex; flex-direction: column; justify-content: space-between; }
+    .right h2 { font-size: 18pt; font-weight: 850; color: #FDFCF8; line-height: 1.25; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8pt; margin-top: 14pt; }
+    .tag p { font-size: 11.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; border-radius: 99pt; padding: 6pt 10pt; line-height: 1; }
+    .recommend { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+    .book { background: #FDFCF8; border-radius: 8pt; padding: 14pt; min-height: 118pt; }
+    .book h3 { font-size: 15pt; font-weight: 850; color: #2C2C2C; line-height: 1.28; }
+    .book p { margin-top: 7pt; font-size: 10.8pt; font-weight: 500; color: #555555; line-height: 1.42; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>4 제작</p></div>
-    <div class=&quot;header&quot;><h1>이동체 안내: 화면을 벗어나 서가를 함께 둘러보는 탐색</h1></div>
-    <div class=&quot;placeholder&quot;></div>
+    <div class=&quot;left&quot;>
+      <div class=&quot;headline&quot;>
+        <h1>취향 파악: 자연어로 지금 읽고 싶은 분위기를 입력</h1>
+        <p>단순 장르 선택이 아니라, 사용자의 현재 맥락을 추천의 출발점으로 삼습니다.</p>
+      </div>
+      <div class=&quot;input&quot;>
+        <h2>사용자 입력 예시</h2>
+        <p>“가볍게 읽을 수 있지만 여운이 남는 책”</p>
+      </div>
+    </div>
+    <div class=&quot;right&quot;>
+      <div>
+        <h2>LLM이 읽어내는 추천 단서</h2>
+        <div class=&quot;tags&quot;>
+          <div class=&quot;tag&quot;><p>가벼운 독서</p></div>
+          <div class=&quot;tag&quot;><p>감정의 여운</p></div>
+          <div class=&quot;tag&quot;><p>현재 분위기</p></div>
+          <div class=&quot;tag&quot;><p>낮은 진입장벽</p></div>
+        </div>
+      </div>
+      <div class=&quot;recommend&quot;>
+        <div class=&quot;book&quot;><h3>추천 결과</h3><p>인기순이 아니라 입력 문장의 분위기와 도서 소개, 리뷰, 주제를 연결합니다.</p></div>
+        <div class=&quot;book&quot;><h3>추천 이유</h3><p>왜 이 책이 맞는지 함께 제시해 선택 실패에 대한 부담을 낮춥니다.</p></div>
+      </div>
+    </div>
   </div>
-
-
 </body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="13" srcdoc="<!DOCTYPE html>
@@ -2636,45 +3525,52 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 52pt 38pt 28pt; display: flex; flex-direction: column; gap: 12pt; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 48pt 38pt 28pt; display: flex; flex-direction: column; gap: 13pt; }
     .section-badge { position: absolute; top: 16pt; left: 26pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 23pt; font-weight: 800; color: #2D2D2D; line-height: 1.34; }
-    .test-grid { flex: 1; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 13pt; }
-    .primary { background: #2D2D2D; border-radius: 8pt; padding: 20pt; display: flex; flex-direction: column; justify-content: space-between; }
-    .primary .label p { display: inline-block; font-size: 10pt; font-weight: 800; color: #2D2D2D; background: #B8C4B8; padding: 4pt 9pt; border-radius: 99pt; line-height: 1; }
-    .primary h2 { margin-top: 12pt; font-size: 23pt; font-weight: 800; color: #F8FAF8; line-height: 1.28; }
-    .primary p { margin-top: 8pt; font-size: 12.5pt; font-weight: 400; color: #D7DDD7; line-height: 1.48; }
-    .checks { display: grid; grid-template-rows: repeat(3, 1fr); gap: 9pt; }
-    .check { background: #F8FAF8; border-radius: 8pt; padding: 14pt 15pt; border-left: 5pt solid #2D2D2D; }
-    .check h2 { font-size: 15pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .check p { margin-top: 6pt; font-size: 10.8pt; font-weight: 500; color: #3D3D3D; line-height: 1.42; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { font-size: 25pt; font-weight: 850; color: #2C2C2C; line-height: 1.3; }
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; }
+    .card { border-radius: 8pt; padding: 17pt 18pt; min-height: 122pt; }
+    .phone { background: #FDFCF8; border: 1.4pt solid rgba(44, 44, 44, 0.18); }
+    .robot { background: #2C2C2C; }
+    .card h2 { font-size: 18pt; font-weight: 850; line-height: 1.25; }
+    .phone h2 { color: #2C2C2C; }
+    .robot h2 { color: #FDFCF8; }
+    .card p { margin-top: 8pt; font-size: 12.3pt; font-weight: 500; line-height: 1.48; }
+    .phone p { color: #555555; }
+    .robot p { color: #E5D1B3; }
+    .map { flex: 1; background: #FDFCF8; border-radius: 8pt; padding: 16pt 18pt; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 18pt; align-items: center; }
+    .route { position: relative; height: 118pt; border: 1.2pt solid #EADCC7; border-radius: 8pt; background: #FAF4EA; }
+    .shelf { position: absolute; background: #D7C09E; border-radius: 4pt; }
+    .s1 { left: 16pt; top: 18pt; width: 86pt; height: 18pt; }
+    .s2 { right: 18pt; top: 22pt; width: 92pt; height: 18pt; }
+    .s3 { left: 30pt; bottom: 22pt; width: 118pt; height: 18pt; }
+    .path { position: absolute; left: 70pt; top: 46pt; width: 190pt; height: 42pt; border-top: 3pt dashed #2C2C2C; border-right: 3pt dashed #2C2C2C; border-radius: 0 28pt 0 0; }
+    .dot { position: absolute; width: 15pt; height: 15pt; border-radius: 99pt; background: #2C2C2C; }
+    .start { left: 61pt; top: 39pt; }
+    .end { right: 28pt; bottom: 35pt; background: #8C7851; }
+    .legend h2 { font-size: 17pt; font-weight: 850; color: #2C2C2C; line-height: 1.25; }
+    .legend p { margin-top: 8pt; font-size: 12.5pt; font-weight: 500; color: #555555; line-height: 1.48; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
-    <div class=&quot;section-badge&quot;><p>5 시험</p></div>
-    <div class=&quot;headline&quot;><h1>Verso가 실제 서점 안에서 하나의 서비스 흐름으로 작동하는지 확인합니다.</h1></div>
-    <div class=&quot;test-grid&quot;>
-      <div class=&quot;primary&quot;>
-        <div>
-          <div class=&quot;label&quot;><p>시험 목표</p></div>
-          <h2>취향 입력, 도서 추천, 위치 안내의 연결</h2>
-          <p>사용자의 취향 입력이 추천으로 이어지고, 추천된 책의 위치 안내까지 끊기지 않고 이어지는지 확인합니다.</p>
-        </div>
-        <p>기준: 추천 반영, 경로 유지, 정지 조건 즉시 멈춤, 실제 도서 위치 도달</p>
+    <div class=&quot;section-badge&quot;><p>4 제작</p></div>
+    <div class=&quot;headline&quot;><h1>이동체 안내: 화면을 벗어나 서가를 함께 둘러보는 탐색</h1></div>
+    <div class=&quot;compare&quot;>
+      <div class=&quot;card phone&quot;><h2>화면만 보는 안내</h2><p>사용자는 계속 스마트폰을 확인해야 해서 주변 서가와 우연한 발견을 놓치기 쉽습니다.</p></div>
+      <div class=&quot;card robot&quot;><h2>이동체를 따라가는 안내</h2><p>시선은 매장에 남고, 이동체는 길을 안내하며 카트처럼 탐색 피로를 줄입니다.</p></div>
+    </div>
+    <div class=&quot;map&quot;>
+      <div class=&quot;route&quot;>
+        <div class=&quot;shelf s1&quot;></div><div class=&quot;shelf s2&quot;></div><div class=&quot;shelf s3&quot;></div>
+        <div class=&quot;path&quot;></div><div class=&quot;dot start&quot;></div><div class=&quot;dot end&quot;></div>
       </div>
-      <div class=&quot;checks&quot;>
-        <div class=&quot;check&quot;><h2>추천 흐름</h2><p>취향 입력이 추천 결과와 도서 정보에 제대로 반영되는지 확인합니다.</p></div>
-        <div class=&quot;check&quot;><h2>이동 경로</h2><p>이동체가 지정 경로를 벗어나지 않고 목표 위치까지 안내하는지 점검합니다.</p></div>
-        <div class=&quot;check&quot;><h2>정지 조건</h2><p>장애물이나 정지 조건에서 즉시 멈추는지 확인합니다.</p></div>
-      </div>
+      <div class=&quot;legend&quot;><h2>추천 책까지 가는 동안, 근처의 관련 도서도 자연스럽게 발견합니다.</h2><p>안내의 목적은 최단 경로만이 아니라, 서점이라는 공간을 더 오래 보고 더 쉽게 탐색하게 만드는 것입니다.</p></div>
     </div>
   </div>
-
-
 </body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="14" srcdoc="<!DOCTYPE html>
@@ -2831,34 +3727,46 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2D2D2D; overflow: hidden; color: #F8FAF8; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
-    .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2D2D2D; background: #B8C4B8; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(248, 250, 248, 0.28); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #F8FAF8; }
-    .title p { font-size: 11.5pt; font-weight: 600; line-height: 1.45; color: #B8C4B8; }
-    .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #F8FAF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #3D3D3D; line-height: 1.46; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 38pt 28pt; display: flex; flex-direction: column; gap: 13pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { font-size: 22pt; font-weight: 850; color: #2C2C2C; line-height: 1.3; }
+    .test-grid { flex: 1; display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 13pt; }
+    .primary { background: #2C2C2C; border-radius: 8pt; padding: 20pt; display: flex; flex-direction: column; justify-content: space-between; }
+    .primary .label p { display: inline-block; font-size: 10pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; padding: 4pt 9pt; border-radius: 99pt; line-height: 1; }
+    .primary h2 { margin-top: 12pt; font-size: 22pt; font-weight: 850; color: #FDFCF8; line-height: 1.28; }
+    .primary p { margin-top: 8pt; font-size: 12.2pt; font-weight: 500; color: #EADCC7; line-height: 1.48; }
+    .matrix { background: #FDFCF8; border-radius: 8pt; padding: 14pt; display: grid; grid-template-rows: repeat(4, 1fr); gap: 8pt; }
+    .row { display: grid; grid-template-columns: 86pt 1fr 44pt; gap: 9pt; align-items: center; border-bottom: 1pt solid #EADCC7; padding-bottom: 7pt; }
+    .row:last-child { border-bottom: none; padding-bottom: 0; }
+    .row h2 { font-size: 13.5pt; font-weight: 850; color: #2C2C2C; line-height: 1.2; }
+    .row p { font-size: 10.2pt; font-weight: 500; color: #555555; line-height: 1.34; }
+    .status p { color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 0; text-align: center; font-size: 9.5pt; font-weight: 850; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
-    <div class=&quot;section-badge&quot;><p>6 평가</p></div>
-    <div class=&quot;title&quot;>
-      <h1>경제성 측면</h1>
-      <p>기존 공간과 재고 활용</p>
-    </div>
-    <div class=&quot;content&quot;>
-      <div class=&quot;card&quot;><h2>기여 방식</h2><p>기존 대형서점의 공간과 재고를 활용하기 때문에 완전히 새로운 매장을 구축하는 것보다 초기 부담을 줄일 수 있습니다.</p></div>
-      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>추천 정확도와 구매 전환율 확보가 중요합니다. 초기에는 일부 장르나 특정 코너에서 먼저 적용하고 점진적으로 확대합니다.</p></div>
+    <div class=&quot;section-badge&quot;><p>5 시험</p></div>
+    <div class=&quot;headline&quot;><h1>산책이 실제 서점 안에서 하나의 서비스 흐름으로 작동하는지 확인합니다.</h1></div>
+    <div class=&quot;test-grid&quot;>
+      <div class=&quot;primary&quot;>
+        <div>
+          <div class=&quot;label&quot;><p>시험 목표</p></div>
+          <h2>입력, 추천, 안내가 끊기지 않고 이어지는지 검증</h2>
+          <p>사용자의 취향 입력이 추천으로 이어지고, 추천된 책의 위치 안내까지 하나의 흐름으로 연결되는지 확인합니다.</p>
+        </div>
+        <p>기준: 추천 반영, 경로 유지, 정지 조건 즉시 멈춤, 실제 도서 위치 도달</p>
+      </div>
+      <div class=&quot;matrix&quot;>
+        <div class=&quot;row&quot;><h2>취향 입력</h2><p>입력 문장이 추천 조건으로 반영되는지 확인합니다.</p><div class=&quot;status&quot;><p>검증</p></div></div>
+        <div class=&quot;row&quot;><h2>도서 추천</h2><p>추천 결과와 도서 정보가 사용자의 맥락과 맞는지 봅니다.</p><div class=&quot;status&quot;><p>검증</p></div></div>
+        <div class=&quot;row&quot;><h2>위치 안내</h2><p>이동체가 지정 경로를 벗어나지 않고 목표 위치까지 안내하는지 점검합니다.</p><div class=&quot;status&quot;><p>검증</p></div></div>
+        <div class=&quot;row&quot;><h2>정지 조건</h2><p>장애물이나 정지 조건에서 즉시 멈추는지 확인합니다.</p><div class=&quot;status&quot;><p>검증</p></div></div>
+      </div>
     </div>
   </div>
-
-
 </body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="15" srcdoc="<!DOCTYPE html>
@@ -3015,30 +3923,33 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2C2C2C; overflow: hidden; color: #FDFCF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
     .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(45, 45, 45, 0.26); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2D2D2D; }
-    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #F8FAF8; background: #2D2D2D; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(253, 252, 248, 0.28); padding-right: 22pt; }
+    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #FDFCF8; }
+    .title p { font-size: 11.5pt; font-weight: 600; line-height: 1.45; color: #E5D1B3; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
+    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #2C2C2C; background: #E5D1B3; border-radius: 99pt; padding: 5pt 8pt; }
     .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #F8FAF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #3D3D3D; line-height: 1.46; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
+    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>6 평가</p></div>
     <div class=&quot;title&quot;>
-      <h1>사회적 측면</h1>
-      <p>다양한 저자와 주제의 발견</p>
+      <h1>경제성 측면</h1>
+      <p>기존 공간과 재고 활용</p>
+      <div class=&quot;tags&quot;><div class=&quot;tag&quot;><p>공간 활용</p></div><div class=&quot;tag&quot;><p>파일럿 적용</p></div><div class=&quot;tag&quot;><p>전환율</p></div></div>
     </div>
     <div class=&quot;content&quot;>
-      <div class=&quot;card&quot;><h2>기여 방식</h2><p>베스트셀러 중심의 선택을 완화하고, 독자가 더 다양한 저자와 주제를 발견하도록 도울 수 있습니다.</p></div>
-      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>추천이 특정 장르나 출판사에 치우치지 않도록 주기적으로 점검해야 합니다.</p></div>
+      <div class=&quot;card&quot;><h2>기여 방식</h2><p>기존 대형서점의 공간과 재고를 활용하기 때문에 완전히 새로운 매장을 구축하는 것보다 초기 부담을 줄일 수 있습니다.</p></div>
+      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>일부 장르나 특정 코너에서 먼저 검증한 뒤, 추천 정확도와 구매 전환율을 확인하며 확대합니다.</p></div>
     </div>
   </div>
 
@@ -3199,30 +4110,33 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2D2D2D; overflow: hidden; color: #F8FAF8; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
     .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2D2D2D; background: #B8C4B8; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(248, 250, 248, 0.28); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #F8FAF8; }
-    .title p { font-size: 11.5pt; font-weight: 600; line-height: 1.45; color: #B8C4B8; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(44, 44, 44, 0.26); padding-right: 22pt; }
+    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2C2C2C; }
+    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
+    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 8pt; }
     .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #F8FAF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #3D3D3D; line-height: 1.46; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
+    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>6 평가</p></div>
     <div class=&quot;title&quot;>
-      <h1>윤리성 측면</h1>
-      <p>취향 데이터와 추천 투명성</p>
+      <h1>사회적 측면</h1>
+      <p>다양한 저자와 주제의 발견</p>
+      <div class=&quot;tags&quot;><div class=&quot;tag&quot;><p>편중 완화</p></div><div class=&quot;tag&quot;><p>다양성</p></div><div class=&quot;tag&quot;><p>점검</p></div></div>
     </div>
     <div class=&quot;content&quot;>
-      <div class=&quot;card&quot;><h2>기여 방식</h2><p>취향 데이터를 다루기 때문에 최소한의 데이터만 수집하고, 추천 이유를 함께 제시해야 합니다.</p></div>
-      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>사용자가 추천 기록을 삭제하거나 취향을 재설정할 수 있어야 하며, 광고와 추천도 명확히 구분되어야 합니다.</p></div>
+      <div class=&quot;card&quot;><h2>기여 방식</h2><p>베스트셀러 중심의 선택을 완화하고, 독자가 더 다양한 저자와 주제를 발견하도록 도울 수 있습니다.</p></div>
+      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>추천이 특정 장르나 출판사에 치우치지 않도록 다양성 지표를 주기적으로 점검합니다.</p></div>
     </div>
   </div>
 
@@ -3383,30 +4297,33 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2C2C2C; overflow: hidden; color: #FDFCF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
     .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(45, 45, 45, 0.26); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2D2D2D; }
-    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #F8FAF8; background: #2D2D2D; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(253, 252, 248, 0.28); padding-right: 22pt; }
+    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #FDFCF8; }
+    .title p { font-size: 11.5pt; font-weight: 600; line-height: 1.45; color: #E5D1B3; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
+    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #2C2C2C; background: #E5D1B3; border-radius: 99pt; padding: 5pt 8pt; }
     .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #F8FAF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #3D3D3D; line-height: 1.46; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
+    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>6 평가</p></div>
     <div class=&quot;title&quot;>
-      <h1>심미성 측면</h1>
-      <p>서점 분위기와의 조화</p>
+      <h1>윤리성 측면</h1>
+      <p>취향 데이터와 추천 투명성</p>
+      <div class=&quot;tags&quot;><div class=&quot;tag&quot;><p>최소 수집</p></div><div class=&quot;tag&quot;><p>추천 이유</p></div><div class=&quot;tag&quot;><p>삭제 권한</p></div></div>
     </div>
     <div class=&quot;content&quot;>
-      <div class=&quot;card&quot;><h2>기여 방식</h2><p>Verso의 화면과 이동체는 과도하게 튀는 기술 장치가 아니라, 책 발견을 자연스럽게 돕는 도구가 되어야 합니다.</p></div>
-      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>매장의 조명과 동선, 진열대와 자연스럽게 어울리는 형태로 화면과 이동체 외형을 조정해야 합니다.</p></div>
+      <div class=&quot;card&quot;><h2>기여 방식</h2><p>취향 데이터를 다루기 때문에 최소한의 데이터만 수집하고, 추천 이유를 함께 제시해야 합니다.</p></div>
+      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>최소한의 정보만 수집하고, 추천 이유와 기록 삭제·취향 재설정 권한을 사용자에게 제공합니다.</p></div>
     </div>
   </div>
 
@@ -3567,30 +4484,33 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2D2D2D; overflow: hidden; color: #F8FAF8; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
     .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2D2D2D; background: #B8C4B8; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(248, 250, 248, 0.28); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #F8FAF8; }
-    .title p { font-size: 11.5pt; font-weight: 600; line-height: 1.45; color: #B8C4B8; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(44, 44, 44, 0.26); padding-right: 22pt; }
+    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2C2C2C; }
+    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
+    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 8pt; }
     .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #F8FAF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #3D3D3D; line-height: 1.46; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
+    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>6 평가</p></div>
     <div class=&quot;title&quot;>
-      <h1>안전성 측면</h1>
-      <p>저속 주행과 장애물 감지</p>
+      <h1>심미성 측면</h1>
+      <p>서점 분위기와의 조화</p>
+      <div class=&quot;tags&quot;><div class=&quot;tag&quot;><p>매장 조화</p></div><div class=&quot;tag&quot;><p>동선</p></div><div class=&quot;tag&quot;><p>외형 조정</p></div></div>
     </div>
     <div class=&quot;content&quot;>
-      <div class=&quot;card&quot;><h2>기여 방식</h2><p>이동체가 사람과 진열대 사이를 이동하기 때문에 저속 주행, 장애물 감지, 긴급 정지 기능이 필수적입니다.</p></div>
-      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>실제 적용 전 반복 주행과 장애물 감지 테스트를 진행하고, 혼잡 시간대에는 운영을 제한할 필요가 있습니다.</p></div>
+      <div class=&quot;card&quot;><h2>기여 방식</h2><p>산책의 화면과 이동체는 과도하게 튀는 기술 장치가 아니라, 책 발견을 자연스럽게 돕는 도구가 되어야 합니다.</p></div>
+      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>조명, 동선, 진열대와 어울리도록 화면과 이동체의 크기와 외형을 조정합니다.</p></div>
     </div>
   </div>
 
@@ -3751,30 +4671,33 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2C2C2C; overflow: hidden; color: #FDFCF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
     .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(45, 45, 45, 0.26); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2D2D2D; }
-    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #F8FAF8; background: #2D2D2D; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(253, 252, 248, 0.28); padding-right: 22pt; }
+    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #FDFCF8; }
+    .title p { font-size: 11.5pt; font-weight: 600; line-height: 1.45; color: #E5D1B3; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
+    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #2C2C2C; background: #E5D1B3; border-radius: 99pt; padding: 5pt 8pt; }
     .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #F8FAF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2D2D2D; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #3D3D3D; line-height: 1.46; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
+    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
     <div class=&quot;section-badge&quot;><p>6 평가</p></div>
     <div class=&quot;title&quot;>
-      <h1>생산성과 내구성 측면</h1>
-      <p>데이터 갱신과 유지보수</p>
+      <h1>안전성 측면</h1>
+      <p>저속 주행과 장애물 감지</p>
+      <div class=&quot;tags&quot;><div class=&quot;tag&quot;><p>저속 주행</p></div><div class=&quot;tag&quot;><p>장애물 감지</p></div><div class=&quot;tag&quot;><p>긴급 정지</p></div></div>
     </div>
     <div class=&quot;content&quot;>
-      <div class=&quot;card&quot;><h2>기여 방식</h2><p>추천 데이터 갱신, 도서 위치 관리, 이동체 유지보수가 쉬워야 합니다. 도서 데이터와 매장 동선 정보를 분리해 변경 사항을 빠르게 반영합니다.</p></div>
-      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>여러 매장으로 확장하기 쉬운 구조가 필요합니다. 배터리와 주요 부품을 쉽게 교체할 수 있는 모듈형 설계가 필요합니다.</p></div>
+      <div class=&quot;card&quot;><h2>기여 방식</h2><p>이동체가 사람과 진열대 사이를 이동하기 때문에 저속 주행, 장애물 감지, 긴급 정지 기능이 필수적입니다.</p></div>
+      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>저속 주행, 장애물 감지, 긴급 정지를 반복 테스트하고 혼잡 시간대 운영 기준을 둡니다.</p></div>
     </div>
   </div>
 
@@ -3782,8 +4705,7 @@
 </body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="20" srcdoc="<!DOCTYPE html>
-<html lang=&quot;ko&quot;>
-<head>
+<html lang=&quot;ko&quot;><head>
 <base href=&quot;./&quot;>
 <script>
 (() => {
@@ -3936,28 +4858,38 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2D2D2D; overflow: hidden; color: #F8FAF8; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; padding: 48pt 58pt 40pt; display: flex; flex-direction: column; justify-content: center; gap: 20pt; }
-    .lead p { font-size: 14pt; font-weight: 700; color: #B8C4B8; line-height: 1.4; }
-    .quote h1 { font-size: 39pt; font-weight: 800; color: #F8FAF8; line-height: 1.24; letter-spacing: 0; }
-    .support { max-width: 540pt; border-top: 1.5pt solid rgba(248, 250, 248, 0.25); padding-top: 16pt; }
-    .support p { font-size: 13.5pt; font-weight: 400; color: #D7DDD7; line-height: 1.56; }
-    .brand h2 { margin-top: 4pt; font-size: 28pt; font-weight: 800; color: #F8FAF8; line-height: 1.28; }
-    .brand p { margin-top: 5pt; font-size: 14pt; font-weight: 500; color: #D7DDD7; line-height: 1.4; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
+    .section-badge { position: absolute; top: 16pt; left: 28pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(44, 44, 44, 0.26); padding-right: 22pt; }
+    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2C2C2C; }
+    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
+    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 8pt; }
+    .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
+    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
+    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
   </style>
 </head>
 <body>
   <div class=&quot;slide&quot;>
-    <div class=&quot;lead&quot;><p>Verso가 제안하는 결론</p></div>
-    <div class=&quot;quote&quot;><h1>책과의 새로운 만남은,<br>우연에만 맡기지 않고 설계할 수 있습니다.</h1></div>
-    <div class=&quot;support&quot;>
-      <p>대형서점은 많은 책을 가지고 있지만, 사용자는 그 안에서 선택의 어려움을 겪습니다. Verso는 취향, 서점 공간, LLM 추천 기술, 자율주행 이동체를 하나의 경험으로 연결합니다.</p>
+    <div class=&quot;section-badge&quot;><p>6 평가</p></div>
+    <div class=&quot;title&quot;>
+      <h1>생산성과 내구성 측면</h1>
+      <p>데이터 갱신과 유지보수</p>
+      <div class=&quot;tags&quot;><div class=&quot;tag&quot;><p>데이터 분리</p></div><div class=&quot;tag&quot;><p>확장성</p></div><div class=&quot;tag&quot;><p>모듈형</p></div></div>
     </div>
-    <div class=&quot;brand&quot;><h2>Verso</h2><p>더 다양한 책을 발견하는 서점 경험</p></div>
+    <div class=&quot;content&quot;>
+      <div class=&quot;card&quot;><h2>기여 방식</h2><p>추천 데이터 갱신, 도서 위치 관리, 이동체 유지보수가 쉬워야 합니다. 도서 데이터와 매장 동선 정보를 분리해 변경 사항을 빠르게 반영합니다.</p></div>
+      <div class=&quot;card&quot;><h2>평가 및 개선</h2><p>도서 데이터, 매장 동선, 이동체 유지보수를 분리해 여러 매장으로 확장하기 쉬운 구조로 관리합니다.</p></div>
+    </div>
   </div>
-</body>
-</html>
+
+
+</body></html>
 " sandbox="allow-same-origin"></iframe>
         <iframe class="slide-frame" data-slide="21" srcdoc="<!DOCTYPE html>
 <html lang=&quot;ko&quot;>
@@ -4114,16 +5046,16 @@
   <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css&quot;>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2D2D2D; overflow: hidden; color: #F8FAF8; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2C2C2C; overflow: hidden; color: #FDFCF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
     .slide { width: 720pt; height: 405pt; overflow: hidden; position: relative; padding: 48pt 58pt 40pt; display: flex; flex-direction: column; justify-content: center; gap: 20pt; }
-    .lead p { font-size: 14pt; font-weight: 750; color: #B8C4B8; line-height: 1.4; }
-    .quote h1 { max-width: 585pt; font-size: 38pt; font-weight: 850; color: #F8FAF8; line-height: 1.24; letter-spacing: 0; }
-    .support { max-width: 560pt; border-top: 1.5pt solid rgba(248, 250, 248, 0.25); padding-top: 16pt; }
-    .support p { font-size: 13.3pt; font-weight: 450; color: #D7DDD7; line-height: 1.58; }
+    .lead p { font-size: 14pt; font-weight: 750; color: #E5D1B3; line-height: 1.4; }
+    .quote h1 { max-width: 604pt; font-size: 35pt; font-weight: 850; color: #FDFCF8; line-height: 1.24; letter-spacing: 0; }
+    .support { max-width: 560pt; border-top: 1.5pt solid rgba(253, 252, 248, 0.25); padding-top: 16pt; }
+    .support p { font-size: 13.3pt; font-weight: 450; color: #EADCC7; line-height: 1.58; }
     .brand { display: flex; align-items: flex-end; justify-content: space-between; gap: 24pt; }
-    .brand h2 { margin-top: 4pt; font-size: 28pt; font-weight: 850; color: #F8FAF8; line-height: 1.28; }
-    .brand p { margin-top: 5pt; font-size: 14pt; font-weight: 550; color: #D7DDD7; line-height: 1.4; }
+    .brand h2 { margin-top: 4pt; font-size: 28pt; font-weight: 850; color: #FDFCF8; line-height: 1.28; }
+    .brand p { margin-top: 5pt; font-size: 14pt; font-weight: 550; color: #EADCC7; line-height: 1.4; }
     .brand img { width: 78pt; height: 78pt; object-fit: contain; }
   </style>
 </head>
@@ -4132,11 +5064,11 @@
     <div class=&quot;lead&quot;><p>마지막으로 결론입니다.</p></div>
     <div class=&quot;quote&quot;><h1>책과의 새로운 만남은,<br>우연에만 맡기지 않고 설계할 수 있습니다.</h1></div>
     <div class=&quot;support&quot;>
-      <p>Verso는 사용자의 취향, 서점이라는 공간, LLM 기반 추천 기술, 그리고 자율주행 이동체를 하나의 경험으로 연결합니다. 이를 통해 독자는 더 다양한 책을 발견하고, 서점은 기존 공간 안에서 새로운 탐색 경험을 제공할 수 있습니다.</p>
+      <p>대형서점은 많은 책을 가지고 있지만, 사용자는 오히려 그 안에서 선택의 어려움을 겪습니다. 산책은 사용자의 취향, 서점이라는 공간, LLM 기반 추천 기술, 그리고 자율주행 이동체를 하나의 경험으로 연결합니다.</p>
     </div>
     <div class=&quot;brand&quot;>
-      <div><h2>Verso</h2><p>이상으로 발표를 마치겠습니다. 감사합니다.</p></div>
-      <img src=&quot;./assets/sanchaek-mascot.png&quot; alt=&quot;Verso 마스코트&quot;>
+      <div><h2>산책</h2><p>이상으로 발표를 마치겠습니다. 감사합니다.</p></div>
+      <img src=&quot;./assets/sanchaek-mascot.png&quot; alt=&quot;산책 마스코트&quot;>
     </div>
   </div>
 </body>

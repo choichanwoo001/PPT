@@ -188,6 +188,20 @@ program
   });
 
 program
+  .command('narrate')
+  .description('Generate OpenAI TTS narration MP3 files from <slides-dir>/narration.json')
+  .option('--slides-dir <path>', 'Slide directory', 'slides')
+  .option('--slide <file>', 'Generate only one slide (repeatable)', collectRepeatedOption, [])
+  .option('--voice <voice>', 'Default voice for entries without a voice', 'marin')
+  .action(async (options = {}) => {
+    const args = ['--slides-dir', options.slidesDir, '--voice', options.voice];
+    for (const slide of options.slide || []) {
+      args.push('--slide', String(slide));
+    }
+    await runCommand('scripts/narrate.js', args);
+  });
+
+program
   .command('figma')
   .description('Export an experimental / unstable Figma Slides importable PPTX')
   .helpOption('-h, --help', 'Show this help message')

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { mkdtemp, mkdir, writeFile, rm, chmod } from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, readFile, rm, chmod } from 'node:fs/promises';
 import os from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -111,6 +111,7 @@ async function stopChild(child) {
 
   child.kill('SIGTERM');
   await waitForExit(child, 5000).catch(() => {});
+  await sleep(200);
 }
 
 test('refuses to open a second editor when another slides-grab editor already owns the port', async () => {
@@ -178,6 +179,66 @@ test('/api/models exposes claude-opus-4-7 so the bbox editor can route edits to 
       body.models.includes('gpt-5.4'),
       `/api/models should include 'gpt-5.4' (re-enabled per user request after the gpt-5.5 default rollout). Got: ${JSON.stringify(body.models)}`,
     );
+  } finally {
+    await stopChild(server.child);
+    await rm(workspace, { recursive: true, force: true });
+  }
+});
+
+test('/api/narration saves slide narration metadata and blocks speech without OPENAI_API_KEY', async () => {
+  const workspace = await createWorkspace();
+  const port = await getAvailablePort();
+  const server = spawnEditorServer(workspace, port, {
+    env: {
+      OPENAI_API_KEY: '',
+    },
+  });
+
+  try {
+    await waitForServerReady(port, server.child, server.output);
+
+    const initialRes = await fetch(`http://localhost:${port}/api/narration`);
+    assert.equal(initialRes.status, 200);
+    const initialBody = await initialRes.json();
+    assert.deepEqual(initialBody.slides, {});
+    assert.ok(initialBody.voices.includes('marin'));
+
+    const saveRes = await fetch(`http://localhost:${port}/api/narration/slide-01.html`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: '발표 대본입니다.',
+        voice: 'cedar',
+        instructions: '차분한 한국어 발표자.',
+      }),
+    });
+    const saveBody = await saveRes.json();
+    assert.equal(saveRes.status, 200, JSON.stringify(saveBody));
+    assert.equal(saveBody.entry.text, '발표 대본입니다.');
+    assert.equal(saveBody.entry.voice, 'cedar');
+
+    const narrationJson = JSON.parse(await readFile(join(workspace, 'slides', 'narration.json'), 'utf8'));
+    assert.equal(narrationJson.slides['slide-01.html'].instructions, '차분한 한국어 발표자.');
+
+    const tooLongRes = await fetch(`http://localhost:${port}/api/narration/slide-01.html`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: 'x'.repeat(4097), voice: 'marin' }),
+    });
+    assert.equal(tooLongRes.status, 400);
+
+    const speechRes = await fetch(`http://localhost:${port}/api/narration/slide-01.html/speech`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: '발표 대본입니다.',
+        voice: 'marin',
+        instructions: '',
+      }),
+    });
+    const speechBody = await speechRes.json();
+    assert.equal(speechRes.status, 400, JSON.stringify(speechBody));
+    assert.match(speechBody.error, /OPENAI_API_KEY/i);
   } finally {
     await stopChild(server.child);
     await rm(workspace, { recursive: true, force: true });

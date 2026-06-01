@@ -4,21 +4,37 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #B8C4B8; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 56pt 42pt 32pt; display: flex; flex-direction: column; gap: 16pt; }
-    .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #F8FAF8; background: #2D2D2D; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .header h1 { font-size: 30pt; font-weight: 800; color: #2D2D2D; line-height: 1.3; }
-    .placeholder { flex: 1; border: 2pt dashed #2D2D2D; border-radius: 8pt; background: rgba(248, 250, 248, 0.38); }
+    .slide { width: 100%; height: 100%; position: relative; padding: 48pt 38pt 28pt; display: flex; flex-direction: column; gap: 14pt; }
+    .section-badge { position: absolute; top: 16pt; left: 26pt; }
+    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { font-size: 24pt; font-weight: 800; color: #2C2C2C; line-height: 1.32; }
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9pt; position: relative; }
+    .flow::before { content: ""; position: absolute; left: 10%; right: 10%; top: 31pt; height: 2pt; background: #2C2C2C; opacity: 0.32; }
+    .step { position: relative; z-index: 1; background: #FDFCF8; border-radius: 8pt; padding: 13pt 12pt 14pt; min-height: 112pt; border: 1.2pt solid rgba(44, 44, 44, 0.18); }
+    .num p { width: 32pt; height: 32pt; border-radius: 99pt; background: #2C2C2C; color: #FDFCF8; font-size: 10.5pt; font-weight: 850; line-height: 32pt; text-align: center; }
+    .step h2 { margin-top: 11pt; font-size: 14.5pt; font-weight: 850; color: #2C2C2C; line-height: 1.24; }
+    .step p.desc { margin-top: 5pt; font-size: 10.4pt; font-weight: 500; color: #555555; line-height: 1.36; }
+    .reason { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; }
+    .card { background: #2C2C2C; border-radius: 8pt; padding: 18pt 20pt; display: flex; flex-direction: column; justify-content: center; }
+    .card h2 { font-size: 19pt; font-weight: 850; color: #FDFCF8; line-height: 1.24; }
+    .card p { margin-top: 8pt; font-size: 12.5pt; font-weight: 500; color: #E5D1B3; line-height: 1.5; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>4 제작</p></div>
-    <div class="header"><h1>시연 영상: 취향 입력부터 실제 도서 위치 이동까지</h1></div>
-    <div class="placeholder"></div>
+    <div class="headline"><h1>산책의 핵심 기능은 취향 파악, 도서 추천, 위치 안내, 이동체 기반 탐색입니다.</h1></div>
+    <div class="flow">
+      <div class="step"><div class="num"><p>01</p></div><h2>취향 파악</h2><p class="desc">간단한 선택 질문과 자연어 입력으로 지금 읽고 싶은 분위기를 파악합니다.</p></div>
+      <div class="step"><div class="num"><p>02</p></div><h2>LLM 추천</h2><p class="desc">LLM 추천 에이전트가 도서 정보와 사용자의 맥락을 연결합니다.</p></div>
+      <div class="step"><div class="num"><p>03</p></div><h2>위치 안내</h2><p class="desc">추천된 책이 매장 어디에 있는지 바로 보여줍니다.</p></div>
+      <div class="step"><div class="num"><p>04</p></div><h2>이동체 탐색</h2><p class="desc">자율주행 이동체가 사용자를 해당 위치까지 이끕니다.</p></div>
+    </div>
+    <div class="reason">
+      <div class="card"><h2>시야 확보</h2><p>안내가 스마트폰 화면 안에만 머물지 않아, 사용자는 주변 서가를 자연스럽게 함께 둘러볼 수 있습니다.</p></div>
+      <div class="card"><h2>신체적 피로 감소</h2><p>이동체가 이동 보조 역할까지 수행하면 오래 걷고 들고 다니는 부담을 줄여 탐색 시간을 늘릴 수 있습니다.</p></div>
+    </div>
   </div>
-
-
 </body></html>
