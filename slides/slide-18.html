@@ -1,38 +1,34 @@
 <!DOCTYPE html>
-<html lang="ko"><head>
+<html lang="ko">
+<head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2C2C2C; overflow: hidden; color: #FDFCF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
-    .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(44, 44, 44, 0.26); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2C2C2C; }
-    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
-    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 8pt; }
-    .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
+    .slide { width: 720pt; height: 405pt; overflow: hidden; position: relative; padding: 48pt 58pt 40pt; display: flex; flex-direction: column; justify-content: center; gap: 20pt; }
+    .lead p { font-size: 14pt; font-weight: 750; color: #E5D1B3; line-height: 1.4; }
+    .quote h1 { max-width: 604pt; font-size: 35pt; font-weight: 850; color: #FDFCF8; line-height: 1.24; letter-spacing: 0; }
+    .support { max-width: 560pt; border-top: 1.5pt solid rgba(253, 252, 248, 0.25); padding-top: 16pt; }
+    .support p { font-size: 13.3pt; font-weight: 450; color: #EADCC7; line-height: 1.58; }
+    .brand { display: flex; align-items: flex-end; justify-content: space-between; gap: 24pt; }
+    .brand h2 { margin-top: 4pt; font-size: 28pt; font-weight: 850; color: #FDFCF8; line-height: 1.28; }
+    .brand p { margin-top: 5pt; font-size: 14pt; font-weight: 550; color: #EADCC7; line-height: 1.4; }
+    .brand img { width: 78pt; height: 78pt; object-fit: contain; }
   </style>
 </head>
 <body>
   <div class="slide">
-    <div class="section-badge"><p>6 평가</p></div>
-    <div class="title">
-      <h1>심미성 측면</h1>
-      <p>서점 분위기와의 조화</p>
-      <div class="tags"><div class="tag"><p>매장 조화</p></div><div class="tag"><p>동선</p></div><div class="tag"><p>외형 조정</p></div></div>
+    <div class="lead"><p>마지막으로 결론입니다.</p></div>
+    <div class="quote"><h1>책과의 새로운 만남은,<br>우연에만 맡기지 않고 설계할 수 있습니다.</h1></div>
+    <div class="support">
+      <p>산책은 사용자의 취향, 서점이라는 공간, LLM 기반 추천 기술, 자율주행 이동체를 하나의 경험으로 연결합니다. 더 많은 책을 가진 서점에서 사용자가 자기에게 맞는 책을 더 쉽게 발견하도록 돕는 것이 목표입니다.</p>
     </div>
-    <div class="content">
-      <div class="card"><h2>기여 방식</h2><p>산책의 화면과 이동체는 과도하게 튀는 기술 장치가 아니라, 책 발견을 자연스럽게 돕는 도구가 되어야 합니다.</p></div>
-      <div class="card"><h2>평가 및 개선</h2><p>조명, 동선, 진열대와 어울리도록 화면과 이동체의 크기와 외형을 조정합니다.</p></div>
+    <div class="brand">
+      <div><h2>산책</h2><p>이상으로 발표를 마치겠습니다. 감사합니다.</p></div>
+      <img src="./assets/sanchaek-mascot.png" alt="산책 마스코트">
     </div>
   </div>
-
-
-</body></html>
+</body>
+</html>

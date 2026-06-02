@@ -1,53 +1,447 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
+<script>
+(() => {
+  const slideFile = "slide-13.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+<base href="/slides/">
+<script>
+(() => {
+  const slideFile = "slide-13.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 48pt 38pt 28pt; display: flex; flex-direction: column; gap: 13pt; }
-    .section-badge { position: absolute; top: 16pt; left: 26pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 25pt; font-weight: 850; color: #2C2C2C; line-height: 1.3; }
-    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; }
-    .card { border-radius: 8pt; padding: 17pt 18pt; min-height: 122pt; }
-    .phone { background: #FDFCF8; border: 1.4pt solid rgba(44, 44, 44, 0.18); }
-    .robot { background: #2C2C2C; }
-    .card h2 { font-size: 18pt; font-weight: 850; line-height: 1.25; }
-    .phone h2 { color: #2C2C2C; }
-    .robot h2 { color: #FDFCF8; }
-    .card p { margin-top: 8pt; font-size: 12.3pt; font-weight: 500; line-height: 1.48; }
-    .phone p { color: #555555; }
-    .robot p { color: #E5D1B3; }
-    .map { flex: 1; background: #FDFCF8; border-radius: 8pt; padding: 16pt 18pt; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 18pt; align-items: center; }
-    .route { position: relative; height: 118pt; border: 1.2pt solid #EADCC7; border-radius: 8pt; background: #FAF4EA; }
-    .shelf { position: absolute; background: #D7C09E; border-radius: 4pt; }
-    .s1 { left: 16pt; top: 18pt; width: 86pt; height: 18pt; }
-    .s2 { right: 18pt; top: 22pt; width: 92pt; height: 18pt; }
-    .s3 { left: 30pt; bottom: 22pt; width: 118pt; height: 18pt; }
-    .path { position: absolute; left: 70pt; top: 46pt; width: 190pt; height: 42pt; border-top: 3pt dashed #2C2C2C; border-right: 3pt dashed #2C2C2C; border-radius: 0 28pt 0 0; }
-    .dot { position: absolute; width: 15pt; height: 15pt; border-radius: 99pt; background: #2C2C2C; }
-    .start { left: 61pt; top: 39pt; }
-    .end { right: 28pt; bottom: 35pt; background: #8C7851; }
-    .legend h2 { font-size: 17pt; font-weight: 850; color: #2C2C2C; line-height: 1.25; }
-    .legend p { margin-top: 8pt; font-size: 12.5pt; font-weight: 500; color: #555555; line-height: 1.48; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 40pt 34pt 24pt; display: flex; flex-direction: column; gap: 11pt; }
+    .section-badge { position: absolute; top: 15pt; left: 24pt; }
+    .section-badge p { display: inline-block; font-size: 9.5pt; font-weight: 850; color: #FDFCF8; background: #2C2C2C; padding: 4pt 9pt; border-radius: 99pt; line-height: 1.1; }
+    .headline h1 { font-size: 23pt; font-weight: 850; color: #2C2C2C; line-height: 1.24; letter-spacing: 0; }
+    .content { flex: 1; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 12pt; min-height: 0; }
+    .map-card, .side-card, .bottom-card { background: #FDFCF8; border: 1.2pt solid rgba(44, 44, 44, 0.16); border-radius: 8pt; }
+    .map-card { padding: 13pt; display: grid; grid-template-rows: auto 1fr auto; gap: 9pt; min-height: 0; }
+    .title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8pt; }
+    .title-row h2 { font-size: 15.8pt; font-weight: 850; color: #2C2C2C; line-height: 1.2; }
+    .pill p { font-size: 8.8pt; font-weight: 800; color: #8C7851; background: #F3E7D5; padding: 3pt 7pt; border-radius: 99pt; white-space: nowrap; }
+    .bookstore-map { position: relative; min-height: 145pt; border-radius: 7pt; background: #FAF4EA; border: 1.1pt solid #EADCC7; overflow: hidden; }
+    .zone { position: absolute; z-index: 2; border-radius: 5pt; background: #D7C09E; border: 1pt solid rgba(44, 44, 44, 0.10); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 3pt #FAF4EA; }
+    .zone p { font-size: 8.6pt; font-weight: 800; color: #4A3D2B; line-height: 1.15; text-align: center; }
+    .entrance { left: 13pt; top: 58pt; width: 48pt; height: 24pt; background: #FDFCF8; }
+    .literature { left: 96pt; top: 18pt; width: 82pt; height: 34pt; }
+    .essay { left: 204pt; top: 74pt; width: 86pt; height: 34pt; background: #C8AF87; }
+    .counter { right: 14pt; bottom: 15pt; width: 70pt; height: 30pt; background: #BCA27A; }
+    .low-display { left: 102pt; bottom: 18pt; width: 55pt; height: 26pt; background: #E1CBA9; }
+    .seg { position: absolute; z-index: 1; }
+    .seg.h { height: 0; border-top: 3pt dashed #2C2C2C; }
+    .seg.v { width: 0; border-left: 3pt dashed #2C2C2C; }
+    .seg-1 { left: 58pt; top: 70pt; width: 82pt; }
+    .seg-2 { left: 140pt; top: 52pt; height: 18pt; }
+    .seg-3 { left: 145pt; top: 52pt; width: 24pt; }
+    .seg-4 { left: 148pt; top: 54pt; height: 39pt; }
+    .seg-5 { left: 148pt; top: 93pt; width: 54pt; }
+    .seg-6 { left: 286pt; top: 92pt; width: 58pt; }
+    .seg-7 { left: 344pt; top: 92pt; height: 24pt; }
+    .current-dot { position: absolute; z-index: 3; left: 66pt; top: 63pt; width: 14pt; height: 14pt; background: #2C2C2C; border: 2pt solid #FDFCF8; border-radius: 99pt; box-shadow: 0 0 0 2pt rgba(44, 44, 44, 0.10); }
+    .destination { position: absolute; z-index: 4; left: 290pt; top: 83pt; width: 17pt; height: 17pt; background: #8C7851; border: 2pt solid #FDFCF8; border-radius: 99pt; box-shadow: 0 0 0 2pt rgba(140, 120, 81, 0.22); }
+    .destination::after { content: ""; position: absolute; left: 4pt; top: 4pt; width: 5pt; height: 5pt; background: #FDFCF8; border-radius: 99pt; }
+    .check { position: absolute; z-index: 4; right: 60pt; bottom: 45pt; width: 16pt; height: 16pt; background: #2C2C2C; border-radius: 99pt; box-shadow: 0 0 0 2pt #FAF4EA; }
+    .check::after { content: ""; position: absolute; left: 5pt; top: 3pt; width: 5pt; height: 8pt; border-right: 2pt solid #FDFCF8; border-bottom: 2pt solid #FDFCF8; transform: rotate(42deg); }
+    .map-caption { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6pt; }
+    .map-caption p { font-size: 8.5pt; font-weight: 750; color: #555555; line-height: 1.25; background: #FAF4EA; border-radius: 5pt; padding: 5pt 6pt; }
+    .right-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 10pt; min-height: 0; }
+    .side-card { padding: 11pt 12pt; display: grid; grid-template-columns: 72pt 1fr; gap: 10pt; align-items: center; min-height: 0; }
+    .visual { position: relative; height: 76pt; border-radius: 7pt; background: #FAF4EA; border: 1pt solid #EADCC7; overflow: hidden; }
+    .user, .robot-icon { position: absolute; border-radius: 99pt; }
+    .user { left: 12pt; top: 27pt; width: 18pt; height: 18pt; background: #8C7851; }
+    .user::before { content: ""; position: absolute; left: 5pt; top: -9pt; width: 10pt; height: 10pt; background: #8C7851; border-radius: 99pt; }
+    .robot-icon { right: 10pt; top: 29pt; width: 20pt; height: 16pt; background: #2C2C2C; border-radius: 5pt; }
+    .robot-icon::before { content: ""; position: absolute; left: 4pt; top: -8pt; width: 13pt; height: 7pt; background: #2C2C2C; border-radius: 4pt 4pt 0 0; }
+    .distance-line { position: absolute; left: 33pt; right: 32pt; top: 37pt; border-top: 2pt dashed #8C7851; }
+    .distance-label { position: absolute; left: 31pt; top: 44pt; }
+    .distance-label p { font-size: 7.5pt; font-weight: 850; color: #8C7851; background: #FDFCF8; padding: 2pt 4pt; border-radius: 99pt; white-space: nowrap; }
+    .sensor-range { position: absolute; left: 24pt; top: 12pt; width: 46pt; height: 46pt; border: 2pt solid rgba(140, 120, 81, 0.42); border-radius: 99pt; }
+    .obstacle { position: absolute; background: #D7C09E; border-radius: 4pt; }
+    .person { left: 13pt; bottom: 15pt; width: 13pt; height: 21pt; border-radius: 99pt 99pt 5pt 5pt; }
+    .cart { left: 49pt; top: 20pt; width: 20pt; height: 13pt; }
+    .cart::after { content: ""; position: absolute; left: 3pt; right: 3pt; bottom: -5pt; height: 4pt; border-left: 3pt solid #8C7851; border-right: 3pt solid #8C7851; }
+    .display { right: 12pt; bottom: 18pt; width: 23pt; height: 12pt; }
+    .avoid-arrow { position: absolute; left: 30pt; top: 43pt; width: 29pt; height: 15pt; border-top: 3pt solid #2C2C2C; border-right: 3pt solid #2C2C2C; border-radius: 0 16pt 0 0; transform: rotate(-17deg); }
+    .copy h2 { font-size: 13.5pt; font-weight: 850; color: #2C2C2C; line-height: 1.2; }
+    .copy p { margin-top: 5pt; font-size: 9.6pt; font-weight: 500; color: #555555; line-height: 1.36; }
+    .bottom-card { margin-top: 0; padding: 10pt 13pt; display: grid; grid-template-columns: 1fr 1.1fr; gap: 11pt; align-items: center; }
+    .bottom-card h2 { font-size: 14pt; font-weight: 850; color: #2C2C2C; line-height: 1.2; }
+    .bottom-card p { margin-top: 5pt; font-size: 9.7pt; font-weight: 500; color: #555555; line-height: 1.35; }
+    .multi-route { display: flex; align-items: center; gap: 6pt; justify-content: flex-end; }
+    .stop { min-width: 52pt; background: #FAF4EA; border: 1pt solid #EADCC7; border-radius: 6pt; padding: 6pt 5pt; text-align: center; }
+    .stop p { margin-top: 0; font-size: 8.5pt; font-weight: 850; color: #4A3D2B; line-height: 1.18; }
+    .arrow p { margin-top: 0; font-size: 12pt; font-weight: 900; color: #8C7851; line-height: 1; }
+    .reset p { color: #FDFCF8; background: #2C2C2C; }
   </style>
 </head>
 <body>
   <div class="slide">
-    <div class="section-badge"><p>4 제작</p></div>
-    <div class="headline"><h1>이동체 안내: 화면을 벗어나 서가를 함께 둘러보는 탐색</h1></div>
-    <div class="compare">
-      <div class="card phone"><h2>화면만 보는 안내</h2><p>사용자는 계속 스마트폰을 확인해야 해서 주변 서가와 우연한 발견을 놓치기 쉽습니다.</p></div>
-      <div class="card robot"><h2>이동체를 따라가는 안내</h2><p>시선은 매장에 남고, 이동체는 길을 안내하며 카트처럼 탐색 피로를 줄입니다.</p></div>
-    </div>
-    <div class="map">
-      <div class="route">
-        <div class="shelf s1"></div><div class="shelf s2"></div><div class="shelf s3"></div>
-        <div class="path"></div><div class="dot start"></div><div class="dot end"></div>
+    <div class="section-badge"><p>4 기술 구성</p></div>
+    <div class="headline"><h1>이동체는 지도 기반 경로 안내와 실시간 주행 판단으로 함께 이동합니다.</h1></div>
+    <div class="content">
+      <div class="map-card">
+        <div class="title-row">
+          <h2>서점 지도 기반 경로 안내</h2>
+          <div class="pill"><p>SLAM 지도 + 위치추정</p></div>
+        </div>
+        <div class="bookstore-map" style="left: 0px; top: -9px;">
+          <div class="zone entrance" style="left: 5px; top: 79px;"><p>입구</p></div>
+          <div class="zone literature"><p>문학 서가</p></div>
+          <div class="zone essay" style="left: 278px; top: 63px;"><p>에세이 평대</p></div>
+          <div class="zone counter" style="left: 340px; top: 140px;"><p>계산대</p></div>
+          <div class="zone low-display"><p>낮은 판매대</p></div>
+          <div class="seg h seg-1" style="left: 90px; top: 97px;"></div>
+          <div class="seg v seg-2"></div>
+          <div class="seg h seg-3"></div>
+          <div class="seg v seg-4" style="left: 252px; top: 106px;"></div>
+          <div class="seg h seg-5" style="left: 200px; top: 97px;"></div>
+          <div class="seg h seg-6" style="left: 258px; top: 154px;"></div>
+          <div class="seg v seg-7"></div>
+          <div class="current-dot" style="left: 78px; top: 88px;"></div>
+          
+          
+        </div>
+        <div class="map-caption">
+          <p style="position: relative; left: 1px; top: -11px;">서점 내부 지도 구축</p>
+          <p style="position: relative; left: 0px; top: -11px;">현재 위치 실시간 파악</p>
+          <p style="position: relative; left: -1px; top: -12px;">선택한 책 서가까지 경로 계산</p>
+        </div>
       </div>
-      <div class="legend"><h2>추천 책까지 가는 동안, 근처의 관련 도서도 자연스럽게 발견합니다.</h2><p>안내의 목적은 최단 경로만이 아니라, 서점이라는 공간을 더 오래 보고 더 쉽게 탐색하게 만드는 것입니다.</p></div>
+      <div class="right-stack">
+        <div class="side-card">
+          <div class="visual">
+            <div class="user" style="left: 17px; top: 38px;"></div>
+            <div class="distance-line"></div>
+            <div class="robot-icon"></div>
+            <div class="distance-label"><p>거리 유지</p></div>
+          </div>
+          <div class="copy">
+            <h2>User Following</h2>
+            <p>사용자의 보행 속도와 거리를 인식해 일정 간격을 유지하고, 뒤처지면 감속하거나 정지합니다.</p>
+          </div>
+        </div>
+        <div class="side-card">
+          <div class="visual">
+            <div class="sensor-range"></div>
+            <div class="obstacle person"></div>
+            <div class="obstacle cart"></div>
+            <div class="obstacle display"></div>
+            <div class="avoid-arrow"></div>
+          </div>
+          <div class="copy">
+            <h2>실시간 장애물 회피</h2>
+            <p>LiDAR와 깊이 카메라로 사람, 카트, 낮은 판매대를 감지하고 local costmap을 갱신해 즉시 우회합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-card" style="position: relative; left: 2px; top: 5px;">
+      <div>
+        <h2>Multi-destination Routing</h2>
+        <p>새로운 책이 추가되면 목적지를 재등록하고, 여러 서가의 방문 순서를 최적화해 하나의 연속 경로로 재생성합니다.</p>
+      </div>
+      <div class="multi-route">
+        <div class="stop"><p>목적지 1</p></div>
+        <div class="arrow"><p>→</p></div>
+        <div class="stop"><p>목적지 2</p></div>
+        <div class="arrow"><p>→</p></div>
+        <div class="stop"><p>계산대</p></div>
+        <div class="stop reset"><p>경로 재설정됨</p></div>
+      </div>
     </div>
   </div>
+
+
 </body></html>

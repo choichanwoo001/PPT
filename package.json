@@ -54,6 +54,8 @@
   "scripts": {
     "html2pptx": "node scripts/html2pptx.js",
     "build-viewer": "node scripts/build-viewer.js",
+    "video:tts": "node scripts/tts-slideshow-video.js",
+    "video:tts:v2": "node scripts/tts-slideshow-video.js --slides-dir slides --images-dir out-png-selected --output slides/presentation-tts-v2.mp4 --tts-rate 1.5",
     "build:showcase": "node showcase/scripts/build-manifest.js",
     "validate": "node scripts/validate-slides.js",
     "convert": "node convert.cjs",

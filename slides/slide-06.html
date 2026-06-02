@@ -1,5 +1,300 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
+<script>
+(() => {
+  const slideFile = "slide-06.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+<base href="/slides/">
+<script>
+(() => {
+  const slideFile = "slide-06.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
@@ -11,11 +306,11 @@
     .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
     .headline h1 { width: 612pt; font-size: 25pt; font-weight: 850; color: #2C2C2C; line-height: 1.2; letter-spacing: 0; }
     .contrast { height: 176pt; display: grid; grid-template-columns: 1fr 76pt 1fr; gap: 14pt; align-items: stretch; flex: none; min-height: 0; }
-    .card { background: #FDFCF8; border-radius: 8pt; padding: 16pt 18pt; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; overflow: hidden; }
+    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 18pt 14pt; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; overflow: hidden; }
     .label p { display: inline-block; font-size: 9.5pt; font-weight: 800; color: #555555; line-height: 1.2; border-bottom: 2pt solid #EADCC7; padding-bottom: 3pt; }
     .card h2 { margin-top: 12pt; font-size: 17pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
     .card .big { margin-top: 8pt; font-size: 34pt; font-weight: 850; color: #2C2C2C; line-height: 1; letter-spacing: 0; }
-    .card .note { margin-top: 8pt; font-size: 12pt; font-weight: 600; color: #555555; line-height: 1.32; }
+    .card .note { margin-top: 6pt; font-size: 11.3pt; font-weight: 600; color: #555555; line-height: 1.28; }
     .right-card { background: #2C2C2C; }
     .right-card .label p { color: #E5D1B3; border-bottom-color: #555555; }
     .right-card h2, .right-card .big { color: #FDFCF8; }
@@ -30,7 +325,7 @@
   <div class="slide">
     <div class="section-badge"><p>3 분석</p></div>
     <div class="headline">
-      <h1>문제는 취향이 좁은 것이 아니라, 발견까지 가는 길이 피곤하다는 점입니다.</h1>
+      <h1>소수의 선택은 취향의 결과가 아니라, 발견 과정의 피로에서 비롯됩니다.<br></h1>
     </div>
     <div class="contrast">
       <div class="card">
@@ -40,7 +335,7 @@
         </div>
         <div>
           <p class="big">발견</p>
-          <p class="note">다양한 책을 보고 싶은 마음은 여전히 존재합니다.</p>
+          
         </div>
       </div>
       <div class="bridge"><p>하지만<br>과정에서<br>이탈</p></div>
@@ -51,12 +346,13 @@
         </div>
         <div>
           <p class="big">안전</p>
-          <p class="note">탐색 피로가 커질수록 베스트셀러가 기본값이 됩니다.</p>
+          
         </div>
       </div>
     </div>
     <div class="insight">
-      <p>따라서 핵심은 책을 더 많이 보여주는 것이 아니라, 고르는 과정을 가볍게 만드는 것입니다.</p>
+      <p>따라서 핵심은 책을 더 많이 보여주는 것이 아니라,<br>고르는 과정을 가볍게 만드는 것입니다.</p>
     </div>
   </div>
+
 </body></html>

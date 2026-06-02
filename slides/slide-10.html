@@ -1,5 +1,153 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
+<base href="/slides/">
+<script>
+(() => {
+  const slideFile = "slide-10.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
@@ -24,17 +172,18 @@
 </head>
 <body>
   <div class="slide">
-    <div class="section-badge"><p>4 제작</p></div>
-    <div class="headline"><h1>산책의 핵심 기능은 취향 파악, 도서 추천, 위치 안내, 이동체 기반 탐색입니다.</h1></div>
+    <div class="section-badge"><p>5 기술</p></div>
+    <div class="headline"><h1>산책은 추천, 이동체 안내, 구매 이후 기록을 하나의 기술 흐름으로 연결합니다.</h1></div>
     <div class="flow">
-      <div class="step"><div class="num"><p>01</p></div><h2>취향 파악</h2><p class="desc">간단한 선택 질문과 자연어 입력으로 지금 읽고 싶은 분위기를 파악합니다.</p></div>
-      <div class="step"><div class="num"><p>02</p></div><h2>LLM 추천</h2><p class="desc">LLM 추천 에이전트가 도서 정보와 사용자의 맥락을 연결합니다.</p></div>
-      <div class="step"><div class="num"><p>03</p></div><h2>위치 안내</h2><p class="desc">추천된 책이 매장 어디에 있는지 바로 보여줍니다.</p></div>
-      <div class="step"><div class="num"><p>04</p></div><h2>이동체 탐색</h2><p class="desc">자율주행 이동체가 사용자를 해당 위치까지 이끕니다.</p></div>
+      <div class="step"><div class="num"><p>01</p></div><h2>밸런스 게임</h2><p class="desc">서점 입장 후 간단한 선택 질문으로 사용자의 취향을 빠르게 파악합니다.</p></div>
+      <div class="step"><div class="num"><p>02</p></div><h2>유사 취향 추천</h2><p class="desc">비슷한 취향의 사용자가 고른 책과 선택 이유를 함께 보여줍니다.</p></div>
+      <div class="step"><div class="num"><p>03</p></div><h2>이동체 안내</h2><p class="desc" style="font-weight: 400;">다중경로와 휴먼팔로잉 기반 이동체가 실제 서가까지 안내합니다.</p></div>
+      <div class="step"><div class="num"><p>04</p></div><h2>AI 독서 경험</h2><p class="desc">구매 이후 앱 책장, 질문, 문장 저장, 다음 추천으로 경험을 이어갑니다.</p></div>
     </div>
     <div class="reason">
-      <div class="card"><h2>시야 확보</h2><p>안내가 스마트폰 화면 안에만 머물지 않아, 사용자는 주변 서가를 자연스럽게 함께 둘러볼 수 있습니다.</p></div>
-      <div class="card"><h2>신체적 피로 감소</h2><p>이동체가 이동 보조 역할까지 수행하면 오래 걷고 들고 다니는 부담을 줄여 탐색 시간을 늘릴 수 있습니다.</p></div>
+      <div class="card"><h2>오프라인 탐색</h2><p>사용자는 길을 찾는 부담을 줄이고, 이동 중 주변 서가를 자연스럽게 둘러볼 수 있습니다.</p></div>
+      <div class="card"><h2>온라인 확장</h2><p>구매 기록과 독서 활동은 다시 다음 추천의 맥락이 되어 선택 만족감을 높입니다.</p></div>
     </div>
   </div>
+
 </body></html>

@@ -1,36 +1,203 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
+<base href="/slides/">
+<script>
+(() => {
+  const slideFile = "slide-16.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
+    body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #2C2C2C; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 54pt 42pt 30pt; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 24pt; }
-    .section-badge { position: absolute; top: 16pt; left: 28pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .title { display: flex; flex-direction: column; justify-content: space-between; border-right: 1.5pt solid rgba(44, 44, 44, 0.26); padding-right: 22pt; }
-    .title h1 { font-size: 27pt; font-weight: 800; line-height: 1.28; color: #2C2C2C; }
-    .title p { font-size: 11.5pt; font-weight: 700; line-height: 1.45; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 10pt; align-self: flex-start; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6pt; }
-    .tags .tag p { font-size: 9.8pt; font-weight: 800; line-height: 1; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 5pt 8pt; }
-    .content { display: flex; flex-direction: column; justify-content: center; gap: 13pt; }
-    .card { background: #FDFCF8; border-radius: 8pt; padding: 15pt 17pt; }
-    .card h2 { font-size: 16pt; font-weight: 800; color: #2C2C2C; line-height: 1.25; }
-    .card p { margin-top: 6pt; font-size: 11.8pt; font-weight: 500; color: #555555; line-height: 1.46; }
+    .slide { width: 720pt; height: 405pt; position: relative; padding: 38pt 40pt 34pt; }
+    .badge { display: inline-block; margin-bottom: 16pt; }
+    .badge p { font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
+    .header { display: flex; align-items: flex-end; justify-content: space-between; gap: 20pt; margin-bottom: 18pt; }
+    .header h1 { font-size: 27pt; font-weight: 850; line-height: 1.18; color: #2C2C2C; }
+    .header p { max-width: 250pt; font-size: 11.5pt; font-weight: 750; line-height: 1.45; color: #FDFCF8; background: #2C2C2C; border-radius: 99pt; padding: 6pt 11pt; text-align: right; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16pt; }
+    .panel { min-height: 240pt; background: #FDFCF8; border-radius: 8pt; padding: 18pt 18pt 16pt; display: flex; flex-direction: column; gap: 13pt; }
+    .panel h2 { font-size: 22pt; font-weight: 850; color: #2C2C2C; line-height: 1.1; }
+    .row { border-top: 1pt solid rgba(44, 44, 44, 0.16); padding-top: 11pt; }
+    .row h3 { font-size: 11pt; font-weight: 850; color: #8C7851; line-height: 1.15; margin-bottom: 5pt; }
+    .row p { font-size: 13pt; font-weight: 600; color: #444444; line-height: 1.42; }
   </style>
 </head>
 <body>
   <div class="slide">
-    <div class="section-badge"><p>6 평가</p></div>
-    <div class="title">
-      <h1>사회적 측면</h1>
-      <p>다양한 저자와 주제의 발견</p>
-      <div class="tags"><div class="tag"><p>편중 완화</p></div><div class="tag"><p>다양성</p></div><div class="tag"><p>점검</p></div></div>
+    <div class="badge"><p>6 평가</p></div>
+    <div class="header">
+      <h1>윤리 · 심미성 측면</h1>
+      
     </div>
-    <div class="content">
-      <div class="card"><h2>기여 방식</h2><p>베스트셀러 중심의 선택을 완화하고, 독자가 더 다양한 저자와 주제를 발견하도록 도울 수 있습니다.</p></div>
-      <div class="card"><h2>평가 및 개선</h2><p>추천이 특정 장르나 출판사에 치우치지 않도록 다양성 지표를 주기적으로 점검합니다.</p></div>
+    <div class="grid">
+      <div class="panel">
+        <h2>윤리</h2>
+        <div class="row">
+          <h3>기여</h3>
+          <p>취향 데이터는 최소한으로 수집하고 추천 이유를 투명하게 제시합니다.</p>
+        </div>
+        <div class="row">
+          <h3>평가</h3>
+          <p>기록 삭제, 취향 비공개, 설명 확인 권한을 사용자에게 제공합니다.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>심미성</h2>
+        <div class="row">
+          <h3>기여</h3>
+          <p>화면과 이동체는 책 발견을 자연스럽게 돕는 도구로 작동합니다.</p>
+        </div>
+        <div class="row">
+          <h3>평가</h3>
+          <p>조명, 동선, 진열대와 어울리도록 외형과 움직임을 조정합니다.</p>
+        </div>
+      </div>
     </div>
   </div>
 

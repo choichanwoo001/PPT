@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko"><head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -6,38 +6,70 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 52pt 40pt 28pt; display: flex; flex-direction: column; gap: 12pt; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 42pt 42pt 24pt; display: flex; flex-direction: column; gap: 14pt; }
     .section-badge { position: absolute; top: 16pt; left: 26pt; }
     .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .headline h1 { font-size: 25pt; font-weight: 700; line-height: 1.25; color: #2C2C2C; }
-    .thesis { background: #2C2C2C; border-radius: 8pt; padding: 19pt 24pt; }
-    .thesis p { font-size: 24pt; font-weight: 700; line-height: 1.34; color: #FDFCF8; }
-    .thesis p strong { color: #E5D1B3; font-weight: 800; }
-    .logic { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; }
-    .step { background: #FDFCF8; border-radius: 8pt; padding: 15pt 16pt; display: flex; flex-direction: column; gap: 10pt; }
-    .step h2 { font-size: 14.5pt; font-weight: 700; color: #2C2C2C; line-height: 1.4; }
-    .step p { font-size: 12pt; font-weight: 400; color: #555555; line-height: 1.48; }
-    .closing p { font-size: 14pt; font-weight: 700; color: #2C2C2C; line-height: 1.42; }
+    .headline { flex: none; }
+    .headline h1 { width: 620pt; font-size: 24.5pt; font-weight: 850; color: #2C2C2C; line-height: 1.16; letter-spacing: 0; }
+    .headline p { margin-top: 6pt; font-size: 11.6pt; font-weight: 650; color: #555555; line-height: 1.3; }
+    .proof { height: 242pt; flex: none; display: grid; grid-template-columns: 178pt 1fr; gap: 14pt; align-items: stretch; min-height: 0; }
+    .metric { background: #2C2C2C; border-radius: 8pt; padding: 18pt 17pt 16pt; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+    .metric .label { font-size: 10.2pt; font-weight: 800; color: #E5D1B3; line-height: 1.18; border-bottom: 1pt solid #555555; padding-bottom: 5pt; }
+    .metric .fromto { display: flex; flex-direction: column; gap: 4pt; }
+    .metric .small { font-size: 12pt; font-weight: 700; color: #FDFCF8; line-height: 1.22; }
+    .metric .arrow { font-size: 14pt; font-weight: 850; color: #E5D1B3; line-height: 1.18; }
+    .metric .big { font-size: 42pt; font-weight: 900; color: #FDFCF8; line-height: 1.12; letter-spacing: 0; }
+    .metric .caption { font-size: 11.8pt; font-weight: 750; color: #E5D1B3; line-height: 1.25; }
+    .chart { background: #FDFCF8; border-radius: 8pt; padding: 18pt 20pt 15pt; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+    .chart-title { display: flex; justify-content: space-between; align-items: baseline; gap: 10pt; flex: none; }
+    .chart-title h2 { font-size: 15.5pt; font-weight: 850; color: #2C2C2C; line-height: 1.16; }
+    .chart-title p { font-size: 9.6pt; font-weight: 700; color: #777777; line-height: 1.18; text-align: right; }
+    .plot { height: 150pt; flex: none; display: grid; grid-template-columns: 28pt 1fr; gap: 7pt; padding-top: 8pt; }
+    .y-axis { height: 132pt; display: flex; flex-direction: column; justify-content: space-between; padding: 0 0 18pt; }
+    .y-axis p { font-size: 7.8pt; font-weight: 750; color: #777777; line-height: 1.25; text-align: right; }
+    .bar-field { position: relative; height: 132pt; border-left: 1.5pt solid #D6C3A4; border-bottom: 1.5pt solid #D6C3A4; border-top: 1pt solid #EADCC7; padding-left: 8pt; }
+    .bar-field::before, .bar-field::after { content: ""; position: absolute; left: 0; right: 0; height: 1pt; background: #EADCC7; }
+    .bar-field::before { bottom: 88pt; }
+    .bar-field::after { bottom: 44pt; }
+    .bars { position: relative; z-index: 1; height: 132pt; display: flex; align-items: flex-end; gap: 7pt; padding-right: 3pt; }
+    .bar-wrap { flex: 1; height: 132pt; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4pt; position: relative; z-index: 1; }
+    .value p { font-size: 8.8pt; font-weight: 800; color: #2C2C2C; line-height: 1.15; }
+    .bar { width: 100%; max-width: 24pt; border-radius: 4pt 4pt 0 0; background: #2C2C2C; }
+    .bar.last { background: #B05A3C; }
+    .year p { font-size: 8.1pt; font-weight: 750; color: #555555; line-height: 1.12; }
+    .callout { display: grid; grid-template-columns: 1fr 142pt; gap: 12pt; align-items: center; flex: none; }
+    .callout p { font-size: 12.8pt; font-weight: 800; color: #2C2C2C; line-height: 1.24; }
+    .callout .source { font-size: 8pt; font-weight: 650; color: #777777; line-height: 1.2; text-align: right; }
   </style>
 </head>
 <body>
   <div class="slide">
     <div class="section-badge"><p>3 분석</p></div>
     <div class="headline">
-      <h1>독립서점이 주목받는 흐름은 사람들이 다양한 발견을 원한다는 신호입니다.</h1>
+      <h1>사람들은 베스트셀러만이 아니라, 자신에게 맞는 책을 발견하는 환경을 원합니다.</h1>
+      <p>독립서점의 증가는 선택을 도와주는 큐레이션에 대한 수요를 보여줍니다.</p>
     </div>
-    <div class="thesis">
-      <p>사람들은 선택을 도와주는 환경 안에서 새로운 책을 발견하고 싶어 합니다.</p>
-    </div>
-    <div class="logic">
-      <div class="step"><h2>주제별 큐레이션</h2><p>책의 수는 적지만 선택을 돕는 기준이 분명합니다.</p></div>
-      <div class="step"><h2>서점 주인의 추천</h2><p>누군가 정리해주고 제안해주는 환경을 제공합니다.</p></div>
-      <div class="step"><h2>짧은 소개 문구</h2><p>낯선 책도 부담 없이 살펴볼 수 있게 만듭니다.</p></div>
-    </div>
-    <div class="closing">
-      <p>독립서점이 주목받는 흐름은 다양한 책을 찾고 싶은 욕구가 여전히 존재한다는 근거가 됩니다.</p>
+    <div class="proof">
+      <div class="metric">
+        <p class="label">전국 운영 중 독립서점</p>
+        <div class="fromto"><p class="small">2015년 97곳</p><p class="arrow">증가</p><p class="big">884곳</p><p class="small">2023년 기준</p></div>
+        <p class="caption">8년 동안 약 9.1배 증가</p>
+      </div>
+      <div class="chart">
+        <div class="chart-title"><h2>2015~2023 독립서점 수 증가 추세</h2><p>단위: 곳</p></div>
+        <div class="plot"><div class="y-axis"><p>900</p><p>600</p><p>300</p><p>0</p></div><div class="bar-field"><div class="bars">
+          <div class="bar-wrap"><div class="value"><p>97</p></div><div class="bar" style="height: 13pt;"></div><div class="year"><p>2015</p></div></div>
+          <div class="bar-wrap"><div class="value"><p>180</p></div><div class="bar" style="height: 23pt;"></div><div class="year"><p>2016</p></div></div>
+          <div class="bar-wrap"><div class="value"><p>283</p></div><div class="bar" style="height: 36pt;"></div><div class="year"><p>2017</p></div></div>
+          <div class="bar-wrap"><div class="value"><p>416</p></div><div class="bar" style="height: 54pt;"></div><div class="year"><p>2018</p></div></div>
+          <div class="bar-wrap"><div class="value"><p>551</p></div><div class="bar" style="height: 71pt;"></div><div class="year"><p>2019</p></div></div>
+          <div class="bar-wrap"><div class="value"><p>634</p></div><div class="bar" style="height: 82pt;"></div><div class="year"><p>2020</p></div></div>
+          <div class="bar-wrap"><div class="value"><p>745</p></div><div class="bar" style="height: 96pt;"></div><div class="year"><p>2021</p></div></div>
+          <div class="bar-wrap"><div class="value"><p>815</p></div><div class="bar" style="height: 105pt;"></div><div class="year"><p>2022</p></div></div>
+          <div class="bar-wrap"><div class="value"><p>884</p></div><div class="bar last" style="height: 114pt;"></div><div class="year"><p>2023</p></div></div>
+        </div></div></div>
+        <div class="callout"><p>책의 수보다 중요한 것은 사용자가 새로운 책을 이해하고 선택하도록 돕는 방식입니다.</p><p class="source">출처: 주식회사 동네서점, Bookshopmap Trend 2023</p></div>
+      </div>
     </div>
   </div>
-
-
 </body></html>
