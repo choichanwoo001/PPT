@@ -1,57 +1,532 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
+<script>
+(() => {
+  const slideFile = "slide-12.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+<script>
+(() => {
+  const slideFile = "slide-12.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
+<base href="/slides/">
+<script>
+(() => {
+  const slideFile = "slide-12.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #E5D1B3; overflow: hidden; color: #1A1A1A; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 100%; height: 100%; position: relative; padding: 50pt 38pt 28pt; display: grid; grid-template-columns: 0.92fr 1.08fr; gap: 18pt; }
-    .section-badge { position: absolute; top: 16pt; left: 26pt; }
-    .section-badge p { display: inline-block; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .left { display: flex; flex-direction: column; justify-content: space-between; gap: 16pt; }
-    .headline h1 { font-size: 28pt; font-weight: 850; color: #2C2C2C; line-height: 1.25; }
-    .headline p { margin-top: 10pt; font-size: 13pt; font-weight: 600; color: #555555; line-height: 1.45; }
-    .input { background: #FDFCF8; border-radius: 8pt; padding: 18pt; border: 1.4pt solid rgba(44, 44, 44, 0.18); }
-    .input h2 { font-size: 12pt; font-weight: 850; color: #8C7851; line-height: 1.2; }
-    .input p { margin-top: 10pt; font-size: 18pt; font-weight: 750; color: #2C2C2C; line-height: 1.38; }
-    .right { background: #2C2C2C; border-radius: 8pt; padding: 20pt; display: flex; flex-direction: column; justify-content: space-between; }
-    .right h2 { font-size: 18pt; font-weight: 850; color: #FDFCF8; line-height: 1.25; }
-    .tags { display: flex; flex-wrap: wrap; gap: 8pt; margin-top: 14pt; }
-    .tag p { font-size: 11.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; border-radius: 99pt; padding: 6pt 10pt; line-height: 1; }
-    .recommend { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
-    .book { background: #FDFCF8; border-radius: 8pt; padding: 14pt; min-height: 118pt; }
-    .book h3 { font-size: 15pt; font-weight: 850; color: #2C2C2C; line-height: 1.28; }
-    .book p { margin-top: 7pt; font-size: 10.8pt; font-weight: 500; color: #555555; line-height: 1.42; }
+    .slide { width: 100%; height: 100%; position: relative; padding: 48pt 38pt 28pt; display: flex; flex-direction: column; gap: 14pt; }
+    .section-badge { position: absolute; left: 45px; top: 24px; }
+    .section-badge p { display: inline-flex; align-items: center; justify-content: center; font-size: 10.5pt; font-weight: 800; color: #FDFCF8; background: #2C2C2C; padding: 4pt 8pt; border-radius: 99pt; line-height: 1.1; white-space: nowrap; }
+    .header { display: grid; grid-template-columns: 1fr 188pt; gap: 18pt; align-items: end; }
+    .header h1 { font-size: 27pt; font-weight: 850; color: #2C2C2C; line-height: 1.18; }
+    .header p { font-size: 12.3pt; font-weight: 650; color: #555555; line-height: 1.45; }
+    .flow { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10pt; min-height: 0; }
+    .step { position: relative; background: #FDFCF8; border-radius: 8pt; padding: 13pt 12pt 12pt; border: 1.2pt solid rgba(44, 44, 44, 0.16); display: flex; flex-direction: column; min-height: 0; }
+    .step:not(:last-child)::after { content: "→"; position: absolute; right: -13pt; top: 47%; z-index: 4; width: 18pt; height: 18pt; border-radius: 99pt; background: #2C2C2C; color: #FDFCF8; font-size: 11pt; font-weight: 850; line-height: 18pt; text-align: center; }
+    .num p { display: inline-block; font-size: 9.2pt; font-weight: 900; color: #FDFCF8; background: #8C7851; border-radius: 99pt; padding: 3pt 7pt; line-height: 1; }
+    .step h2 { margin-top: 9pt; font-size: 15.2pt; font-weight: 850; color: #2C2C2C; line-height: 1.22; }
+    .step p.desc { margin-top: 7pt; font-size: 10.2pt; font-weight: 560; color: #555555; line-height: 1.42; }
+    .chips { margin-top: auto; padding-top: 9pt; display: flex; flex-wrap: wrap; gap: 5pt; }
+    .chips p { font-size: 8.2pt; font-weight: 800; color: #2C2C2C; background: #EFE2CF; border-radius: 99pt; padding: 4pt 6pt; line-height: 1; }
+    .bottom { height: 74pt; background: #2C2C2C; border-radius: 8pt; padding: 13pt 16pt; display: grid; grid-template-columns: 220pt 1fr 195pt; gap: 14pt; align-items: center; }
+    .bottom h2 { font-size: 15pt; font-weight: 850; color: #FDFCF8; line-height: 1.2; }
+    .bottom p { font-size: 10.8pt; font-weight: 530; color: #EADCC7; line-height: 1.44; }
+    .vector { height: 34pt; display: flex; align-items: center; gap: 5pt; }
+    .bar { width: 14pt; border-radius: 99pt; background: #E5D1B3; }
+    .bar:nth-child(1) { height: 16pt; opacity: 0.72; }
+    .bar:nth-child(2) { height: 28pt; opacity: 0.95; }
+    .bar:nth-child(3) { height: 21pt; opacity: 0.8; }
+    .bar:nth-child(4) { height: 32pt; opacity: 1; }
+    .bar:nth-child(5) { height: 18pt; opacity: 0.76; }
+    .bar:nth-child(6) { height: 25pt; opacity: 0.9; }
+    .reason { background: #FDFCF8; border-radius: 8pt; padding: 10pt 11pt; }
+    .reason h3 { font-size: 11.2pt; font-weight: 850; color: #8C7851; line-height: 1.15; }
+    .reason p { margin-top: 4pt; font-size: 9.5pt; font-weight: 650; color: #2C2C2C; line-height: 1.32; }
   </style>
 </head>
 <body>
   <div class="slide">
-    <div class="section-badge"><p>4 제작</p></div>
-    <div class="left">
-      <div class="headline">
-        <h1>취향 파악: 자연어로 지금 읽고 싶은 분위기를 입력</h1>
-        <p>단순 장르 선택이 아니라, 사용자의 현재 맥락을 추천의 출발점으로 삼습니다.</p>
+    <div class="section-badge"><p>제작</p></div>
+    <div class="header">
+      <h1>독서 로그를 취향 벡터로 바꿔<br>유사 사용자의 선택을 추천합니다.</h1>
+      <p style="position: relative; width: 268px; height: 73px; left: -17px;">산책의 취향 분석은 단순 장르가 아니라, 읽는 방식과 반응까지 누적해 추천 근거로 사용합니다.</p>
+    </div>
+
+    <div class="flow">
+      <div class="step">
+        <div class="num"><p>01</p></div>
+        <h2>독서 로그 저장</h2>
+        <p class="desc">읽은 페이지, 하이라이트, 감정 태그, 에이전트 대화, 리뷰를 사용자 활동 기록으로 모읍니다.</p>
+        <div class="chips"><p>페이지</p><p>하이라이트</p><p>리뷰</p></div>
       </div>
-      <div class="input">
-        <h2>사용자 입력 예시</h2>
-        <p>“가볍게 읽을 수 있지만 여운이 남는 책”</p>
+      <div class="step">
+        <div class="num"><p>02</p></div>
+        <h2>AI 취향 추출</h2>
+        <p class="desc">로그에서 주제 키워드, 감정 반응, 문장 취향, 완독 패턴을 분석합니다.</p>
+        <div class="chips"><p>주제</p><p>감정</p><p>문장</p><p>완독</p></div>
+      </div>
+      <div class="step">
+        <div class="num"><p>03</p></div>
+        <h2>프로필 벡터화</h2>
+        <p class="desc">추출 값을 사용자별 취향 프로필로 누적하고 임베딩해 취향 벡터로 변환합니다.</p>
+        <div class="chips"><p>프로필</p><p>임베딩</p><p>벡터 DB</p></div>
+      </div>
+      <div class="step">
+        <div class="num"><p>04</p></div>
+        <h2>유사 사용자 추천</h2>
+        <p class="desc">벡터 DB에서 비슷한 사용자를 찾고, 그들이 완독하며 깊게 기록한 책을 후보로 선별합니다.</p>
+        <div class="chips"><p>유사도</p><p>완독</p><p>대화 기록</p></div>
       </div>
     </div>
-    <div class="right">
+
+    <div class="bottom">
       <div>
-        <h2>LLM이 읽어내는 추천 단서</h2>
-        <div class="tags">
-          <div class="tag"><p>가벼운 독서</p></div>
-          <div class="tag"><p>감정의 여운</p></div>
-          <div class="tag"><p>현재 분위기</p></div>
-          <div class="tag"><p>낮은 진입장벽</p></div>
-        </div>
+        <h2>추천 후보의 기준</h2>
+        <p>완독과 기록이 많은 책을 우선합니다.</p>
       </div>
-      <div class="recommend">
-        <div class="book"><h3>추천 결과</h3><p>인기순이 아니라 입력 문장의 분위기와 도서 소개, 리뷰, 주제를 연결합니다.</p></div>
-        <div class="book"><h3>추천 이유</h3><p>왜 이 책이 맞는지 함께 제시해 선택 실패에 대한 부담을 낮춥니다.</p></div>
+      <div class="vector" aria-hidden="true" style="position: relative; width: 204px; height: 45px; left: 21px;">
+        
+      </div>
+      <div class="reason">
+        <h3>AI 추천 이유 생성</h3>
+        <p>공통 키워드로 맞는 이유를 설명합니다.</p>
       </div>
     </div>
   </div>
+
+
 </body></html>

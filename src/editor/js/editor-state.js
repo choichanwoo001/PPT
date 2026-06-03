@@ -44,5 +44,9 @@ export const state = {
   },
   hoveredObjectXPath: '',
   objectDrag: null,
+  objectResize: null,
+  objectClipboard: null,
+  undoHistoryBySlide: new Map(),
+  redoHistoryBySlide: new Map(),
   suppressNextSelectClick: false,
 };

@@ -20,7 +20,7 @@ export function serializeSlideDocument(doc) {
   return `${doctype}\n${doc.documentElement.outerHTML}`;
 }
 
-async function persistDirectSlideHtml(slide, html, message) {
+export async function persistDirectSlideHtml(slide, html, message) {
   if (!slide || !html) return;
 
   try {
@@ -43,6 +43,82 @@ async function persistDirectSlideHtml(slide, html, message) {
     addChatMessage('error', `[${slide}] Direct edit save failed: ${error.message}`, slide);
     setStatus(`Error: ${error.message}`);
   }
+}
+
+const HISTORY_LIMIT = 50;
+
+function getSlideHistory(map, slide) {
+  if (!map.has(slide)) {
+    map.set(slide, { stack: [], lastCoalesceKey: '' });
+  }
+  return map.get(slide);
+}
+
+function pushHistoryEntry(history, html, coalesceKey = '') {
+  if (!html) return;
+  if (coalesceKey && history.lastCoalesceKey === coalesceKey) return;
+
+  const last = history.stack[history.stack.length - 1];
+  if (last?.html === html) return;
+
+  history.stack.push({ html });
+  if (history.stack.length > HISTORY_LIMIT) {
+    history.stack.splice(0, history.stack.length - HISTORY_LIMIT);
+  }
+  history.lastCoalesceKey = coalesceKey || '';
+}
+
+export function recordUndoSnapshot({ coalesceKey = '' } = {}) {
+  const slide = currentSlideFile();
+  const html = serializeSlideDocument(slideIframe.contentDocument);
+  if (!slide || !html) return;
+
+  pushHistoryEntry(getSlideHistory(state.undoHistoryBySlide, slide), html, coalesceKey);
+  getSlideHistory(state.redoHistoryBySlide, slide).stack = [];
+}
+
+function writeSlideDocument(html) {
+  const doc = slideIframe.contentDocument;
+  if (!doc || !html) return false;
+  doc.open();
+  doc.write(html);
+  doc.close();
+  return true;
+}
+
+async function restoreHistoryEntry(fromMap, toMap, message) {
+  const slide = currentSlideFile();
+  const currentHtml = serializeSlideDocument(slideIframe.contentDocument);
+  if (!slide || !currentHtml) return false;
+
+  const fromHistory = getSlideHistory(fromMap, slide);
+  const entry = fromHistory.stack.pop();
+  if (!entry?.html) {
+    setStatus(message.includes('Redo') ? 'Nothing to redo.' : 'Nothing to undo.');
+    return false;
+  }
+
+  const toHistory = getSlideHistory(toMap, slide);
+  pushHistoryEntry(toHistory, currentHtml);
+  fromHistory.lastCoalesceKey = '';
+  toHistory.lastCoalesceKey = '';
+
+  writeSlideDocument(entry.html);
+  const ss = getSlideState(slide);
+  ss.selectedObjectXPath = '';
+  state.hoveredObjectXPath = '';
+  renderObjectSelection();
+  updateObjectEditorControls();
+  await persistDirectSlideHtml(slide, entry.html, message);
+  return true;
+}
+
+export function undoDirectEdit() {
+  return restoreHistoryEntry(state.undoHistoryBySlide, state.redoHistoryBySlide, 'Undo applied and saved.');
+}
+
+export function redoDirectEdit() {
+  return restoreHistoryEntry(state.redoHistoryBySlide, state.undoHistoryBySlide, 'Redo applied and saved.');
 }
 
 function queueDirectSave(slide, html, message) {
@@ -107,9 +183,10 @@ export function applyTextDecorationToken(el, token, shouldEnable) {
   el.style.textDecorationLine = parts.size > 0 ? Array.from(parts).join(' ') : 'none';
 }
 
-export function mutateSelectedObject(mutator, message, { delay = 0, preserveTextInput = false } = {}) {
+export function mutateSelectedObject(mutator, message, { delay = 0, preserveTextInput = false, historyCoalesceKey = '' } = {}) {
   const selected = getSelectedObjectElement();
   if (!selected) return;
+  recordUndoSnapshot({ coalesceKey: historyCoalesceKey });
   mutator(selected);
   renderObjectSelection();
   updateObjectEditorControls({ preserveTextInput });
@@ -122,6 +199,7 @@ export function deleteSelectedObject() {
   if (!selected || selected === slideIframe.contentDocument?.body) return;
 
   const slide = currentSlideFile();
+  recordUndoSnapshot();
   selected.remove();
 
   if (slide) {
@@ -134,6 +212,82 @@ export function deleteSelectedObject() {
   updateObjectEditorControls();
   scheduleDirectSave(0, 'Object deleted and saved.');
   setStatus('Saving deleted object...');
+}
+
+export function copySelectedObject() {
+  const selected = getSelectedObjectElement();
+  if (!selected || selected === slideIframe.contentDocument?.body) {
+    setStatus('No object selected to copy.');
+    return false;
+  }
+
+  state.objectClipboard = {
+    html: selected.outerHTML,
+  };
+  setStatus('Object copied.');
+  return true;
+}
+
+function offsetPastedObject(el, offset = 12) {
+  const styles = slideIframe.contentWindow?.getComputedStyle(el);
+  const position = styles?.position || 'static';
+  const isAbsolute = position === 'absolute' || position === 'fixed';
+
+  if (isAbsolute) {
+    el.style.left = `${Math.round(el.offsetLeft + offset)}px`;
+    el.style.top = `${Math.round(el.offsetTop + offset)}px`;
+    return;
+  }
+
+  const existingLeft = parsePx(el.style.left, 0);
+  const existingTop = parsePx(el.style.top, 0);
+  el.style.position = 'relative';
+  el.style.left = `${Math.round(existingLeft + offset)}px`;
+  el.style.top = `${Math.round(existingTop + offset)}px`;
+}
+
+export function pasteCopiedObject() {
+  const clipboard = state.objectClipboard;
+  if (!clipboard?.html) {
+    setStatus('Nothing copied.');
+    return false;
+  }
+
+  const doc = slideIframe.contentDocument;
+  const selected = getSelectedObjectElement();
+  const container = selected?.parentElement || doc?.querySelector('.slide') || doc?.body;
+  if (!doc || !container) {
+    setStatus('Could not paste object here.');
+    return false;
+  }
+
+  const wrapper = doc.createElement('div');
+  wrapper.innerHTML = clipboard.html.trim();
+  const clone = wrapper.firstElementChild;
+  if (!clone) {
+    setStatus('Copied object is invalid.');
+    return false;
+  }
+
+  recordUndoSnapshot();
+  offsetPastedObject(clone);
+  if (selected?.parentElement === container) {
+    selected.insertAdjacentElement('afterend', clone);
+  } else {
+    container.appendChild(clone);
+  }
+
+  const slide = currentSlideFile();
+  if (slide) {
+    const ss = getSlideState(slide);
+    ss.selectedObjectXPath = getXPath(clone);
+  }
+  state.hoveredObjectXPath = getXPath(clone);
+  renderObjectSelection();
+  updateObjectEditorControls();
+  scheduleDirectSave(0, 'Object pasted and saved.');
+  setStatus('Object pasted.');
+  return true;
 }
 
 function parsePx(value, fallback = 0) {
@@ -181,6 +335,68 @@ function applyDragOffset(el, snapshot, dx, dy) {
   el.style.top = `${Math.round(snapshot.baseTop + dy)}px`;
 }
 
+function buildResizeSnapshot(el) {
+  const styles = slideIframe.contentWindow?.getComputedStyle(el);
+  const position = styles?.position || 'static';
+  const isAbsolute = position === 'absolute' || position === 'fixed';
+  const rect = el.getBoundingClientRect();
+
+  return {
+    baseLeft: isAbsolute ? el.offsetLeft : parsePx(el.style.left, 0),
+    baseTop: isAbsolute ? el.offsetTop : parsePx(el.style.top, 0),
+    baseWidth: rect.width || parsePx(styles?.width, el.offsetWidth || 1),
+    baseHeight: rect.height || parsePx(styles?.height, el.offsetHeight || 1),
+    makeRelative: position === 'static',
+  };
+}
+
+function applyResize(el, snapshot, handle, dx, dy) {
+  const affectsLeft = handle.includes('w');
+  const affectsRight = handle.includes('e');
+  const affectsTop = handle.includes('n');
+  const affectsBottom = handle.includes('s');
+  const minWidth = 8;
+  const minHeight = 8;
+
+  let nextLeft = snapshot.baseLeft;
+  let nextTop = snapshot.baseTop;
+  let nextWidth = snapshot.baseWidth;
+  let nextHeight = snapshot.baseHeight;
+
+  if (affectsRight) {
+    nextWidth = snapshot.baseWidth + dx;
+  }
+  if (affectsBottom) {
+    nextHeight = snapshot.baseHeight + dy;
+  }
+  if (affectsLeft) {
+    nextWidth = snapshot.baseWidth - dx;
+    nextLeft = snapshot.baseLeft + dx;
+  }
+  if (affectsTop) {
+    nextHeight = snapshot.baseHeight - dy;
+    nextTop = snapshot.baseTop + dy;
+  }
+
+  if (nextWidth < minWidth) {
+    if (affectsLeft) nextLeft -= minWidth - nextWidth;
+    nextWidth = minWidth;
+  }
+  if (nextHeight < minHeight) {
+    if (affectsTop) nextTop -= minHeight - nextHeight;
+    nextHeight = minHeight;
+  }
+
+  if ((affectsLeft || affectsTop) && snapshot.makeRelative && !el.style.position) {
+    el.style.position = 'relative';
+  }
+
+  el.style.width = `${Math.round(nextWidth)}px`;
+  el.style.height = `${Math.round(nextHeight)}px`;
+  if (affectsLeft) el.style.left = `${Math.round(nextLeft)}px`;
+  if (affectsTop) el.style.top = `${Math.round(nextTop)}px`;
+}
+
 export function startObjectDrag(event) {
   if (state.toolMode !== TOOL_MODE_SELECT) return false;
   if (event.button !== 0) return false;
@@ -199,10 +415,36 @@ export function startObjectDrag(event) {
     startPoint: clientToSlidePoint(event.clientX, event.clientY),
     snapshot: buildDragSnapshot(movable),
     didMove: false,
+    undoRecorded: false,
   };
 
   document.body.classList.add('object-dragging');
   event.preventDefault();
+  return true;
+}
+
+export function startObjectResize(event) {
+  if (state.toolMode !== TOOL_MODE_SELECT) return false;
+  if (event.button !== 0) return false;
+
+  const handle = event.target?.dataset?.resizeHandle;
+  if (!handle) return false;
+
+  const selected = getSelectedObjectElement();
+  if (!selected) return false;
+
+  state.objectResize = {
+    el: selected,
+    handle,
+    startPoint: clientToSlidePoint(event.clientX, event.clientY),
+    snapshot: buildResizeSnapshot(selected),
+    didResize: false,
+    undoRecorded: false,
+  };
+
+  document.body.classList.add('object-resizing');
+  event.preventDefault();
+  event.stopPropagation();
   return true;
 }
 
@@ -220,10 +462,41 @@ export function moveObjectDrag(event) {
   const dx = point.x - drag.startPoint.x;
   const dy = point.y - drag.startPoint.y;
   if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+    if (!drag.undoRecorded) {
+      recordUndoSnapshot();
+      drag.undoRecorded = true;
+    }
     drag.didMove = true;
   }
 
   applyDragOffset(drag.el, drag.snapshot, dx, dy);
+  renderObjectSelection();
+  event.preventDefault();
+  return true;
+}
+
+export function moveObjectResize(event) {
+  if (state.toolMode !== TOOL_MODE_SELECT || !state.objectResize) return false;
+
+  const resize = state.objectResize;
+  if (!isElementNode(resize.el)) {
+    state.objectResize = null;
+    document.body.classList.remove('object-resizing');
+    return false;
+  }
+
+  const point = clientToSlidePoint(event.clientX, event.clientY);
+  const dx = point.x - resize.startPoint.x;
+  const dy = point.y - resize.startPoint.y;
+  if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+    if (!resize.undoRecorded) {
+      recordUndoSnapshot();
+      resize.undoRecorded = true;
+    }
+    resize.didResize = true;
+  }
+
+  applyResize(resize.el, resize.snapshot, resize.handle, dx, dy);
   renderObjectSelection();
   event.preventDefault();
   return true;
@@ -245,4 +518,22 @@ export function endObjectDrag() {
   }
 
   return didMove;
+}
+
+export function endObjectResize() {
+  if (!state.objectResize) return false;
+
+  const didResize = state.objectResize.didResize;
+  state.objectResize = null;
+  document.body.classList.remove('object-resizing');
+
+  if (didResize) {
+    state.suppressNextSelectClick = true;
+    renderObjectSelection();
+    updateObjectEditorControls();
+    scheduleDirectSave(80, 'Object resized and saved.');
+    setStatus('Saving resized object...');
+  }
+
+  return didResize;
 }

@@ -511,6 +511,26 @@
       box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14);
     }
 
+    .object-outline.selected .resize-handle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 1px solid rgba(15, 23, 42, 0.82);
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.28);
+      pointer-events: auto;
+    }
+
+    .resize-handle.nw { left: -5px; top: -5px; cursor: nwse-resize; }
+    .resize-handle.n { left: 50%; top: -5px; transform: translateX(-50%); cursor: ns-resize; }
+    .resize-handle.ne { right: -5px; top: -5px; cursor: nesw-resize; }
+    .resize-handle.e { right: -5px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+    .resize-handle.se { right: -5px; bottom: -5px; cursor: nwse-resize; }
+    .resize-handle.s { left: 50%; bottom: -5px; transform: translateX(-50%); cursor: ns-resize; }
+    .resize-handle.sw { left: -5px; bottom: -5px; cursor: nesw-resize; }
+    .resize-handle.w { left: -5px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+
     .draw-layer {
       position: absolute;
       inset: 0;
@@ -525,6 +545,10 @@
 
     body.object-dragging .mode-select .draw-layer {
       cursor: grabbing;
+    }
+
+    body.object-resizing .mode-select .draw-layer {
+      cursor: default;
     }
 
     .draw-box {
@@ -1644,7 +1668,16 @@
             <div class="bbox-layer" id="bbox-layer"></div>
             <div class="object-layer" id="object-layer">
               <div class="object-outline hover" id="object-hover-box"></div>
-              <div class="object-outline selected" id="object-selected-box"></div>
+              <div class="object-outline selected" id="object-selected-box">
+                <div class="resize-handle nw" data-resize-handle="nw"></div>
+                <div class="resize-handle n" data-resize-handle="n"></div>
+                <div class="resize-handle ne" data-resize-handle="ne"></div>
+                <div class="resize-handle e" data-resize-handle="e"></div>
+                <div class="resize-handle se" data-resize-handle="se"></div>
+                <div class="resize-handle s" data-resize-handle="s"></div>
+                <div class="resize-handle sw" data-resize-handle="sw"></div>
+                <div class="resize-handle w" data-resize-handle="w"></div>
+              </div>
             </div>
             <div class="draw-layer" id="draw-layer">
               <div class="draw-box" id="draw-box"></div>

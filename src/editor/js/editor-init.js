@@ -8,7 +8,7 @@ import {
   alignLeft, alignCenter, alignRight,
   popoverTextInput, popoverApplyText, popoverTextColorInput, popoverBgColorInput,
   popoverSizeInput, popoverApplySize, toolModeDrawBtn, toolModeSelectBtn,
-  toolModeNarrationBtn, deleteSelectedObjectBtn,
+  toolModeNarrationBtn, deleteSelectedObjectBtn, objectSelectedBox,
 } from './editor-dom.js';
 import {
   currentSlideFile, getSlideState, normalizeModelName, setStatus,
@@ -27,6 +27,8 @@ import {
 import {
   mutateSelectedObject, applyTextDecorationToken,
   startObjectDrag, moveObjectDrag, endObjectDrag, deleteSelectedObject,
+  startObjectResize, moveObjectResize, endObjectResize,
+  undoDirectEdit, redoDirectEdit, copySelectedObject, pasteCopiedObject,
 } from './editor-direct-edit.js';
 import { updateSendState, applyChanges } from './editor-send.js';
 import { goToSlide } from './editor-navigation.js';
@@ -54,9 +56,10 @@ btnClearBboxes.addEventListener('click', clearBboxesForCurrentSlide);
 // Drawing
 drawLayer.addEventListener('mousedown', startDrawing);
 drawLayer.addEventListener('mousedown', startObjectDrag);
+objectSelectedBox.addEventListener('mousedown', startObjectResize);
 drawLayer.addEventListener('mousemove', (event) => {
   if (state.toolMode !== TOOL_MODE_SELECT) return;
-  if (state.objectDrag) return;
+  if (state.objectDrag || state.objectResize) return;
   updateHoveredObjectFromPointer(event.clientX, event.clientY);
 });
 drawLayer.addEventListener('mouseleave', clearHoveredObject);
@@ -77,10 +80,12 @@ drawLayer.addEventListener('click', (event) => {
 });
 window.addEventListener('mousemove', (event) => {
   moveDrawing(event);
+  moveObjectResize(event);
   moveObjectDrag(event);
 });
 window.addEventListener('mouseup', (event) => {
   endDrawing(event);
+  endObjectResize();
   endObjectDrag();
 });
 
@@ -119,18 +124,22 @@ promptInput.addEventListener('input', () => {
 });
 
 function applySelectedTextFromInput(message = 'Object text updated and saved.', delay = 120) {
+  const selected = getSelectedObjectElement();
+  const xpath = selected ? getXPath(selected) : '';
   mutateSelectedObject((el) => {
     const escaped = popoverTextInput.value
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     el.innerHTML = escaped.replace(/\n/g, '<br>');
-  }, message, { delay, preserveTextInput: true });
+  }, message, { delay, preserveTextInput: true, historyCoalesceKey: `text:${xpath}` });
 }
 
 function applySelectedSizeFromInput(message = 'Object font size updated and saved.', delay = 0) {
   const size = clamp(Number.parseInt(popoverSizeInput.value || '24', 10) || 24, 8, 180);
+  const selected = getSelectedObjectElement();
+  const xpath = selected ? getXPath(selected) : '';
   mutateSelectedObject((el) => {
     el.style.fontSize = `${size}px`;
-  }, message, { delay, preserveTextInput: true });
+  }, message, { delay, preserveTextInput: true, historyCoalesceKey: `size:${xpath}` });
 }
 
 // Text editing
@@ -172,16 +181,20 @@ popoverSizeInput.addEventListener('keydown', (event) => {
 
 popoverTextColorInput.addEventListener('input', () => {
   if (popoverTextColorInput.disabled) return;
+  const selected = getSelectedObjectElement();
+  const xpath = selected ? getXPath(selected) : '';
   mutateSelectedObject((el) => {
     el.style.color = popoverTextColorInput.value;
-  }, 'Text color updated.', { delay: 300 });
+  }, 'Text color updated.', { delay: 300, historyCoalesceKey: `text-color:${xpath}` });
 });
 
 popoverBgColorInput.addEventListener('input', () => {
   if (popoverBgColorInput.disabled) return;
+  const selected = getSelectedObjectElement();
+  const xpath = selected ? getXPath(selected) : '';
   mutateSelectedObject((el) => {
     el.style.backgroundColor = popoverBgColorInput.value;
-  }, 'Background color updated.', { delay: 300 });
+  }, 'Background color updated.', { delay: 300, historyCoalesceKey: `bg-color:${xpath}` });
 });
 
 function hasEditableFocus() {
@@ -250,6 +263,31 @@ document.addEventListener('keydown', (event) => {
 
   if (state.toolMode === TOOL_MODE_SELECT && (event.ctrlKey || event.metaKey) && !inEditableField) {
     const key = event.key.toLowerCase();
+    if (key === 'z' && !event.shiftKey) {
+      event.preventDefault();
+      void undoDirectEdit();
+      return;
+    }
+    if (key === 'z' && event.shiftKey) {
+      event.preventDefault();
+      void redoDirectEdit();
+      return;
+    }
+    if (key === 'y') {
+      event.preventDefault();
+      void redoDirectEdit();
+      return;
+    }
+    if (key === 'c') {
+      event.preventDefault();
+      copySelectedObject();
+      return;
+    }
+    if (key === 'v') {
+      event.preventDefault();
+      pasteCopiedObject();
+      return;
+    }
     if (key === 'b') { event.preventDefault(); if (!toggleBold.disabled) toggleBold.click(); return; }
     if (key === 'i') { event.preventDefault(); if (!toggleItalic.disabled) toggleItalic.click(); return; }
     if (key === 'u') { event.preventDefault(); if (!toggleUnderline.disabled) toggleUnderline.click(); return; }

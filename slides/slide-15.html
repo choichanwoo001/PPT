@@ -1,5 +1,152 @@
 <!DOCTYPE html>
 <html lang="ko"><head>
+<script>
+(() => {
+  const slideFile = "slide-15.html";
+  const localAssetPrefix = "./assets/";
+  const absolutePathRe = /^(file:\/\/|\/Users\/|\/home\/|\/var\/|\/tmp\/|\/private\/|\/Volumes\/|[A-Za-z]:[\\/]|\\\\)/i;
+  const schemeRe = /^[a-z][a-z0-9+\-.]*:/i;
+  const prefix = '[slides-grab:image]';
+
+  function describeElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return '';
+    if (element === document.body) return 'body';
+
+    const parts = [];
+    let current = element;
+    while (current && current.nodeType === Node.ELEMENT_NODE && current !== document.body) {
+      let part = current.tagName.toLowerCase();
+      if (current.id) {
+        part += '#' + current.id;
+        parts.unshift(part);
+        break;
+      }
+      if (current.classList.length > 0) {
+        part += '.' + Array.from(current.classList).slice(0, 2).join('.');
+      }
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+    return 'body > ' + parts.join(' > ');
+  }
+
+  function warn(message, detail) {
+    console.warn(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function fail(message, detail) {
+    console.error(prefix + ' ' + slideFile + ': ' + message, detail);
+  }
+
+  function validateAssetSource(kind, source, { allowEmpty = true, onNoncanonical = 'warn' } = {}) {
+    const value = (source || '').trim();
+    if (!value) {
+      return allowEmpty;
+    }
+    if (value.startsWith('data:')) {
+      return true;
+    }
+    if (value.startsWith('https://')) {
+      fail('remote ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (value.startsWith('http://')) {
+      fail('remote http:// ' + kind + ' URL is unsupported in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (absolutePathRe.test(value) || value.startsWith('/')) {
+      fail('non-portable ' + kind + ' path is unsupported', { src: value });
+      return false;
+    }
+    if (schemeRe.test(value)) {
+      fail('unsupported ' + kind + ' URL scheme in saved slides; download it into ./assets/<file>', { src: value });
+      return false;
+    }
+    if (!value.startsWith(localAssetPrefix)) {
+      const report = onNoncanonical === 'fail' ? fail : warn;
+      report('noncanonical local ' + kind + ' path should use ./assets/<file>', { src: value });
+    }
+    return true;
+  }
+
+  function getVideoSources(video) {
+    const sources = [];
+    const directSrc = (video.getAttribute('src') || '').trim();
+    if (directSrc) {
+      sources.push(directSrc);
+    }
+    for (const source of video.querySelectorAll('source[src]')) {
+      const src = (source.getAttribute('src') || '').trim();
+      if (src) {
+        sources.push(src);
+      }
+    }
+    return sources;
+  }
+
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLImageElement) {
+      const src = (target.getAttribute('src') || target.currentSrc || '').trim();
+      if (!src || src.startsWith('data:')) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local asset', { src });
+        return;
+      }
+      fail('image failed to load', { src });
+      return;
+    }
+
+    if (target instanceof HTMLVideoElement) {
+      const sources = getVideoSources(target);
+      if (sources.some((src) => src.startsWith(localAssetPrefix))) {
+        fail('missing local video asset', { sources });
+        return;
+      }
+      fail('video failed to load', { sources });
+      return;
+    }
+
+    if (target instanceof HTMLSourceElement && target.parentElement instanceof HTMLVideoElement) {
+      const src = (target.getAttribute('src') || '').trim();
+      if (!src) return;
+      if (src.startsWith(localAssetPrefix)) {
+        fail('missing local video asset', { src });
+        return;
+      }
+      fail('video source failed to load', { src });
+    }
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (const image of document.querySelectorAll('img[src]')) {
+      const src = (image.getAttribute('src') || '').trim();
+      validateAssetSource('image', src);
+    }
+
+    for (const video of document.querySelectorAll('video')) {
+      for (const src of getVideoSources(video)) {
+        validateAssetSource('video', src);
+      }
+
+      const poster = (video.getAttribute('poster') || '').trim();
+      if (poster) {
+        validateAssetSource('image', poster);
+      }
+    }
+
+    for (const element of document.body.querySelectorAll('*')) {
+      if (element === document.body) continue;
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (!backgroundImage || backgroundImage === 'none' || !backgroundImage.includes('url(')) continue;
+      fail('non-body background-image is not supported for slide content', {
+        element: describeElement(element),
+        backgroundImage,
+      });
+    }
+  });
+})();
+</script>
 <base href="/slides/">
 <script>
 (() => {
@@ -154,10 +301,10 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { width: 720pt; height: 405pt; font-family: 'Pretendard', sans-serif; background: #2C2C2C; overflow: hidden; color: #FDFCF8; }
     h1, h2, h3, p, li { padding-bottom: 0.1em; }
-    .slide { width: 720pt; height: 405pt; position: relative; padding: 38pt 40pt 34pt; }
-    .badge { display: inline-block; margin-bottom: 16pt; }
-    .badge p { font-size: 10.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; padding: 4pt 10pt; border-radius: 99pt; line-height: 1.1; }
-    .header { display: flex; align-items: flex-end; justify-content: space-between; gap: 20pt; margin-bottom: 18pt; }
+    .slide { width: 720pt; height: 405pt; position: relative; padding: 60pt 40pt 34pt; }
+    .badge { position: absolute; left: 45px; top: 24px; display: inline-block; margin-bottom: 0; }
+    .badge p { display: inline-flex; align-items: center; justify-content: center; font-size: 10.5pt; font-weight: 800; color: #2C2C2C; background: #E5D1B3; padding: 4pt 8pt; border-radius: 99pt; line-height: 1.1; white-space: nowrap; }
+    .header { display: flex; align-items: flex-end; justify-content: space-between; gap: 20pt; margin-bottom: 17pt; }
     .header h1 { font-size: 27pt; font-weight: 850; line-height: 1.18; color: #FDFCF8; }
     .header p { max-width: 250pt; font-size: 11.5pt; font-weight: 600; line-height: 1.45; color: #E5D1B3; text-align: right; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16pt; }
@@ -170,7 +317,7 @@
 </head>
 <body>
   <div class="slide">
-    <div class="badge"><p>6 평가</p></div>
+    <div class="badge"><p>평가</p></div>
     <div class="header">
       <h1>경제 · 사회 측면</h1>
       
@@ -200,6 +347,7 @@
       </div>
     </div>
   </div>
+
 
 
 </body></html>
